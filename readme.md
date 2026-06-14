@@ -11,6 +11,9 @@
 
 ---
 
+<img width="959" height="869" alt="Untitled" src="https://github.com/user-attachments/assets/9d5302fe-d12f-48b7-ab88-1eb87007695e" />
+
+
 ## 💡 Tinggalkan Cara Manual, Biarkan Robot yang Bekerja!
 
 Sebagai Seller Shopee, menekan tombol "Naikkan Produk" setiap 4 jam secara manual sangatlah melelahkan dan sering terlewat. **Shopee Auto Product Boost PRO** hadir sebagai asisten virtual toko Anda. 
