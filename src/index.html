@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SellerBoost Premium - CRM Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .page-section { display: none; padding: 32px; max-width: 1100px; margin: 0 auto; width: 100%; }
+        .page-section.active { display: block; }
+        .nav-item { cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-icon">SB</div>
+                <div class="logo-text">SellerBoost</div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a class="nav-item active" onclick="showPage('page-dashboard', this)">
+                    <span class="material-icons-round">dashboard</span> Dashboard
+                </a>
+                <a class="nav-item" onclick="showPage('page-accounts', this)">
+                    <span class="material-icons-round">group</span> Accounts
+                </a>
+                <a class="nav-item" onclick="showPage('page-products', this)">
+                    <span class="material-icons-round">inventory_2</span> Products
+                </a>
+                <a class="nav-item" onclick="showPage('page-history', this)">
+                    <span class="material-icons-round">history</span> History
+                </a>
+                <a class="nav-item" onclick="showPage('page-settings', this)">
+                    <span class="material-icons-round">settings</span> Settings
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="breadcrumb" id="header-title">
+                    <span class="material-icons-round">dashboard</span>
+                    <span id="header-text">Dashboard Overview</span>
+                </div>
+                <div class="user-profile">
+                    <span class="material-icons-round">account_circle</span>
+                </div>
+            </header>
+
+            <!-- DASHBOARD PAGE -->
+            <div id="page-dashboard" class="page-section active">
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Active Accounts</div>
+                        <div class="stat-value" id="total-acc">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Total Products Boosted</div>
+                        <div class="stat-value" id="total-boosted">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">System Status</div>
+                        <div class="stat-value status-active" id="system-status-container">
+                            <span class="status-dot" id="system-status-dot"></span>
+                            <span id="system-status-text">Idle</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bot Controller Card -->
+                <div class="bot-controller-card" style="background-color: var(--card-bg); border-radius: 12px; padding: 20px 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border-color); margin-bottom: 24px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <div>
+                            <h3 style="font-size: 16px; font-weight: 600; color: var(--text-main); margin-bottom: 4px;">Sistem Auto-Boost</h3>
+                            <p style="font-size: 13px; color: var(--text-muted);">Sistem akan mengeksekusi antrean boost secara otomatis di latar belakang</p>
+                        </div>
+                        <button id="btn-toggle-bot" class="btn btn-primary" onclick="toggleBot()">
+                            <span class="material-icons-round" id="bot-icon">play_arrow</span> <span id="bot-btn-text">Mulai Auto-Boost</span>
+                        </button>
+                    </div>
+                    <div id="bot-logs" style="background: #1e293b; color: #e2e8f0; padding: 16px; border-radius: 8px; height: 180px; overflow-y: auto; font-family: 'Inter', monospace; font-size: 12px; display: flex; flex-direction: column; gap: 6px;">
+                        <div style="color: #94a3b8;">[Sistem] Menunggu instruksi...</div>
+                    </div>
+                </div>
+
+                <!-- Table Card -->
+                <div class="table-card">
+                    <div class="table-header">
+                        <h2>Account Management Table</h2>
+                        <div class="table-actions">
+                            <button class="btn btn-primary" onclick="addNewAccount()">
+                                Add Account
+                            </button>
+                            <button class="btn btn-secondary" onclick="loadData()">
+                                <span class="material-icons-round sync-icon">sync</span>
+                                Sync All
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table id="account-table">
+                            <thead>
+                                <tr>
+                                    <th>STORE NAME</th>
+                                    <th>ORDERS</th>
+                                    <th>STATUS</th>
+                                    <th>SLOTS USAGE</th>
+                                    <th>NEXT BOOST CYCLE</th>
+                                    <th>ACTIONS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                <tr>
+                                    <td colspan="5" class="loading-state">Memuat data akun...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACCOUNTS PAGE -->
+            <div id="page-accounts" class="page-section">
+                <div class="table-card">
+                    <div class="table-header">
+                        <h2>Kelola Akun Shopee</h2>
+                        <button class="btn btn-primary" onclick="addNewAccount()">Tambah Akun Baru</button>
+                    </div>
+                    <div style="padding: 24px;">
+                        <p style="color: var(--text-muted); font-size: 14px;">Silakan tambahkan akun Anda menggunakan tombol di atas. Untuk memantau status antrean produk, silakan kembali ke tab <strong>Dashboard</strong>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRODUCTS PAGE -->
+            <div id="page-products" class="page-section">
+                <div class="table-header" style="margin-bottom: 24px;">
+                    <h2>Performa Produk (30 Hari Terakhir)</h2>
+                    <select id="product-account-select" class="form-select" onchange="loadProductPerformance()" style="padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border-color); font-family: 'Inter'; font-size: 14px; outline: none; background: white; cursor: pointer;">
+                        <option value="">Pilih Akun Shopee...</option>
+                    </select>
+                </div>
+                <div id="product-gallery" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;">
+                    <div class="empty-state" style="grid-column: 1 / -1; padding: 60px; text-align: center; color: var(--text-muted); background: white; border-radius: 12px; border: 1px dashed var(--border-color);">
+                        <span class="material-icons-round" style="font-size: 48px; color: #cbd5e1; margin-bottom: 16px;">inventory_2</span>
+                        <p>Pilih akun di atas untuk melihat performa produk.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HISTORY PAGE -->
+            <div id="page-history" class="page-section">
+                <div class="table-card">
+                    <div class="table-header">
+                        <h2>Riwayat Auto-Boost</h2>
+                        <button class="btn btn-secondary" onclick="loadStats()"><span class="material-icons-round sync-icon">sync</span> Refresh</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>WAKTU</th>
+                                    <th>TANGGAL</th>
+                                    <th>STORE NAME</th>
+                                    <th>NAMA PRODUK</th>
+                                    <th>STATUS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-table-body">
+                                <tr><td colspan="5" class="loading-state">Memuat riwayat...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SETTINGS PAGE -->
+            <div id="page-settings" class="page-section">
+                <div class="table-card">
+                    <div class="table-header">
+                        <h2>Pengaturan Sistem</h2>
+                    </div>
+                    <div style="padding: 24px;">
+                        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Konfigurasi bot dan jeda eksekusi dapat diatur di sini (segera hadir).</p>
+                        
+                        <div style="margin-bottom: 16px;">
+                            <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px;">Jeda Antar Akun (Detik)</label>
+                            <input type="number" value="3" disabled style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 6px; width: 100px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+
+        <!-- Add Account Modal -->
+        <div id="addAccountModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+            <div style="background: white; padding: 24px; border-radius: 12px; width: 450px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+                <h3 style="margin-bottom: 8px; font-size: 18px;">Tambah Akun Baru</h3>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Silakan paste Cookie Shopee Anda di bawah ini (pastikan string cookie mengandung SPC_CDS):</p>
+                <textarea id="cookieInput" placeholder="Paste cookie di sini..." style="width: 100%; height: 120px; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px; margin-bottom: 16px; font-family: 'Inter', monospace; font-size: 12px; resize: none;"></textarea>
+                <div style="display: flex; justify-content: flex-end; gap: 12px;">
+                    <button class="btn btn-secondary" onclick="closeAddModal()">Batal</button>
+                    <button class="btn btn-primary" onclick="submitNewAccount()">Simpan Akun</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { ipcRenderer } = require('electron');
+
+        // =====================================
+        // SPA ROUTING
+        // =====================================
+        function showPage(pageId, navElement) {
+            // Hide all
+            document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            
+            // Show target
+            document.getElementById(pageId).classList.add('active');
+            navElement.classList.add('active');
+
+            // Update Header
+            const titleMap = {
+                'page-dashboard': { icon: 'dashboard', text: 'Dashboard Overview' },
+                'page-accounts': { icon: 'group', text: 'Account Management' },
+                'page-products': { icon: 'inventory_2', text: 'Products Catalog' },
+                'page-history': { icon: 'history', text: 'Auto-Boost History' },
+                'page-settings': { icon: 'settings', text: 'System Settings' }
+            };
+            document.getElementById('header-title').innerHTML = `
+                <span class="material-icons-round">${titleMap[pageId].icon}</span>
+                <span id="header-text">${titleMap[pageId].text}</span>
+            `;
+
+            if(pageId === 'page-history' || pageId === 'page-dashboard') {
+                loadStats();
+            }
+        }
+
+        function getStatusColor(status) {
+            const s = status.toLowerCase();
+            if (s.includes('active')) return 'active';
+            if (s.includes('cooldown')) return 'cooldown';
+            if (s.includes('expired')) return 'expired';
+            return 'default';
+        }
+
+        function formatTimeRemaining(ms) {
+            if (ms <= 0) return "Ready";
+            const totalSec = Math.floor(ms / 1000);
+            const h = Math.floor(totalSec / 3600);
+            const m = Math.floor((totalSec % 3600) / 60);
+            const s = totalSec % 60;
+            if (h > 0) return `${h}h ${m}m ${s}s`;
+            if (m > 0) return `${m}m ${s}s`;
+            return `${s}s`;
+        }
+
+        // =====================================
+        // DATA LOADING & LIVE TIMERS
+        // =====================================
+        async function loadStats() {
+            try {
+                const stats = await ipcRenderer.invoke('get-stats');
+                document.getElementById('total-boosted').innerText = stats.totalBoosted.toLocaleString();
+                
+                const tbody = document.getElementById('history-table-body');
+                if (stats.history.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Belum ada riwayat aktivitas bot.</td></tr>';
+                } else {
+                    tbody.innerHTML = '';
+                    stats.history.forEach(log => {
+                        const statusBadge = log.status === 'Success' ? '<span class="badge badge-active">Success</span>' : '<span class="badge badge-expired">Failed</span>';
+                        tbody.innerHTML += `
+                            <tr>
+                                <td>${log.time}</td>
+                                <td>${log.date}</td>
+                                <td><strong>${log.shopName}</strong></td>
+                                <td>${log.productName}</td>
+                                <td>${statusBadge}</td>
+                            </tr>
+                        `;
+                    });
+                }
+            } catch(e) {
+                console.error("Gagal load stats:", e);
+            }
+        }
+
+        async function loadData() {
+            try {
+                const accounts = await ipcRenderer.invoke('get-all-accounts');
+                const tbody = document.getElementById('table-body');
+                const accountSelect = document.getElementById('product-account-select');
+                
+                document.getElementById('total-acc').innerText = accounts.length;
+                
+                if (accounts.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Belum ada akun. Klik Add Account untuk memulai.</td></tr>';
+                    accountSelect.innerHTML = '<option value="">Pilih Akun Shopee...</option>';
+                    return;
+                }
+
+                tbody.innerHTML = '';
+                
+                // Preserve current selected account
+                const currentSelected = accountSelect.value;
+                let selectHtml = '<option value="">Pilih Akun Shopee...</option>';
+
+                accounts.forEach(acc => {
+                    // Populate select
+                    selectHtml += `<option value="${acc.cookie}" ${currentSelected === acc.cookie ? 'selected' : ''}>${acc.name}</option>`;
+
+                    const statusClass = getStatusColor(acc.status);
+                    const slotValue = parseInt(acc.slots) || 0;
+                    const slotPercent = Math.min((slotValue / 5) * 100, 100);
+                    const slotColor = slotPercent > 80 ? '#e74c3c' : (slotPercent > 50 ? '#f39c12' : '#f1582c');
+                    
+                    const orderBadgeClass = acc.ordersToShip > 0 ? 'badge-expired' : 'badge-default';
+
+                    const row = `
+                        <tr>
+                            <td>
+                                <div class="store-name-cell">
+                                    <div class="store-avatar">${acc.name.charAt(0).toUpperCase()}</div>
+                                    <span class="store-name-text">${acc.name}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge ${orderBadgeClass}">${acc.ordersToShip} To Ship</span>
+                            </td>
+                            <td>
+                                <span class="badge badge-${statusClass}">${acc.status}</span>
+                            </td>
+                            <td>
+                                <div class="slot-usage">
+                                    <div class="slot-text">${acc.slots}</div>
+                                    <div class="slot-bar">
+                                        <div class="slot-fill" style="width: ${slotPercent}%; background: ${slotColor}"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="next-boost-cell">
+                                <span class="countdown-timer" data-timestamp="${acc.nextTimestamp}">Menghitung...</span>
+                            </td>
+                            <td>
+                                <div class="action-cell">
+                                    <label class="switch">
+                                        <input type="checkbox" checked onchange="console.log('Toggling status for ${acc.name}')">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <button class="btn-icon">
+                                        <span class="material-icons-round">more_horiz</span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                });
+                
+                accountSelect.innerHTML = selectHtml;
+            } catch (err) {
+                console.error("Gagal load data:", err);
+            }
+            loadStats();
+        }
+
+        // Load Product Performance
+        async function loadProductPerformance() {
+            const select = document.getElementById('product-account-select');
+            const gallery = document.getElementById('product-gallery');
+            const cookie = select.value;
+
+            if (!cookie) {
+                gallery.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1; padding: 60px; text-align: center; color: var(--text-muted); background: white; border-radius: 12px; border: 1px dashed var(--border-color);">
+                        <span class="material-icons-round" style="font-size: 48px; color: #cbd5e1; margin-bottom: 16px;">inventory_2</span>
+                        <p>Pilih akun di atas untuk melihat performa produk.</p>
+                    </div>`;
+                return;
+            }
+
+            gallery.innerHTML = `
+                <div style="grid-column: 1 / -1; padding: 40px; text-align: center;">
+                    <div class="status-dot blinking" style="margin-bottom: 8px;"></div>
+                    <p style="color: var(--text-muted);">Menarik data performa langsung dari Shopee...</p>
+                </div>
+            `;
+
+            try {
+                const products = await ipcRenderer.invoke('get-products-performance', cookie);
+                
+                if (products.length === 0) {
+                    gallery.innerHTML = `
+                        <div class="empty-state" style="grid-column: 1 / -1; padding: 60px; text-align: center; color: var(--text-muted); background: white; border-radius: 12px; border: 1px dashed var(--border-color);">
+                            <span class="material-icons-round" style="font-size: 48px; color: #cbd5e1; margin-bottom: 16px;">warning</span>
+                            <p>Tidak ada produk yang sedang di-boost atau session kedaluwarsa.</p>
+                        </div>`;
+                    return;
+                }
+
+                gallery.innerHTML = '';
+                products.forEach(p => {
+                    const fallbackImg = 'https://via.placeholder.com/300x140?text=No+Image';
+                    gallery.innerHTML += `
+                        <div style="background: white; border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.02); transition: transform 0.2s; cursor: default;">
+                            <div style="height: 160px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; overflow: hidden; border-bottom: 1px solid var(--border-color);">
+                                <img src="${p.image || fallbackImg}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='${fallbackImg}'">
+                            </div>
+                            <div style="padding: 20px;">
+                                <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 12px; color: var(--text-main); line-height: 1.4; height: 38px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                                    ${p.name}
+                                </h4>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                    <span class="badge badge-active" style="font-size: 11px;">Active</span>
+                                    <span style="font-size: 12px; color: var(--primary-color); font-weight: 600;" class="countdown-timer" data-timestamp="${p.cooldown > 0 ? Date.now() + (p.cooldown*1000) : 0}">
+                                        Menghitung...
+                                    </span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 16px;">
+                                    <div>
+                                        <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Views</div>
+                                        <div style="font-size: 16px; font-weight: 700; color: var(--text-main);">${p.views}</div>
+                                    </div>
+                                    <div style="border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color);">
+                                        <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Sales</div>
+                                        <div style="font-size: 16px; font-weight: 700; color: var(--text-main);">${p.sales}</div>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Conv.</div>
+                                        <div style="font-size: 16px; font-weight: 700; color: var(--text-main);">${(p.conversion * 100).toFixed(1)}%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+            } catch (err) {
+                gallery.innerHTML = `<div style="grid-column: 1 / -1; padding: 20px; color: red;">Error: ${err.message}</div>`;
+            }
+        }
+
+        // Live Timer Tick
+        setInterval(() => {
+            const timers = document.querySelectorAll('.countdown-timer');
+            const now = Date.now();
+            timers.forEach(timer => {
+                const ts = parseInt(timer.getAttribute('data-timestamp'));
+                if (ts > 0) {
+                    const remaining = ts - now;
+                    timer.innerText = formatTimeRemaining(remaining);
+                } else {
+                    timer.innerText = "Ready";
+                }
+            });
+        }, 1000);
+
+        // =====================================
+        // ACCOUNT MODAL
+        // =====================================
+        function addNewAccount() {
+            document.getElementById('cookieInput').value = '';
+            document.getElementById('addAccountModal').style.display = 'flex';
+        }
+
+        function closeAddModal() {
+            document.getElementById('addAccountModal').style.display = 'none';
+        }
+
+        async function submitNewAccount() {
+            const cookieString = document.getElementById('cookieInput').value;
+            
+            if (cookieString && cookieString.trim() !== "") {
+                const result = await ipcRenderer.invoke('add-new-account', cookieString);
+                if (result.success) {
+                    alert("✅ " + result.msg);
+                    loadData();
+                    closeAddModal();
+                } else {
+                    alert("❌ " + result.msg);
+                }
+            } else {
+                alert("❌ Cookie tidak boleh kosong.");
+            }
+        }
+
+        // =====================================
+        // BOT CONTROLLER LOGIC
+        // =====================================
+        let isBotActive = false;
+
+        async function toggleBot() {
+            const btn = document.getElementById('btn-toggle-bot');
+            const icon = document.getElementById('bot-icon');
+            const text = document.getElementById('bot-btn-text');
+
+            if (!isBotActive) {
+                const result = await ipcRenderer.invoke('start-auto-boost');
+                if (result.success) {
+                    isBotActive = true;
+                    btn.classList.remove('btn-primary');
+                    btn.classList.add('btn-secondary');
+                    btn.style.color = '#e74c3c';
+                    btn.style.borderColor = '#e74c3c';
+                    icon.innerText = 'stop';
+                    text.innerText = 'Stop Auto-Boost';
+
+                    document.getElementById('system-status-text').innerText = 'Running';
+                    document.getElementById('system-status-dot').classList.add('blinking');
+                }
+            } else {
+                await ipcRenderer.invoke('stop-auto-boost');
+                isBotActive = false;
+                btn.classList.add('btn-primary');
+                btn.classList.remove('btn-secondary');
+                btn.style.color = 'white';
+                btn.style.borderColor = 'var(--primary-color)';
+                icon.innerText = 'play_arrow';
+                text.innerText = 'Mulai Auto-Boost';
+
+                document.getElementById('system-status-text').innerText = 'Idle';
+                document.getElementById('system-status-dot').classList.remove('blinking');
+            }
+        }
+
+        // Listener Log
+        ipcRenderer.on('bot-log', (event, data) => {
+            if (data.type === 'refresh_ui') {
+                loadData();
+                return;
+            }
+            if (data.type === 'countdown') { return; }
+
+            const logsContainer = document.getElementById('bot-logs');
+            const logEntry = document.createElement('div');
+            
+            let color = '#e2e8f0'; // info
+            if (data.type === 'success') color = '#4ade80';
+            else if (data.type === 'error') color = '#f87171';
+            else if (data.type === 'warning') color = '#fbbf24';
+
+            logEntry.innerHTML = `<span style="color: #64748b;">[${data.time}]</span> <span style="color: ${color}">${data.msg}</span>`;
+            logsContainer.appendChild(logEntry);
+            logsContainer.scrollTop = logsContainer.scrollHeight;
+        });
+
+        window.onload = () => {
+            loadData();
+        };
+        setInterval(loadData, 60000); // 1 menit sekali sync data akun
+
+    </script>
+</body>
+</html>

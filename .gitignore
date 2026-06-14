@@ -1,3 +1,12 @@
 node_modules/
 .DS_Store
 *.log
+cookies.txt
+stats.json
+scratch_test.js
+shop_info.txt
+get_order_list_to_ship.txt
+get_product_perfomance_info.txt
+dist/
+index.js
+New Text Document.txt

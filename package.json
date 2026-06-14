@@ -1,8 +1,18 @@
 {
+  "name": "seller-boost-premium",
+  "version": "1.0.0",
+  "description": "Premium Shopee Product Boost Automation",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
   "dependencies": {
-    "axios": "^1.17.0",
-    "figlet": "^1.11.0",
-    "nanospinner": "^1.2.2",
-    "picocolors": "^1.1.1"
+    "axios": "^1.6.0",
+    "fs-extra": "^11.1.1"
+  },
+  "devDependencies": {
+    "electron": "^27.3.11",
+    "electron-builder": "^24.6.4"
   }
 }
