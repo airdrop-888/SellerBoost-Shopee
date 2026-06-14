@@ -53,9 +53,7 @@ Dapatkan akses ke tools premium ini dan hemat puluhan jam waktu Anda setiap bula
 *   **Paket Jasa Push (Kami yang jalankan di server):** `Rp 50.000 / Akun / Bulan`
 
 📲 **Tertarik? Hubungi Developer Sekarang:**
-*   **Telegram:** [@UsernameTelegramAnda](https://t.me/UsernameTelegramAnda)
-*   **WhatsApp:** [Klik Disini untuk Chat WA](https://wa.me/6281234567890)
-*   **Email:** emailanda@gmail.com
+*   **Telegram:** [@indocafe1992](https://t.me/indocafe1992)
 
 *(Menerima pembayaran via BCA, Mandiri, Jago, Seabank, DANA, OVO, GoPay, dan Crypto).*
 
