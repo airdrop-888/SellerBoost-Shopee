@@ -442,6 +442,11 @@ tbody tr:last-child td {
     color: var(--text-main);
 }
 
+.btn-icon.delete:hover {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
 /* Toggle Switch */
 .switch {
     position: relative;

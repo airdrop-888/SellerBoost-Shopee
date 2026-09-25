@@ -2,6 +2,12 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const botCore = require('./bot-core');
 
+// Fix GPU error: Disable GPU acceleration
+app.disableHardwareAcceleration();
+app.commandLine.appendSwitch('disable-gpu');
+app.commandLine.appendSwitch('disable-gpu-compositing');
+app.commandLine.appendSwitch('disable-software-rasterizer');
+
 let mainWindow;
 
 function createWindow() {
@@ -13,11 +19,17 @@ function createWindow() {
             contextIsolation: false
         },
         autoHideMenuBar: true,
-        title: "SellerBoost Premium - Dashboard",
+        title: "SellerBoost - Dashboard",
+        show: false, // Hide until ready-to-show for smoother startup
         // icon: path.join(__dirname, 'icon.ico')
     });
 
     mainWindow.loadFile(path.join(__dirname, 'index.html'));
+    
+    // Show window when ready to avoid white flash
+    mainWindow.once('ready-to-show', () => {
+        mainWindow.show();
+    });
 }
 
 app.whenReady().then(createWindow);
@@ -32,6 +44,10 @@ ipcMain.handle('get-all-accounts', async () => {
 
 ipcMain.handle('add-new-account', async (event, cookie) => {
     return await botCore.addAccount(cookie);
+});
+
+ipcMain.handle('delete-account', async (event, cookie) => {
+    return await botCore.deleteAccount(cookie);
 });
 
 // STATS & HISTORY

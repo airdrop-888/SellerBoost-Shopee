@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SellerBoost Premium - CRM Dashboard</title>
+    <title>SellerBoost - CRM Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -134,8 +134,25 @@
                         <h2>Kelola Akun Shopee</h2>
                         <button class="btn btn-primary" onclick="addNewAccount()">Tambah Akun Baru</button>
                     </div>
-                    <div style="padding: 24px;">
-                        <p style="color: var(--text-muted); font-size: 14px;">Silakan tambahkan akun Anda menggunakan tombol di atas. Untuk memantau status antrean produk, silakan kembali ke tab <strong>Dashboard</strong>.</p>
+
+                    <div class="table-responsive">
+                        <table id="accounts-table">
+                            <thead>
+                                <tr>
+                                    <th>STORE NAME</th>
+                                    <th>ORDERS</th>
+                                    <th>STATUS</th>
+                                    <th>SLOTS USAGE</th>
+                                    <th>NEXT BOOST CYCLE</th>
+                                    <th>ACTIONS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="accounts-table-body">
+                                <tr>
+                                    <td colspan="6" class="loading-state">Memuat data akun...</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -302,17 +319,21 @@
             try {
                 const accounts = await ipcRenderer.invoke('get-all-accounts');
                 const tbody = document.getElementById('table-body');
+                const accountsTbody = document.getElementById('accounts-table-body');
                 const accountSelect = document.getElementById('product-account-select');
                 
                 document.getElementById('total-acc').innerText = accounts.length;
                 
                 if (accounts.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Belum ada akun. Klik Add Account untuk memulai.</td></tr>';
+                    const emptyRow = '<tr><td colspan="6" class="empty-state">Belum ada akun. Klik Add Account untuk memulai.</td></tr>';
+                    tbody.innerHTML = emptyRow;
+                    accountsTbody.innerHTML = emptyRow;
                     accountSelect.innerHTML = '<option value="">Pilih Akun Shopee...</option>';
                     return;
                 }
 
                 tbody.innerHTML = '';
+                accountsTbody.innerHTML = '';
                 
                 // Preserve current selected account
                 const currentSelected = accountSelect.value;
@@ -356,18 +377,15 @@
                             </td>
                             <td>
                                 <div class="action-cell">
-                                    <label class="switch">
-                                        <input type="checkbox" checked onchange="console.log('Toggling status for ${acc.name}')">
-                                        <span class="slider round"></span>
-                                    </label>
-                                    <button class="btn-icon">
-                                        <span class="material-icons-round">more_horiz</span>
+                                    <button class="btn-icon delete" onclick='deleteAccount(${JSON.stringify(acc.cookie)})' title="Hapus akun ini">
+                                        <span class="material-icons-round">delete</span>
                                     </button>
                                 </div>
                             </td>
                         </tr>
                     `;
                     tbody.innerHTML += row;
+                    accountsTbody.innerHTML += row;
                 });
                 
                 accountSelect.innerHTML = selectHtml;
@@ -474,6 +492,23 @@
         function addNewAccount() {
             document.getElementById('cookieInput').value = '';
             document.getElementById('addAccountModal').style.display = 'flex';
+        }
+
+        async function deleteAccount(cookie) {
+            if (!confirm('Yakin ingin menghapus akun ini? Cookie akan dihapus permanen dari daftar.')) {
+                return;
+            }
+            try {
+                const result = await ipcRenderer.invoke('delete-account', cookie);
+                if (result.success) {
+                    alert("✅ " + result.msg);
+                    loadData();
+                } else {
+                    alert("❌ " + result.msg);
+                }
+            } catch (err) {
+                alert("❌ Error: " + err.message);
+            }
         }
 
         function closeAddModal() {

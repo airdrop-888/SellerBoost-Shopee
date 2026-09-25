@@ -1,12 +1,12 @@
 node_modules/
+dist/
 .DS_Store
 *.log
+*.exe
+
+# File data privat - JANGAN di-commit
 cookies.txt
 stats.json
+
+# File testing/scratch
 scratch_test.js
-shop_info.txt
-get_order_list_to_ship.txt
-get_product_perfomance_info.txt
-dist/
-index.js
-New Text Document.txt

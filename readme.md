@@ -1,75 +1,167 @@
 <div align="center">
 
-# 🚀 Premium Shopee Auto Product Boost (PRO Version)
-**Software Otomatisasi Push Produk Shopee Terbaik, Teraman, & Paling Pintar di Kelasnya.**
+# 🚀 Shopee Auto Product Boost (Free & Open Source)
+**Tools Otomatisasi Push Produk Shopee - 100% Gratis & Open Source**
 
-![Platform](https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011-blue?style=for-the-badge&logo=windows)
-![Shopee](https://img.shields.io/badge/Shopee-Seller%20Center-EE4D2D?style=for-the-badge&logo=shopee&logoColor=white)
-![Version](https://img.shields.io/badge/Version-1.0.1%20PRO-success?style=for-the-badge)
+![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%2010%20%7C%2011-blue?style=for-the-square&logo=windows&logoColor=white)
+![Shopee](https://img.shields.io/badge/Shopee-Seller%20Center-EE4D2D?style=for-the-square&logo=shopee&logoColor=white)
+![Version](https://img.shields.io/badge/Version-2.0.0-success?style=for-the-square)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-square)
 
 </div>
 
 ---
 
-## 💡 Tinggalkan Cara Manual, Biarkan Robot yang Bekerja!
+## 💡 Apa Ini?
 
-Sebagai Seller Shopee, menekan tombol "Naikkan Produk" setiap 4 jam secara manual sangatlah melelahkan dan sering terlewat. **Shopee Auto Product Boost PRO** hadir sebagai asisten virtual toko Anda. 
+Sebagai Seller Shopee, menekan tombol **"Naikkan Produk"** setiap 4 jam secara manual sangatlah melelahkan dan sering terlewat.
 
-Software ini akan berjalan otomatis di PC/RDP Anda 24/7. Tidak hanya sekadar mengklik, bot ini dibekali **Kecerdasan Buatan (Smart Cooldown)** untuk membaca server Shopee agar 100% aman dari Banned/Shadowban, dan kini telah berevolusi menjadi **Mini CRM Dashboard**.
+**Shopee Auto Product Boost** hadir sebagai asisten virtual toko Anda. Software ini akan berjalan otomatis di PC/RDP Anda 24/7 dengan fitur **Smart Cooldown Tracker** yang membaca server Shopee agar aman dari deteksi bot.
 
-## ✨ Fitur Utama (Update v1.0.1)
-
-*   📱 **Modern SPA Dashboard (NEW)** — Mengusung desain antarmuka *Single Page Application* kelas atas bergaya *Enterprise*. Berpindah tab secara instan, halus, dan *eye-catching*.
-*   📊 **30-Day Product Analytics (NEW)** — Bukan sekadar *auto-boost*. Aplikasi kini dilengkapi tab khusus **Products** untuk memonitor performa produk Anda selama 30 hari terakhir (menampilkan data *Views*, *Sales*, & *Conversion Rate* secara real-time!).
-*   📦 **Orders To Ship Tracker (NEW)** — Dapatkan notifikasi *live* langsung di tabel Dasbor Anda ketika ada pesanan pelanggan yang masuk dan siap dikirim (indikator merah menyala).
-*   👥 **Multi-Account Manager** — Punya 5, 10, atau 50 toko Shopee? Jalankan semuanya sekaligus HANYA dengan 1x klik.
-*   🧠 **Smart Cooldown Tracker (Anti-Spam)** — Bot mampu membaca sisa waktu dari server Shopee secara *real-time*. Jika slot penuh, bot otomatis tidur dan akan bangun tepat di detik saat tombol boost siap ditekan lagi. Waktu cooldown akan tampil menghitung mundur *live* di layar Anda!
-*   🛡️ **Human-Like Delay** — Dilengkapi dengan algoritma *random delay* (jeda acak) per aksi. Aktivitas bot akan terlihat persis seperti manusia asli di mata sistem keamanan Shopee.
-*   💻 **Plug & Play (Tanpa Instalasi Ribet)** — Berbentuk file `.exe`. Anda tidak perlu paham coding, tidak perlu instal Node.js, Python, dsb. Tinggal klik 2x, langsung jalan!
+> ⚠️ **Disclaimer:** Tools ini dibuat untuk tujuan edukasi dan automasi pribadi. Segala risiko akibat penggunaan tools ini (termasuk potensi banned oleh Shopee) sepenuhnya menjadi tanggung jawab pengguna.
 
 ---
 
-## 📸 Preview Aplikasi
+## ✨ Fitur Utama
 
-*(Catatan: Segera perbarui gambar *screenshot* ini dengan desain v1.0.1 terbaru)*
-<img width="959" height="869" alt="Untitled" src="https://github.com/user-attachments/assets/9d5302fe-d12f-48b7-ab88-1eb87007695e" />
-
----
-
-## 🚀 Cara Penggunaan (Sangat Mudah!)
-
-Bahkan untuk pemula sekalipun, aplikasi ini bisa dijalankan dalam 3 langkah:
-
-1. **Buka folder** hasil download / install versi terbaru (Rilis v1.0.1).
-2. Anda bisa menambahkan akun langsung melalui antarmuka tombol **Add Account** di aplikasi, ATAU buka file `cookies.txt` menggunakan Notepad dan **masukkan Cookie akun Shopee Seller Anda** (1 Baris = 1 Akun Toko).
-3. **Klik 2x (Double Click)** pada aplikasi yang telah diinstall.
-4. **Selesai!** Tinggalkan PC/RDP Anda menyala, biarkan omzet toko Anda naik dengan sendirinya. ☕
+*   🖥️ **Modern SPA Dashboard** — Antarmuka *Single Page Application* bergaya Enterprise. Berpindah tab secara instan dan halus.
+*   📊 **30-Day Product Analytics** — Monitor performa produk Anda selama 30 hari terakhir (*Views*, *Sales*, *Conversion Rate*).
+*   📦 **Orders To Ship Tracker** — Notifikasi langsung di dashboard ketika ada pesanan baru masuk.
+*   👥 **Multi-Account Manager** — Jalankan banyak toko Shopee sekaligus hanya dengan 1x klik.
+*   🧠 **Smart Cooldown Tracker (Anti-Spam)** — Bot membaca sisa waktu cooldown dari server Shopee secara *real-time*. Jika slot penuh, bot otomatis menunggu dan bangun tepat saat tombol boost siap ditekan lagi.
+*   🛡️ **Human-Like Delay** — Algoritma *random delay* per aksi membuat aktivitas bot terlihat seperti manusia asli.
+*   💻 **CLI Mode** — Bisa juga dijalankan via terminal tanpa GUI Electron.
+*   🔓 **100% Free & Open Source** — Tidak ada biaya tersembunyi, tidak ada lock-in.
 
 ---
 
-## 💳 Harga & Cara Pembelian
+## 🚀 Cara Install & Pakai
 
-Dapatkan akses ke tools premium ini dan hemat puluhan jam waktu Anda setiap bulannya!
+### Prasyarat
+- [Node.js](https://nodejs.org/) v16+ (download & install dari website resmi)
 
-*   **Paket Lifetime (Sekali Bayar):** `Rp 250.000` *(Bebas update jika ada minor bug)*
-*   **Paket Jasa Push (Kami yang jalankan di server):** `Rp 50.000 / Akun / Bulan`
+### Langkah Instalasi
 
-📲 **Tertarik? Hubungi Developer Sekarang:**
-*   **Telegram:** [@indocafe1992](https://t.me/indocafe1992)
+```bash
+# 1. Clone atau download project ini
+git clone <repo-url>
+cd seller-boost
 
-*(Menerima pembayaran via BCA, Mandiri, Jago, Seabank, DANA, OVO, GoPay, dan Crypto).*
+# 2. Install dependencies
+npm install
+```
+
+### Cara Menjalankan
+
+**Opsi A: Via run.bat (Paling Mudah - Windows) ⭐**
+```
+Klik 2x file `run.bat` - aplikasi langsung jalan **TANPA terminal/console window**
+- Auto-install dependencies saat pertama kali
+- Auto-buat file cookies.txt kalau belum ada
+- Langsung buka GUI Dashboard SellerBoost
+```
+
+**Opsi B: Via Terminal (Developer)**
+```bash
+# GUI Dashboard (Electron) - akan tampil terminal
+npm start
+
+# ATAU CLI Mode (Terminal only)
+npm run cli
+```
+
+**Opsi B: Via Terminal**
+```bash
+# GUI Dashboard (Electron)
+npm start
+
+# ATAU CLI Mode (Terminal only)
+npm run cli
+```
+
+### Konfigurasi Akun (Langsung dari UI Aplikasi)
+
+**Cara Tambah Akun:**
+1. Buka aplikasi SellerBoost (via `run.bat` atau `npm start`)
+2. Klik tombol **"Add Account"** di Dashboard atau tab **Accounts**
+3. Paste Cookie Shopee Seller Anda (harus mengandung `SPC_CDS`)
+4. Klik **"Simpan Akun"**
+
+**Cara Hapus Akun:**
+1. Buka tab **Dashboard**
+2. Klik ikon 🗑️ **(hapus)** di kolom **ACTIONS** untuk akun yang ingin dihapus
+3. Konfirmasi penghapusan
+
+> 💡 **Tips:** Session cookie Shopee biasanya berlaku ~7 hari. Gunakan fitur **Add Account** di UI untuk update cookie dengan mudah tanpa perlu buka folder/file manual.
+
+**Cara Manual (Alternatif):**
+1. Buka [Shopee Seller Center](https://seller.shopee.co.id) → Login
+2. Tekan **F12** → Tab **Application** → **Cookies**
+3. Salin seluruh string Cookie (pastikan mengandung `SPC_CDS`)
+4. Buka file `cookies.txt` → Paste (1 baris = 1 akun) → Simpan
 
 ---
 
-## ⚖️ Syarat & Ketentuan (TOS)
+## 📁 Struktur Project
 
-Dengan membeli software ini, Anda menyetujui aturan berikut:
-1. **Dilarang Keras** menjual ulang (*resell*), membagikan secara gratis, atau mencoba membongkar (*crack/decompile*) aplikasi ini.
-2. Software dijual "sebagaimana adanya". Update mayor yang diakibatkan perubahan drastis pada API Shopee mungkin memerlukan biaya tambahan/upgrade.
-3. Segala bentuk pelanggaran terhadap kebijakan Shopee akibat penyalahgunaan tools adalah tanggung jawab pengguna sepenuhnya. 
+```
+seller-boost/
+├── src/
+│   ├── main.js          # Electron main process
+│   ├── bot-core.js      # Core logic API & auto-boost
+│   ├── index.html       # SPA Dashboard UI
+│   └── style.css        # Stylesheet dashboard
+├── index.js             # CLI version (tanpa GUI)
+├── run.bat              # ⭐ Silent launcher (klik 2x, tanpa terminal)
+├── run_silent.vbs       # Helper untuk silent launch
+├── cookies.txt          # File konfigurasi cookie akun
+├── package.json         # Dependencies & scripts
+└── readme.md            # Dokumentasi ini
+```
+
+---
+
+## 🛠️ Build ke .exe (Opsional)
+
+Jika ingin membagikan dalam bentuk file `.exe`:
+
+```bash
+npm run dist
+```
+
+Hasil build akan ada di folder `dist/`.
+
+---
+
+## ⚙️ Teknologi yang Dipakai
+
+| Teknologi | Kegunaan |
+|-----------|----------|
+| [Electron](https://www.electronjs.org/) | Desktop App Framework |
+| [Axios](https://axios-http.com/) | HTTP Client untuk API Shopee |
+| [Node.js](https://nodejs.org/) | Runtime Environment |
+
+---
+
+## 🤝 Kontribusi
+
+Kontribusi sangat diterima! Silakan:
+1. Fork project ini
+2. Buat branch baru (`git checkout -b feature/fitur-baru`)
+3. Commit perubahan (`git commit -m 'Tambah fitur baru'`)
+4. Push ke branch (`git push origin feature/fitur-baru`)
+5. Buat Pull Request
+
+---
+
+## 📄 Lisensi
+
+Project ini dilisensikan under **MIT License** - bebas digunakan, dimodifikasi, dan didistribusikan.
 
 ---
 
 <div align="center">
-  <b>Developed with ❤️ for Indonesian Shopee Sellers by <a href="https://github.com/airdrop-888">Airdrop 888</a></b>
+  <b>Made with ❤️ for Indonesian Shopee Sellers</b>
+  
+  *[Open Source - Free Forever]*
 </div>

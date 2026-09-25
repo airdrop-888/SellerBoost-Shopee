@@ -2,18 +2,20 @@ const axios = require('axios');
 const fs = require('fs-extra');
 const path = require('path');
 
-const { app } = require('electron');
-
 // ==========================================
-// FIX PATH UNTUK .EXE
+// FIX PATH UNTUK .EXE / CLI / DEV
 // ==========================================
 let rootPath;
-if (app.isPackaged) {
-    // Saat di-build jadi .exe, file cookies.txt akan dicari bersebelahan dengan .exe
-    rootPath = path.dirname(process.execPath);
-} else {
-    // Saat tahap development (npm start), cari di folder root project
-    rootPath = path.join(__dirname, '..');
+try {
+    const { app } = require('electron');
+    if (app.isPackaged) {
+        rootPath = path.dirname(process.execPath);
+    } else {
+        rootPath = path.join(__dirname, '..');
+    }
+} catch (e) {
+    // Fallback untuk CLI mode (tanpa electron)
+    rootPath = process.cwd();
 }
 const COOKIE_FILE = path.join(rootPath, 'cookies.txt');
 const STATS_FILE = path.join(rootPath, 'stats.json');
@@ -179,6 +181,45 @@ async function addAccount(newCookie) {
         if (!newCookie || !newCookie.includes('SPC_CDS')) return { success: false, msg: "Cookie tidak valid!" };
         await fs.appendFile(COOKIE_FILE, `\n${newCookie.trim()}`);
         return { success: true, msg: "Akun berhasil ditambahkan!" };
+    } catch (err) {
+        return { success: false, msg: err.message };
+    }
+}
+
+// ==========================================
+// FUNGSI: HAPUS AKUN DARI cookies.txt
+// ==========================================
+async function deleteAccount(cookieToDelete) {
+    try {
+        if (!fs.existsSync(COOKIE_FILE)) {
+            return { success: false, msg: "File cookies tidak ditemukan!" };
+        }
+        
+        const data = await fs.readFile(COOKIE_FILE, 'utf-8');
+        const cookies = data.split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('#'));
+        
+        // Try to match by SPC_CDS first (safer), fallback to exact string match
+        const spcCdsToDelete = cookieToDelete.match(/SPC_CDS=([^;]+)/)?.[1];
+        
+        let filteredCookies;
+        if (spcCdsToDelete) {
+            // Match by SPC_CDS
+            filteredCookies = cookies.filter(cookie => {
+                const spcCds = cookie.match(/SPC_CDS=([^;]+)/)?.[1];
+                return spcCds !== spcCdsToDelete;
+            });
+        } else {
+            // Fallback: match by exact cookie string (for invalid cookies without SPC_CDS)
+            filteredCookies = cookies.filter(cookie => cookie !== cookieToDelete.trim());
+        }
+        
+        if (filteredCookies.length === cookies.length) {
+            return { success: false, msg: "Akun tidak ditemukan di cookies.txt!" };
+        }
+        
+        // Write back filtered cookies
+        await fs.writeFile(COOKIE_FILE, filteredCookies.join('\n') + (filteredCookies.length > 0 ? '\n' : ''));
+        return { success: true, msg: "Akun berhasil dihapus!" };
     } catch (err) {
         return { success: false, msg: err.message };
     }
@@ -450,6 +491,7 @@ module.exports = {
     getAllAccountsStatus,
     getProductPerformance,
     addAccount,
+    deleteAccount,
     startBot,
     stopBot,
     getStats
