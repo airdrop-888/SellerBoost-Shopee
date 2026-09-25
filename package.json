@@ -6,7 +6,55 @@
   "scripts": {
     "start": "electron .",
     "cli": "node index.js",
-    "dist": "electron-builder"
+    "dist": "electron-builder --win --x64",
+    "dist:portable": "electron-builder --win portable --x64"
+  },
+  "build": {
+    "appId": "com.sellerboost.app",
+    "productName": "SellerBoost",
+    "copyright": "Copyright © 2024 SellerBoost",
+    "directories": {
+      "output": "dist-build"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "cookies.txt",
+        "to": "cookies.txt"
+      },
+      {
+        "from": "stats.json",
+        "to": "stats.json"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "requestedExecutionLevel": "asInvoker",
+      "signingHashAlgorithms": null,
+      "sign": null
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "installerHeaderIcon": "build/icon.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "SellerBoost"
+    },
+    "portable": {
+      "artifactName": "SellerBoost-Portable-${version}.exe"
+    }
   },
   "dependencies": {
     "axios": "^1.6.0",
@@ -17,6 +65,6 @@
   },
   "devDependencies": {
     "electron": "^27.3.11",
-    "electron-builder": "^24.6.4"
+    "electron-builder": "^24.13.3"
   }
 }

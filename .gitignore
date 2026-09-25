@@ -1,5 +1,6 @@
 node_modules/
 dist/
+dist-build/
 .DS_Store
 *.log
 *.exe
@@ -10,3 +11,5 @@ stats.json
 
 # File testing/scratch
 scratch_test.js
+generate-icon.js
+src/icon-256.png
