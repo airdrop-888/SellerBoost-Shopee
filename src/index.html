@@ -3,755 +3,1250 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SellerBoost - CRM Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <title>SellerBoost v2.4 — Shopee Automation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { inter: ['Inter', 'sans-serif'] },
+            colors: {
+              shopee: '#EE4D2D',
+              'shopee-dark': '#D63D20',
+              'shopee-light': '#FFF5F3',
+              sidebar: '#111827',
+              'sidebar-hover': '#1F2937',
+              canvas: '#F6F8F9',
+              card: '#FFFFFF',
+              border: '#E2E8F0',
+              'text-main': '#2D3748',
+              'text-muted': '#718096',
+              'text-dim': '#64748B',
+              active: { DEFAULT: '#1E8E3E', bg: '#E6F4EA', text: '#1E8E3E' },
+              cooldown: { DEFAULT: '#B06000', bg: '#FEF7E0', text: '#B06000' },
+              expired: { DEFAULT: '#D93025', bg: '#FCE8E6', text: '#D93025' },
+              terminal: '#1E293B',
+            }
+          }
+        }
+      }
+    </script>
     <style>
-        .page-section { display: none; padding: 32px; max-width: 1100px; margin: 0 auto; width: 100%; }
-        .page-section.active { display: block; }
-        .nav-item { cursor: pointer; }
+      * { font-family: 'Inter', sans-serif; }
+      body { background: #F6F8F9; color: #2D3748; overflow: hidden; }
+      .dot-bg { background-image: radial-gradient(#E2E8F0 1px, transparent 1px); background-size: 20px 20px; }
+      .page { display: none; height: calc(100vh - 8rem); overflow-y: auto; }
+      .page.active { display: block; }
+      .page::-webkit-scrollbar { width: 4px; }
+      .page::-webkit-scrollbar-track { background: transparent; }
+      .page::-webkit-scrollbar-thumb { background: #E2E8F0; border-radius: 99px; }
+      .nav-link { display: flex; align-items: center; gap: 12px; padding: 8px 12px; border-radius: 8px; color: rgba(255,255,255,0.6); transition: all 0.15s; font-size: 13px; font-weight: 500; cursor: pointer; }
+      .nav-link:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.9); }
+      .nav-link.active { background: rgba(238,77,45,0.18); color: #EE4D2D; font-weight: 600; }
+      .nav-link .ms { font-size: 18px; }
+      .badge { display: inline-flex; align-items: center; padding: 2px 10px; border-radius: 99px; font-size: 12px; font-weight: 600; }
+      .badge-active { background: #E6F4EA; color: #1E8E3E; }
+      .badge-cooldown { background: #FEF7E0; color: #B06000; }
+      .badge-boosting { background: #FFF5F3; color: #EE4D2D; border: 1px solid #FECDC4; }
+      .badge-expired { background: #FCE8E6; color: #D93025; }
+      .badge-ready { background: #E8F5E9; color: #2E7D32; }
+      .btn-primary { background: #EE4D2D; color: white; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.15s; }
+      .btn-primary:hover { background: #D63D20; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(238,77,45,0.3); }
+      .btn-secondary { background: white; color: #EE4D2D; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; border: 1px solid #EE4D2D; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.15s; }
+      .btn-secondary:hover { background: #FFF5F3; }
+      .btn-ghost { background: transparent; color: #718096; padding: 6px 10px; border-radius: 6px; font-size: 13px; font-weight: 500; border: 1px solid #E2E8F0; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.15s; }
+      .btn-ghost:hover { background: #F8FAFC; color: #2D3748; }
+      .stat-card { background: white; border: 1px solid #E2E8F0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); transition: all 0.2s; }
+      .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+      .table-wrap { overflow-x: auto; }
+      table { width: 100%; border-collapse: collapse; }
+      thead th { background: #F8FAFC; padding: 10px 16px; text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #718096; border-bottom: 1px solid #E2E8F0; }
+      tbody tr { border-bottom: 1px solid #E2E8F0; transition: background 0.1s; }
+      tbody tr:hover { background: #F8FAFC; }
+      tbody td { padding: 14px 16px; font-size: 13px; color: #2D3748; }
+      tbody tr:last-child { border-bottom: none; }
+      .terminal { background: #1E293B; border-radius: 8px; padding: 14px 18px; font-family: 'Inter', monospace; font-size: 12px; color: #E2E8F0; height: 180px; overflow-y: auto; border: 1px solid #334155; box-shadow: inset 0 2px 4px rgba(0,0,0,0.25); }
+      .terminal::-webkit-scrollbar { width: 4px; }
+      .terminal::-webkit-scrollbar-thumb { background: #334155; border-radius: 99px; }
+      .input-field { padding: 8px 12px; border: 1px solid #E2E8F0; border-radius: 6px; font-size: 13px; color: #2D3748; background: white; outline: none; width: 100%; transition: border-color 0.15s, box-shadow 0.15s; }
+      .input-field:focus { border-color: #EE4D2D; box-shadow: 0 0 0 3px rgba(238,77,45,0.12); }
+      .select-field { padding: 8px 12px; border: 1px solid #E2E8F0; border-radius: 6px; font-size: 13px; color: #2D3748; background: white; outline: none; cursor: pointer; }
+      .select-field:focus { border-color: #EE4D2D; box-shadow: 0 0 0 3px rgba(238,77,45,0.12); }
+      .pulse-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
+      @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.35; } }
+      .animate-pulse-dot { animation: pulse 1.2s ease infinite; }
+      .slot-bar { height: 4px; border-radius: 99px; background: #E2E8F0; overflow: hidden; }
+      .slot-fill { height: 100%; border-radius: 99px; transition: width 0.3s; }
+      .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(17,24,39,0.6); z-index: 100; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+      .modal-overlay.open { display: flex; }
+      .modal-box { background: white; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); border: 1px solid #E2E8F0; width: 480px; max-width: 95vw; }
+      .ms { font-family: 'Material Symbols Outlined'; font-size: 20px; line-height: 1; }
+      .countdown-timer { font-variant-numeric: tabular-nums; }
+      .urgency-chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+      .urgency-high { background: #FEE2E2; color: #DC2626; }
+      .urgency-med { background: #FEF9C3; color: #854D0E; }
+      .urgency-ok { background: #F0FDF4; color: #15803D; }
+      .product-img { width: 44px; height: 44px; border-radius: 6px; object-fit: cover; background: #F8FAFC; border: 1px solid #E2E8F0; }
+      .toggle-switch { position: relative; width: 34px; height: 18px; }
+      .toggle-switch input { opacity: 0; width: 0; height: 0; }
+      .toggle-slider { position: absolute; cursor: pointer; inset: 0; background: #CBD5E1; border-radius: 9999px; transition: 0.25s; }
+      .toggle-slider:before { content: ''; position: absolute; width: 14px; height: 14px; left: 2px; bottom: 2px; background: white; border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,0.2); transition: 0.25s; }
+      input:checked + .toggle-slider { background: #EE4D2D; }
+      input:checked + .toggle-slider:before { transform: translateX(16px); }
+      .section-title { font-size: 18px; font-weight: 700; color: #2D3748; letter-spacing: -0.02em; }
+      .section-sub { font-size: 13px; color: #718096; margin-top: 2px; }
+      .card { background: white; border: 1px solid #E2E8F0; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+      .hero-card { background: #111827; border-radius: 12px; overflow: hidden; position: relative; }
     </style>
 </head>
-<body>
-    <div class="app-container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="logo-icon">SB</div>
-                <div class="logo-text">SellerBoost</div>
-            </div>
-            
-            <nav class="sidebar-nav">
-                <a class="nav-item active" onclick="showPage('page-dashboard', this)">
-                    <span class="material-icons-round">dashboard</span> Dashboard
-                </a>
-                <a class="nav-item" onclick="showPage('page-accounts', this)">
-                    <span class="material-icons-round">group</span> Accounts
-                </a>
-                <a class="nav-item" onclick="showPage('page-products', this)">
-                    <span class="material-icons-round">inventory_2</span> Products
-                </a>
-                <a class="nav-item" onclick="showPage('page-history', this)">
-                    <span class="material-icons-round">history</span> History
-                </a>
-                <a class="nav-item" onclick="showPage('page-settings', this)">
-                    <span class="material-icons-round">settings</span> Settings
-                </a>
-            </nav>
-        </aside>
+<body class="bg-canvas">
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <header class="top-header">
-                <div class="breadcrumb" id="header-title">
-                    <span class="material-icons-round">dashboard</span>
-                    <span id="header-text">Dashboard Overview</span>
-                </div>
-                <div class="user-profile">
-                    <span class="material-icons-round">account_circle</span>
-                </div>
-            </header>
+<!-- TITLEBAR -->
+<div class="fixed top-0 left-0 right-0 h-8 bg-sidebar z-50 flex items-center justify-between px-3 select-none" style="-webkit-app-region:drag">
+    <div class="flex items-center gap-2">
+        <span class="ms text-shopee text-sm">bolt</span>
+        <span class="text-white/80 text-xs font-semibold tracking-wide">SellerBoost v2.4.0</span>
+        <span class="text-white/30 text-xs">•</span>
+        <span id="bot-node-label" class="text-white/40 font-mono text-xs">ID_LOCAL</span>
+    </div>
+    <div class="flex items-center" style="-webkit-app-region:no-drag">
+        <button onclick="require('electron').ipcRenderer.invoke('quit-app')" class="h-8 px-3 text-white/50 hover:bg-red-600 hover:text-white flex items-center transition-colors" title="Keluar">
+            <span class="ms text-sm">close</span>
+        </button>
+    </div>
+</div>
 
-            <!-- DASHBOARD PAGE -->
-            <div id="page-dashboard" class="page-section active">
-                <!-- Stats Grid -->
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-label">Total Active Accounts</div>
-                        <div class="stat-value" id="total-acc">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Total Products Boosted</div>
-                        <div class="stat-value" id="total-boosted">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">System Status</div>
-                        <div class="stat-value status-active" id="system-status-container">
-                            <span class="status-dot" id="system-status-dot"></span>
-                            <span id="system-status-text">Idle</span>
-                        </div>
-                    </div>
-                </div>
+<!-- SIDEBAR -->
+<aside class="fixed left-0 top-8 bottom-0 w-[220px] bg-sidebar flex flex-col z-40" style="box-shadow: 1px 0 8px rgba(0,0,0,0.15)">
+    <!-- Logo -->
+    <div class="px-5 py-4 flex items-center gap-3 border-b border-white/5">
+        <div class="w-8 h-8 rounded-lg bg-shopee flex items-center justify-center flex-shrink-0">
+            <span class="ms text-white text-base">rocket_launch</span>
+        </div>
+        <div>
+            <div class="text-white font-bold text-sm leading-tight">SellerBoost</div>
+            <div class="text-white/40 text-[10px] uppercase tracking-wider font-semibold">Shopee Automation</div>
+        </div>
+    </div>
 
-                <!-- Bot Controller Card -->
-                <div class="bot-controller-card" style="background-color: var(--card-bg); border-radius: 12px; padding: 20px 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border-color); margin-bottom: 24px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                        <div>
-                            <h3 style="font-size: 16px; font-weight: 600; color: var(--text-main); margin-bottom: 4px;">Sistem Auto-Boost</h3>
-                            <p style="font-size: 13px; color: var(--text-muted);">Sistem akan mengeksekusi antrean boost secara otomatis di latar belakang</p>
-                        </div>
-                        <button id="btn-toggle-bot" class="btn btn-primary" onclick="toggleBot()">
-                            <span class="material-icons-round" id="bot-icon">play_arrow</span> <span id="bot-btn-text">Mulai Auto-Boost</span>
-                        </button>
-                    </div>
-                    <div id="bot-logs" style="background: #1e293b; color: #e2e8f0; padding: 16px; border-radius: 8px; height: 180px; overflow-y: auto; font-family: 'Inter', monospace; font-size: 12px; display: flex; flex-direction: column; gap: 6px;">
-                        <div style="color: #94a3b8;">[Sistem] Menunggu instruksi...</div>
-                    </div>
-                </div>
-
-                <!-- Table Card -->
-                <div class="table-card">
-                    <div class="table-header">
-                        <h2>Account Management Table</h2>
-                        <div class="table-actions">
-                            <button class="btn btn-primary" onclick="addNewAccount()">
-                                Add Account
-                            </button>
-                            <button class="btn btn-secondary" onclick="loadData()">
-                                <span class="material-icons-round sync-icon">sync</span>
-                                Sync All
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="table-responsive">
-                        <table id="account-table">
-                            <thead>
-                                <tr>
-                                    <th>STORE NAME</th>
-                                    <th>ORDERS</th>
-                                    <th>STATUS</th>
-                                    <th>SLOTS USAGE</th>
-                                    <th>NEXT BOOST CYCLE</th>
-                                    <th>ACTIONS</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table-body">
-                                <tr>
-                                    <td colspan="5" class="loading-state">Memuat data akun...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ACCOUNTS PAGE -->
-            <div id="page-accounts" class="page-section">
-                <div class="table-card">
-                    <div class="table-header">
-                        <h2>Kelola Akun Shopee</h2>
-                        <button class="btn btn-primary" onclick="addNewAccount()">Tambah Akun Baru</button>
-                    </div>
-
-                    <div class="table-responsive">
-                        <table id="accounts-table">
-                            <thead>
-                                <tr>
-                                    <th>STORE NAME</th>
-                                    <th>ORDERS</th>
-                                    <th>STATUS</th>
-                                    <th>SLOTS USAGE</th>
-                                    <th>NEXT BOOST CYCLE</th>
-                                    <th>ACTIONS</th>
-                                </tr>
-                            </thead>
-                            <tbody id="accounts-table-body">
-                                <tr>
-                                    <td colspan="6" class="loading-state">Memuat data akun...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PRODUCTS PAGE -->
-            <div id="page-products" class="page-section">
-                <div class="table-header" style="margin-bottom: 24px;">
-                    <h2>Performa Produk (30 Hari Terakhir)</h2>
-                    <select id="product-account-select" class="form-select" onchange="loadProductPerformance()" style="padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border-color); font-family: 'Inter'; font-size: 14px; outline: none; background: white; cursor: pointer;">
-                        <option value="">Pilih Akun Shopee...</option>
-                    </select>
-                </div>
-                <div id="product-gallery" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;">
-                    <div class="empty-state" style="grid-column: 1 / -1; padding: 60px; text-align: center; color: var(--text-muted); background: white; border-radius: 12px; border: 1px dashed var(--border-color);">
-                        <span class="material-icons-round" style="font-size: 48px; color: #cbd5e1; margin-bottom: 16px;">inventory_2</span>
-                        <p>Pilih akun di atas untuk melihat performa produk.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- HISTORY PAGE -->
-            <div id="page-history" class="page-section">
-                <div class="table-card">
-                    <div class="table-header">
-                        <h2>Riwayat Auto-Boost</h2>
-                        <button class="btn btn-secondary" onclick="loadStats()"><span class="material-icons-round sync-icon">sync</span> Refresh</button>
-                    </div>
-                    <div class="table-responsive">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>WAKTU</th>
-                                    <th>TANGGAL</th>
-                                    <th>STORE NAME</th>
-                                    <th>NAMA PRODUK</th>
-                                    <th>STATUS</th>
-                                </tr>
-                            </thead>
-                            <tbody id="history-table-body">
-                                <tr><td colspan="5" class="loading-state">Memuat riwayat...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SETTINGS PAGE -->
-            <div id="page-settings" class="page-section">
-                <style>
-                    .settings-section { margin-bottom: 28px; }
-                    .settings-section h3 { font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border-color); }
-                    .setting-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 18px 0; border-bottom: 1px solid var(--border-color); gap: 24px; }
-                    .setting-row:last-child { border-bottom: none; }
-                    .setting-info { flex: 1; }
-                    .setting-info .setting-title { font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; }
-                    .setting-info .setting-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
-                    /* Toggle Switch */
-                    .toggle-switch { position: relative; width: 48px; height: 26px; flex-shrink: 0; margin-top: 2px; }
-                    .toggle-switch input { opacity: 0; width: 0; height: 0; }
-                    .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: 0.3s; border-radius: 26px; }
-                    .toggle-slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: 0.3s; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
-                    input:checked + .toggle-slider { background-color: var(--primary-color); }
-                    input:checked + .toggle-slider:before { transform: translateX(22px); }
-                    .setting-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 99px; font-size: 11px; font-weight: 600; margin-left: 8px; }
-                    .badge-running { background: #dcfce7; color: #16a34a; }
-                    .badge-stopped { background: #fee2e2; color: #dc2626; }
-                    .settings-save-btn { margin-top: 8px; padding: 10px 28px; border-radius: 8px; font-size: 14px; font-weight: 600; }
-                    .settings-toast { display: none; padding: 12px 20px; border-radius: 8px; background: #1e293b; color: #4ade80; font-size: 13px; margin-top: 16px; border-left: 3px solid #4ade80; }
-                    .settings-toast.show { display: block; }
-                </style>
-
-                <div class="table-card">
-                    <div class="table-header" style="margin-bottom: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 20px;">
-                        <h2>Pengaturan Sistem</h2>
-                        <span id="settings-bot-badge" class="setting-badge badge-stopped">⏹ Bot Idle</span>
-                    </div>
-
-                    <div style="padding: 24px;">
-
-                        <!-- Section: Startup & Background -->
-                        <div class="settings-section">
-                            <h3>🚀 Startup & Background</h3>
-
-                            <div class="setting-row">
-                                <div class="setting-info">
-                                    <div class="setting-title">Jalankan Saat Windows Startup</div>
-                                    <div class="setting-desc">SellerBoost akan otomatis berjalan di background setiap kali PC dinyalakan. Ikon akan muncul di system tray — <strong>tidak mengganggu</strong> kegiatan Anda.</div>
-                                </div>
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="toggle-run-on-startup" onchange="onSettingChange()">
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-
-                            <div class="setting-row">
-                                <div class="setting-info">
-                                    <div class="setting-title">Auto-Resume Bot Setelah Restart</div>
-                                    <div class="setting-desc">Jika bot sedang aktif saat PC mati/restart, bot akan <strong>otomatis dilanjutkan</strong> saat PC kembali hidup — tanpa perlu tekan tombol manual. Ideal untuk kondisi mati lampu.</div>
-                                </div>
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="toggle-auto-resume" onchange="onSettingChange()">
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- Section: Bot -->
-                        <div class="settings-section">
-                            <h3>⚙️ Parameter Bot</h3>
-                            <div class="setting-row">
-                                <div class="setting-info">
-                                    <div class="setting-title">Jeda Antar Akun (Detik)</div>
-                                    <div class="setting-desc">Waktu jeda sebelum bot berpindah ke akun berikutnya. Default: 3 detik.</div>
-                                </div>
-                                <input type="number" value="3" disabled style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 6px; width: 80px; text-align: center; font-family: 'Inter'; font-size: 14px; color: var(--text-muted); background: #f8fafc;">
-                            </div>
-                        </div>
-
-                        <!-- Section: Info -->
-                        <div class="settings-section">
-                            <h3>📂 Lokasi Data</h3>
-                            <div class="setting-row">
-                                <div class="setting-info">
-                                    <div class="setting-title">Folder Penyimpanan</div>
-                                    <div class="setting-desc" id="data-dir-info" style="font-family: monospace; word-break: break-all;">Memuat...</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <button class="btn btn-primary settings-save-btn" onclick="saveSettings()">
-                            <span class="material-icons-round" style="font-size: 16px; vertical-align: middle; margin-right: 4px;">save</span>
-                            Simpan Pengaturan
-                        </button>
-                        <div class="settings-toast" id="settings-toast">✅ Pengaturan berhasil disimpan!</div>
-                    </div>
-                </div>
-            </div>
-
-            
-        </main>
-
-        <!-- Add Account Modal -->
-        <div id="addAccountModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
-            <div style="background: white; padding: 24px; border-radius: 12px; width: 450px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
-                <h3 style="margin-bottom: 8px; font-size: 18px;">Tambah Akun Baru</h3>
-                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Silakan paste Cookie Shopee Anda di bawah ini (pastikan string cookie mengandung SPC_CDS):</p>
-                <textarea id="cookieInput" placeholder="Paste cookie di sini..." style="width: 100%; height: 120px; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px; margin-bottom: 16px; font-family: 'Inter', monospace; font-size: 12px; resize: none;"></textarea>
-                <div style="display: flex; justify-content: flex-end; gap: 12px;">
-                    <button class="btn btn-secondary" onclick="closeAddModal()">Batal</button>
-                    <button class="btn btn-primary" onclick="submitNewAccount()">Simpan Akun</button>
-                </div>
+    <!-- Active Store -->
+    <div id="sidebar-store" class="mx-3 mt-3 mb-1 bg-white/5 rounded-lg px-3 py-2.5">
+        <div class="flex items-center gap-2">
+            <span class="pulse-dot bg-emerald-400 animate-pulse-dot"></span>
+            <div class="min-w-0">
+                <div class="text-white text-xs font-semibold truncate" id="sidebar-store-name">Memuat...</div>
+                <div class="text-white/40 text-[10px] font-mono" id="sidebar-store-sub">—</div>
             </div>
         </div>
     </div>
 
-    <script>
-        const { ipcRenderer } = require('electron');
+    <!-- Nav -->
+    <nav class="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto">
+        <a class="nav-link active" onclick="showPage('dashboard',this)">
+            <span class="ms">dashboard</span><span>Dashboard</span>
+        </a>
+        <a class="nav-link" onclick="showPage('products',this)">
+            <span class="ms">inventory_2</span><span>Products</span>
+        </a>
+        <a class="nav-link" onclick="showPage('boost',this)">
+            <span class="ms">rocket_launch</span><span>Boost Manager</span>
+        </a>
+        <a class="nav-link" onclick="showPage('accounts',this)">
+            <span class="ms">manage_accounts</span><span>Accounts</span>
+        </a>
+        <a class="nav-link" onclick="showPage('orders',this)">
+            <span class="ms">shopping_cart</span>
+            <span>Orders</span>
+            <span id="orders-badge-nav" class="ml-auto bg-shopee text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full hidden">0</span>
+        </a>
+        <a class="nav-link" onclick="showPage('analytics',this)">
+            <span class="ms">insights</span><span>Analytics</span>
+        </a>
+        <a class="nav-link" onclick="showPage('history',this)">
+            <span class="ms">terminal</span><span>Activity Logs</span>
+        </a>
+        <a class="nav-link" onclick="showPage('settings',this)">
+            <span class="ms">settings</span><span>Settings</span>
+        </a>
+    </nav>
 
-        // =====================================
-        // SPA ROUTING
-        // =====================================
-        function showPage(pageId, navElement) {
-            // Hide all
-            document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            
-            // Show target
-            document.getElementById(pageId).classList.add('active');
-            navElement.classList.add('active');
-
-            // Update Header
-            const titleMap = {
-                'page-dashboard': { icon: 'dashboard', text: 'Dashboard Overview' },
-                'page-accounts': { icon: 'group', text: 'Account Management' },
-                'page-products': { icon: 'inventory_2', text: 'Products Catalog' },
-                'page-history': { icon: 'history', text: 'Auto-Boost History' },
-                'page-settings': { icon: 'settings', text: 'System Settings' }
-            };
-            document.getElementById('header-title').innerHTML = `
-                <span class="material-icons-round">${titleMap[pageId].icon}</span>
-                <span id="header-text">${titleMap[pageId].text}</span>
-            `;
-
-            if(pageId === 'page-history' || pageId === 'page-dashboard') {
-                loadStats();
-            }
-        }
-
-        function getStatusColor(status) {
-            const s = status.toLowerCase();
-            if (s.includes('active')) return 'active';
-            if (s.includes('cooldown')) return 'cooldown';
-            if (s.includes('expired')) return 'expired';
-            return 'default';
-        }
-
-        function formatTimeRemaining(ms) {
-            if (ms <= 0) return "Ready";
-            const totalSec = Math.floor(ms / 1000);
-            const h = Math.floor(totalSec / 3600);
-            const m = Math.floor((totalSec % 3600) / 60);
-            const s = totalSec % 60;
-            if (h > 0) return `${h}h ${m}m ${s}s`;
-            if (m > 0) return `${m}m ${s}s`;
-            return `${s}s`;
-        }
-
-        // =====================================
-        // DATA LOADING & LIVE TIMERS
-        // =====================================
-        async function loadStats() {
-            try {
-                const stats = await ipcRenderer.invoke('get-stats');
-                document.getElementById('total-boosted').innerText = stats.totalBoosted.toLocaleString();
-                
-                const tbody = document.getElementById('history-table-body');
-                if (stats.history.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Belum ada riwayat aktivitas bot.</td></tr>';
-                } else {
-                    tbody.innerHTML = '';
-                    stats.history.forEach(log => {
-                        const statusBadge = log.status === 'Success' ? '<span class="badge badge-active">Success</span>' : '<span class="badge badge-expired">Failed</span>';
-                        tbody.innerHTML += `
-                            <tr>
-                                <td>${log.time}</td>
-                                <td>${log.date}</td>
-                                <td><strong>${log.shopName}</strong></td>
-                                <td>${log.productName}</td>
-                                <td>${statusBadge}</td>
-                            </tr>
-                        `;
-                    });
-                }
-            } catch(e) {
-                console.error("Gagal load stats:", e);
-            }
-        }
-
-        async function loadData() {
-            try {
-                const accounts = await ipcRenderer.invoke('get-all-accounts');
-                const tbody = document.getElementById('table-body');
-                const accountsTbody = document.getElementById('accounts-table-body');
-                const accountSelect = document.getElementById('product-account-select');
-                
-                document.getElementById('total-acc').innerText = accounts.length;
-                
-                if (accounts.length === 0) {
-                    const emptyRow = '<tr><td colspan="6" class="empty-state">Belum ada akun. Klik Add Account untuk memulai.</td></tr>';
-                    tbody.innerHTML = emptyRow;
-                    accountsTbody.innerHTML = emptyRow;
-                    accountSelect.innerHTML = '<option value="">Pilih Akun Shopee...</option>';
-                    return;
-                }
-
-                tbody.innerHTML = '';
-                accountsTbody.innerHTML = '';
-                
-                // Preserve current selected account
-                const currentSelected = accountSelect.value;
-                let selectHtml = '<option value="">Pilih Akun Shopee...</option>';
-
-                accounts.forEach(acc => {
-                    // Populate select
-                    selectHtml += `<option value="${acc.cookie}" ${currentSelected === acc.cookie ? 'selected' : ''}>${acc.name}</option>`;
-
-                    const statusClass = getStatusColor(acc.status);
-                    const slotValue = parseInt(acc.slots) || 0;
-                    const slotPercent = Math.min((slotValue / 5) * 100, 100);
-                    const slotColor = slotPercent > 80 ? '#e74c3c' : (slotPercent > 50 ? '#f39c12' : '#f1582c');
-                    
-                    const orderBadgeClass = acc.ordersToShip > 0 ? 'badge-expired' : 'badge-default';
-
-                    const row = `
-                        <tr>
-                            <td>
-                                <div class="store-name-cell">
-                                    <div class="store-avatar">${acc.name.charAt(0).toUpperCase()}</div>
-                                    <span class="store-name-text">${acc.name}</span>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="badge ${orderBadgeClass}">${acc.ordersToShip} To Ship</span>
-                            </td>
-                            <td>
-                                <span class="badge badge-${statusClass}">${acc.status}</span>
-                            </td>
-                            <td>
-                                <div class="slot-usage">
-                                    <div class="slot-text">${acc.slots}</div>
-                                    <div class="slot-bar">
-                                        <div class="slot-fill" style="width: ${slotPercent}%; background: ${slotColor}"></div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="next-boost-cell">
-                                <span class="countdown-timer" data-timestamp="${acc.nextTimestamp}">Menghitung...</span>
-                            </td>
-                            <td>
-                                <div class="action-cell">
-                                    <button class="btn-icon delete" onclick='deleteAccount(${JSON.stringify(acc.cookie)})' title="Hapus akun ini">
-                                        <span class="material-icons-round">delete</span>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
-                    tbody.innerHTML += row;
-                    accountsTbody.innerHTML += row;
-                });
-                
-                accountSelect.innerHTML = selectHtml;
-            } catch (err) {
-                console.error("Gagal load data:", err);
-            }
-            loadStats();
-        }
-
-        // Load Product Performance
-        async function loadProductPerformance() {
-            const select = document.getElementById('product-account-select');
-            const gallery = document.getElementById('product-gallery');
-            const cookie = select.value;
-
-            if (!cookie) {
-                gallery.innerHTML = `
-                    <div class="empty-state" style="grid-column: 1 / -1; padding: 60px; text-align: center; color: var(--text-muted); background: white; border-radius: 12px; border: 1px dashed var(--border-color);">
-                        <span class="material-icons-round" style="font-size: 48px; color: #cbd5e1; margin-bottom: 16px;">inventory_2</span>
-                        <p>Pilih akun di atas untuk melihat performa produk.</p>
-                    </div>`;
-                return;
-            }
-
-            gallery.innerHTML = `
-                <div style="grid-column: 1 / -1; padding: 40px; text-align: center;">
-                    <div class="status-dot blinking" style="margin-bottom: 8px;"></div>
-                    <p style="color: var(--text-muted);">Menarik data performa langsung dari Shopee...</p>
+    <!-- Bot Status Panel -->
+    <div class="p-3 border-t border-white/5">
+        <div class="bg-white/5 rounded-lg p-3" style="box-shadow: inset 0 2px 4px rgba(0,0,0,0.25)">
+            <div class="flex items-center justify-between mb-1">
+                <div class="flex items-center gap-1.5">
+                    <span id="bot-status-dot" class="pulse-dot bg-slate-500"></span>
+                    <span id="bot-status-label" class="text-white/70 text-xs font-semibold">Bot Idle</span>
                 </div>
-            `;
+                <span id="bot-live-badge" class="text-slate-500 text-[10px] font-mono font-semibold">IDLE</span>
+            </div>
+            <p id="bot-countdown-sidebar" class="text-white/60 text-xs font-mono">Belum aktif</p>
+            <div class="slot-bar mt-2">
+                <div id="bot-progress-bar" class="slot-fill bg-shopee" style="width:0%"></div>
+            </div>
+        </div>
+    </div>
+</aside>
 
-            try {
-                const products = await ipcRenderer.invoke('get-products-performance', cookie);
-                
-                if (products.length === 0) {
-                    gallery.innerHTML = `
-                        <div class="empty-state" style="grid-column: 1 / -1; padding: 60px; text-align: center; color: var(--text-muted); background: white; border-radius: 12px; border: 1px dashed var(--border-color);">
-                            <span class="material-icons-round" style="font-size: 48px; color: #cbd5e1; margin-bottom: 16px;">warning</span>
-                            <p>Tidak ada produk yang sedang di-boost atau session kedaluwarsa.</p>
-                        </div>`;
-                    return;
-                }
+<!-- TOP HEADER -->
+<header class="fixed top-8 left-[220px] right-0 h-14 bg-white/90 backdrop-blur-xl z-30 flex items-center justify-between px-6 border-b border-border" style="box-shadow:0 1px 8px rgba(0,0,0,0.04)">
+    <div class="flex items-center gap-4">
+        <span id="header-title-text" class="text-sm font-bold text-text-main">Dashboard Overview</span>
+        <div class="hidden md:flex items-center gap-1.5 px-3 py-1 bg-slate-50 rounded-full border border-border">
+            <span class="pulse-dot bg-emerald-500 animate-pulse-dot"></span>
+            <span id="header-automation-text" class="text-xs font-semibold text-text-muted">Checking...</span>
+        </div>
+    </div>
+    <div class="flex items-center gap-2">
+        <button class="btn-ghost text-xs" onclick="loadData()">
+            <span class="ms text-base">sync</span> Sync All
+        </button>
+        <button class="btn-primary text-xs" onclick="openAddModal()">
+            <span class="ms text-base">person_add</span> Add Account
+        </button>
+        <button id="btn-toggle-bot" class="btn-primary text-xs" onclick="toggleBot()" style="background:#1E8E3E">
+            <span class="ms text-base" id="bot-btn-icon">play_arrow</span>
+            <span id="bot-btn-text">Start Bot</span>
+        </button>
+    </div>
+</header>
 
-                gallery.innerHTML = '';
-                products.forEach(p => {
-                    const fallbackImg = 'https://via.placeholder.com/300x140?text=No+Image';
-                    gallery.innerHTML += `
-                        <div style="background: white; border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.02); transition: transform 0.2s; cursor: default;">
-                            <div style="height: 160px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; overflow: hidden; border-bottom: 1px solid var(--border-color);">
-                                <img src="${p.image || fallbackImg}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='${fallbackImg}'">
-                            </div>
-                            <div style="padding: 20px;">
-                                <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 12px; color: var(--text-main); line-height: 1.4; height: 38px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
-                                    ${p.name}
-                                </h4>
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                                    <span class="badge badge-active" style="font-size: 11px;">Active</span>
-                                    <span style="font-size: 12px; color: var(--primary-color); font-weight: 600;" class="countdown-timer" data-timestamp="${p.cooldown > 0 ? Date.now() + (p.cooldown*1000) : 0}">
-                                        Menghitung...
-                                    </span>
-                                </div>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 16px;">
-                                    <div>
-                                        <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Views</div>
-                                        <div style="font-size: 16px; font-weight: 700; color: var(--text-main);">${p.views}</div>
-                                    </div>
-                                    <div style="border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color);">
-                                        <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Sales</div>
-                                        <div style="font-size: 16px; font-weight: 700; color: var(--text-main);">${p.sales}</div>
-                                    </div>
-                                    <div>
-                                        <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Conv.</div>
-                                        <div style="font-size: 16px; font-weight: 700; color: var(--text-main);">${(p.conversion * 100).toFixed(1)}%</div>
-                                    </div>
-                                </div>
-                            </div>
+<!-- MAIN CONTENT -->
+<div class="pl-[220px] pt-[4.5rem] mt-8">
+    <div class="p-6 dot-bg min-h-screen">
+
+    <!-- ===== DASHBOARD PAGE ===== -->
+    <div id="page-dashboard" class="page active">
+        <!-- KPI Grid -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div class="stat-card">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center">
+                        <span class="ms text-text-muted text-xl">storefront</span>
+                    </div>
+                    <span class="badge badge-active text-[10px]">Healthy</span>
+                </div>
+                <div class="text-xs uppercase tracking-wider text-text-muted font-semibold mb-1">Connected Stores</div>
+                <div class="text-2xl font-bold text-text-main" id="kpi-stores">—</div>
+                <div class="text-xs text-text-dim mt-1">akun terdaftar</div>
+            </div>
+            <div class="stat-card">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background:#FFF5F3">
+                        <span class="ms text-shopee text-xl">rocket_launch</span>
+                    </div>
+                    <span class="badge badge-boosting text-[10px]" id="kpi-boost-badge">+0</span>
+                </div>
+                <div class="text-xs uppercase tracking-wider text-text-muted font-semibold mb-1">Total Boosted</div>
+                <div class="text-2xl font-bold text-text-main" id="kpi-boosted">—</div>
+                <div class="text-xs text-text-dim mt-1">sepanjang masa</div>
+            </div>
+            <div class="stat-card">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center">
+                        <span class="ms text-red-500 text-xl">inventory_2</span>
+                    </div>
+                    <span class="badge badge-expired text-[10px]" id="kpi-urgent-badge">0 Urgent</span>
+                </div>
+                <div class="text-xs uppercase tracking-wider text-text-muted font-semibold mb-1">Orders To Ship</div>
+                <div class="text-2xl font-bold text-text-main" id="kpi-orders">—</div>
+                <div class="text-xs text-text-dim mt-1">perlu dikirim</div>
+            </div>
+            <div class="stat-card">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center">
+                        <span class="ms text-text-muted text-xl">smart_toy</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <span id="engine-dot" class="pulse-dot bg-slate-400"></span>
+                        <span id="engine-status-text" class="text-[10px] font-semibold text-text-muted">Idle</span>
+                    </div>
+                </div>
+                <div class="text-xs uppercase tracking-wider text-text-muted font-semibold mb-1">Automation Engine</div>
+                <div class="text-base font-bold text-text-main" id="kpi-engine">Not Running</div>
+                <div class="text-xs text-text-dim mt-1" id="kpi-engine-sub">—</div>
+            </div>
+        </div>
+
+        <!-- Hero Active Boost Card -->
+        <div class="hero-card mb-6 p-5">
+            <div class="absolute -right-16 -top-16 w-72 h-72 rounded-full opacity-20" style="background:radial-gradient(circle,#EE4D2D,transparent)"></div>
+            <div class="relative z-10 flex flex-col lg:flex-row lg:items-center gap-6">
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-[10px] font-mono font-semibold text-shopee uppercase tracking-wider">● ACTIVE BOOST ENGINE</span>
+                        <span class="text-white/30 text-xs font-mono">Worker #01</span>
+                    </div>
+                    <div class="text-white font-bold text-lg mb-1" id="hero-store">Menunggu bot aktif...</div>
+                    <div class="text-white/50 text-xs font-mono" id="hero-product">Start bot untuk memulai automasi</div>
+                    <div class="mt-3 flex items-center gap-3">
+                        <div class="text-xs text-white/40 uppercase tracking-wider">Slot Usage</div>
+                        <div class="slot-bar flex-1 max-w-[120px]"><div id="hero-slot-bar" class="slot-fill bg-shopee" style="width:0%"></div></div>
+                        <span class="text-white/60 text-xs font-semibold" id="hero-slot-text">0/5</span>
+                    </div>
+                </div>
+                <div class="text-center px-6 border-l border-white/10">
+                    <div class="text-white/40 text-xs uppercase tracking-wider mb-1">Next Cycle In</div>
+                    <div class="text-white text-3xl font-bold font-mono countdown-timer" id="hero-countdown">—:—:—</div>
+                    <div class="text-white/30 text-xs mt-1">4H Cooldown Cycle</div>
+                </div>
+                <div class="px-4 border-l border-white/10 text-right">
+                    <div class="text-white/40 text-xs uppercase tracking-wider mb-1">Success Rate</div>
+                    <div class="text-shopee text-2xl font-bold" id="hero-success-rate">—</div>
+                    <div class="text-white/40 text-xs mt-1" id="hero-slots-fulfilled">—</div>
+                </div>
+            </div>
+            <!-- Bot Controls -->
+            <div class="relative z-10 flex items-center gap-2 mt-4 pt-4 border-t border-white/10">
+                <button class="btn-primary text-xs" onclick="toggleBot()">
+                    <span class="ms text-base" id="hero-bot-icon">play_arrow</span>
+                    <span id="hero-bot-text">Mulai Auto-Boost</span>
+                </button>
+                <button class="btn-ghost text-xs text-white/60 border-white/20 hover:bg-white/10 hover:text-white" onclick="openAddModal()">
+                    <span class="ms text-base">person_add</span> Add Cookie
+                </button>
+            </div>
+        </div>
+
+        <!-- Bot Console + Account Table (2 columns) -->
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-4 mb-4">
+            <!-- Console -->
+            <div class="lg:col-span-3 card p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="ms text-text-muted text-base">terminal</span>
+                        <span class="text-sm font-semibold text-text-main">Live Automation Console</span>
+                    </div>
+                    <span class="text-[10px] font-mono text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded">STREAM_OK</span>
+                </div>
+                <div class="terminal" id="bot-logs">
+                    <div style="color:#64748B">[Sistem] Menunggu instruksi bot...</div>
+                </div>
+            </div>
+            <!-- Recent Activity -->
+            <div class="lg:col-span-2 card p-4">
+                <div class="text-sm font-semibold text-text-main mb-3 flex items-center gap-2">
+                    <span class="ms text-text-muted text-base">history</span> Recent Activity
+                </div>
+                <div id="recent-activity-list" class="space-y-2">
+                    <div class="text-xs text-text-dim text-center py-4">Belum ada aktivitas</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Accounts Table -->
+        <div class="card">
+            <div class="flex items-center justify-between px-4 py-3 border-b border-border">
+                <span class="text-sm font-semibold text-text-main">Account Management</span>
+                <div class="flex items-center gap-2">
+                    <button class="btn-ghost text-xs" onclick="loadData()"><span class="ms text-sm">sync</span></button>
+                    <button class="btn-primary text-xs" onclick="openAddModal()"><span class="ms text-sm">add</span> Add Account</button>
+                </div>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr>
+                        <th>Store</th><th>Status</th><th>Orders</th><th>Slots</th><th>Next Boost</th><th>Actions</th>
+                    </tr></thead>
+                    <tbody id="dashboard-accounts-tbody">
+                        <tr><td colspan="6" class="text-center text-text-muted py-8 text-sm">Memuat akun...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div><!-- end dashboard -->
+
+    <!-- ===== PRODUCTS PAGE ===== -->
+    <div id="page-products" class="page">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <h1 class="section-title">Products Catalog</h1>
+                <p class="section-sub">Semua produk live beserta status boost & stok real-time</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <select id="products-account-select" class="select-field text-xs" onchange="loadAllProducts()">
+                    <option value="">Pilih Akun...</option>
+                </select>
+                <button class="btn-ghost text-xs" onclick="loadAllProducts()"><span class="ms text-base">sync</span></button>
+            </div>
+        </div>
+        <!-- Filter Pills -->
+        <div class="flex items-center gap-2 mb-4">
+            <button class="badge badge-active cursor-pointer px-3 py-1 text-xs" onclick="filterProducts('all')" id="pf-all">All Products</button>
+            <button class="badge badge-boosting cursor-pointer px-3 py-1 text-xs" onclick="filterProducts('boosting')" id="pf-boosting">Boosting</button>
+            <button class="badge badge-ready cursor-pointer px-3 py-1 text-xs" onclick="filterProducts('ready')" id="pf-ready">Ready</button>
+            <button class="badge badge-cooldown cursor-pointer px-3 py-1 text-xs" onclick="filterProducts('cooldown')" id="pf-cooldown">Cooldown</button>
+        </div>
+        <div class="card">
+            <div class="table-wrap">
+                <table>
+                    <thead><tr>
+                        <th style="width:40px"><input type="checkbox"></th>
+                        <th>Product</th><th>Store</th><th>Price</th><th>Stock</th><th>Sold</th><th>Boost Status</th><th>SKU</th>
+                    </tr></thead>
+                    <tbody id="products-tbody">
+                        <tr><td colspan="8" class="text-center text-text-muted py-8 text-sm">Pilih akun untuk melihat produk</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div><!-- end products -->
+
+    <!-- ===== BOOST MANAGER PAGE ===== -->
+    <div id="page-boost" class="page">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <h1 class="section-title">Boost Manager</h1>
+                <p class="section-sub">Monitor dan kelola automasi boost produk per toko</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <select id="boost-account-select" class="select-field text-xs" onchange="loadBoostProducts()">
+                    <option value="">Semua Toko</option>
+                </select>
+                <button class="btn-primary text-xs" onclick="toggleBot()">
+                    <span class="ms text-sm" id="boost-btn-icon">play_arrow</span>
+                    <span id="boost-btn-text">Start Bot</span>
+                </button>
+            </div>
+        </div>
+        <!-- Boost telemetry -->
+        <div class="grid grid-cols-3 gap-4 mb-4">
+            <div class="stat-card text-center">
+                <div class="text-xs text-text-muted uppercase tracking-wider mb-1">Bot Status</div>
+                <div class="text-lg font-bold text-text-main" id="boost-engine-status">IDLE</div>
+                <div class="text-xs text-text-dim" id="boost-jitter">—</div>
+            </div>
+            <div class="stat-card text-center">
+                <div class="text-xs text-text-muted uppercase tracking-wider mb-1">Next Reset</div>
+                <div class="text-lg font-bold font-mono text-text-main countdown-timer" id="boost-countdown">—:—:—</div>
+                <div class="text-xs text-text-dim">4H Shopee Cycle</div>
+            </div>
+            <div class="stat-card text-center">
+                <div class="text-xs text-text-muted uppercase tracking-wider mb-1">24h Success Rate</div>
+                <div class="text-2xl font-bold text-emerald-600" id="boost-success-rate">—%</div>
+            </div>
+        </div>
+        <!-- Products boost table -->
+        <div class="card">
+            <div class="flex items-center justify-between px-4 py-3 border-b border-border">
+                <div class="flex items-center gap-2 text-sm font-semibold text-text-main">
+                    <span class="ms text-text-muted text-base">table_rows</span>
+                    Product Queue
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-text-muted" id="boost-product-count">—</span>
+                </div>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr>
+                        <th>Product</th><th>Store</th><th>Boost Status</th><th>Cooldown Left</th><th>Slot</th>
+                    </tr></thead>
+                    <tbody id="boost-products-tbody">
+                        <tr><td colspan="5" class="text-center text-text-muted py-8 text-sm">Pilih akun untuk melihat produk</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- Console -->
+        <div class="card mt-4 p-4">
+            <div class="flex items-center gap-2 mb-3">
+                <span class="ms text-text-muted text-base">terminal</span>
+                <span class="text-sm font-semibold text-text-main">Live Boost Console</span>
+            </div>
+            <div class="terminal" id="boost-logs">
+                <div style="color:#64748B">[Bot] Menunggu instruksi...</div>
+            </div>
+        </div>
+    </div><!-- end boost -->
+
+    <!-- ===== ACCOUNTS PAGE ===== -->
+    <div id="page-accounts" class="page">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <h1 class="section-title">Shopee Accounts</h1>
+                <p class="section-sub">Kelola cookie session dan monitor status semua toko</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <button class="btn-ghost text-xs" onclick="loadData()"><span class="ms text-base">sync</span> Refresh</button>
+                <button class="btn-primary text-xs" onclick="openAddModal()"><span class="ms text-base">add</span> Add Account</button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="table-wrap">
+                <table>
+                    <thead><tr>
+                        <th>Store Name</th><th>Status</th><th>Orders</th><th>Slots Usage</th><th>Next Boost Cycle</th><th>Actions</th>
+                    </tr></thead>
+                    <tbody id="accounts-tbody">
+                        <tr><td colspan="6" class="text-center text-text-muted py-8 text-sm">Memuat data akun...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div><!-- end accounts -->
+
+    <!-- ===== ORDERS PAGE ===== -->
+    <div id="page-orders" class="page">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <h1 class="section-title">Orders To Ship</h1>
+                <p class="section-sub">Monitor pesanan pending, deadline pengiriman, dan status kurir</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <select id="orders-account-select" class="select-field text-xs" onchange="loadOrders()">
+                    <option value="">Pilih Akun...</option>
+                </select>
+                <button class="btn-ghost text-xs" onclick="loadOrders()"><span class="ms text-base">sync</span></button>
+            </div>
+        </div>
+        <!-- Orders KPI -->
+        <div class="grid grid-cols-3 gap-4 mb-4">
+            <div class="stat-card">
+                <div class="text-xs text-text-muted uppercase tracking-wider mb-1">Total Orders</div>
+                <div class="text-2xl font-bold text-text-main" id="orders-total">—</div>
+                <div class="text-xs text-text-dim mt-1">perlu dikirim</div>
+            </div>
+            <div class="stat-card" style="border-color: #FECDC4;">
+                <div class="text-xs text-shopee uppercase tracking-wider mb-1 font-semibold">⚠ Urgent Deadline</div>
+                <div class="text-2xl font-bold text-shopee" id="orders-urgent">—</div>
+                <div class="text-xs text-shopee/60 mt-1">< 12 jam lagi</div>
+            </div>
+            <div class="stat-card" style="border-color: #A7F3D0;">
+                <div class="text-xs text-text-muted uppercase tracking-wider mb-1">Store</div>
+                <div class="text-base font-bold text-text-main truncate" id="orders-store-name">—</div>
+                <div class="text-xs text-text-dim mt-1" id="orders-last-sync">—</div>
+            </div>
+        </div>
+        <!-- Filter tabs -->
+        <div class="flex items-center gap-2 mb-4 border-b border-border pb-3">
+            <button onclick="filterOrders('all')" id="of-all" class="badge badge-active cursor-pointer px-3 py-1 text-xs">All Orders</button>
+            <button onclick="filterOrders('urgent')" id="of-urgent" class="badge badge-expired cursor-pointer px-3 py-1 text-xs">Urgent</button>
+        </div>
+        <div class="card">
+            <div class="table-wrap">
+                <table>
+                    <thead><tr>
+                        <th>Order ID</th><th>Product</th><th>Buyer</th><th>Qty</th><th>Total</th><th>Courier</th><th>Deadline</th><th>Status</th>
+                    </tr></thead>
+                    <tbody id="orders-tbody">
+                        <tr><td colspan="8" class="text-center text-text-muted py-8 text-sm">Pilih akun untuk melihat pesanan</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div><!-- end orders -->
+
+    <!-- ===== ANALYTICS PAGE ===== -->
+    <div id="page-analytics" class="page">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <h1 class="section-title">Analytics & Revenue</h1>
+                <p class="section-sub">Ringkasan pendapatan, traffic, dan konversi toko</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <select id="analytics-account-select" class="select-field text-xs" onchange="loadAnalytics()">
+                    <option value="">Pilih Akun...</option>
+                </select>
+                <button class="btn-ghost text-xs" onclick="loadAnalytics()"><span class="ms text-base">sync</span></button>
+            </div>
+        </div>
+        <div id="analytics-content">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div class="stat-card">
+                    <div class="text-xs uppercase tracking-wider text-text-muted mb-1 font-semibold">Revenue</div>
+                    <div class="text-2xl font-bold text-text-main" id="ana-revenue">—</div>
+                    <div class="text-xs mt-1" id="ana-revenue-change">pilih akun</div>
+                </div>
+                <div class="stat-card">
+                    <div class="text-xs uppercase tracking-wider text-text-muted mb-1 font-semibold">Orders</div>
+                    <div class="text-2xl font-bold text-text-main" id="ana-orders">—</div>
+                    <div class="text-xs mt-1" id="ana-orders-change">—</div>
+                </div>
+                <div class="stat-card">
+                    <div class="text-xs uppercase tracking-wider text-text-muted mb-1 font-semibold">Visitors</div>
+                    <div class="text-2xl font-bold text-text-main" id="ana-visitors">—</div>
+                    <div class="text-xs mt-1" id="ana-visitors-change">—</div>
+                </div>
+                <div class="stat-card">
+                    <div class="text-xs uppercase tracking-wider text-text-muted mb-1 font-semibold">Conversion Rate</div>
+                    <div class="text-2xl font-bold text-emerald-600" id="ana-conv">—%</div>
+                    <div class="text-xs mt-1 text-text-dim">dari visitor → order</div>
+                </div>
+            </div>
+            <!-- Product Performance from existing -->
+            <div class="card">
+                <div class="flex items-center justify-between px-4 py-3 border-b border-border">
+                    <span class="text-sm font-semibold text-text-main">30-Day Product Performance</span>
+                </div>
+                <div id="analytics-products-gallery" class="grid gap-4 p-4" style="grid-template-columns: repeat(auto-fill, minmax(240px,1fr))">
+                    <div class="text-center text-text-muted py-8 text-sm col-span-full">Pilih akun untuk melihat performa produk</div>
+                </div>
+            </div>
+        </div>
+    </div><!-- end analytics -->
+
+    <!-- ===== HISTORY PAGE ===== -->
+    <div id="page-history" class="page">
+        <div class="flex items-center justify-between mb-4">
+            <h1 class="section-title">Activity Logs</h1>
+            <button class="btn-ghost text-xs" onclick="loadStats()"><span class="ms text-base">sync</span> Refresh</button>
+        </div>
+        <div class="card">
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Waktu</th><th>Tanggal</th><th>Store</th><th>Produk</th><th>Status</th></tr></thead>
+                    <tbody id="history-tbody">
+                        <tr><td colspan="5" class="text-center text-text-muted py-8 text-sm">Memuat riwayat...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div><!-- end history -->
+
+    <!-- ===== SETTINGS PAGE ===== -->
+    <div id="page-settings" class="page">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <h1 class="section-title">System Settings</h1>
+                <p class="section-sub">Konfigurasi automasi, startup, dan penyimpanan data</p>
+            </div>
+            <span id="settings-bot-badge" class="badge badge-cooldown text-xs">⏹ Bot Idle</span>
+        </div>
+        <div class="card p-6 max-w-2xl">
+            <!-- Startup -->
+            <div class="mb-6">
+                <h3 class="text-xs font-bold text-text-muted uppercase tracking-wider mb-4 pb-2 border-b border-border">🚀 Startup & Background</h3>
+                <div class="flex items-start justify-between py-4 border-b border-border gap-6">
+                    <div>
+                        <div class="text-sm font-semibold text-text-main mb-1">Jalankan Saat Windows Startup</div>
+                        <div class="text-xs text-text-muted leading-relaxed">App otomatis berjalan di background saat PC dinyalakan. Muncul di System Tray — tidak mengganggu aktivitas.</div>
+                    </div>
+                    <label class="toggle-switch flex-shrink-0 mt-0.5">
+                        <input type="checkbox" id="toggle-run-on-startup" onchange="onSettingChange()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="flex items-start justify-between py-4 gap-6">
+                    <div>
+                        <div class="text-sm font-semibold text-text-main mb-1">Auto-Resume Bot Setelah Restart</div>
+                        <div class="text-xs text-text-muted leading-relaxed">Bot otomatis lanjut jika PC mati/restart saat bot sedang aktif. <strong>Ideal untuk kondisi mati lampu.</strong></div>
+                    </div>
+                    <label class="toggle-switch flex-shrink-0 mt-0.5">
+                        <input type="checkbox" id="toggle-auto-resume" onchange="onSettingChange()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            <!-- Data -->
+            <div class="mb-6">
+                <h3 class="text-xs font-bold text-text-muted uppercase tracking-wider mb-4 pb-2 border-b border-border">📂 Data Storage</h3>
+                <div class="py-3">
+                    <div class="text-sm font-semibold text-text-main mb-1">Folder Penyimpanan</div>
+                    <div class="text-xs font-mono text-text-dim bg-slate-50 px-3 py-2 rounded-lg border border-border" id="data-dir-info">Memuat...</div>
+                </div>
+            </div>
+            <button class="btn-primary" onclick="saveSettings()">
+                <span class="ms text-base">save</span> Simpan Pengaturan
+            </button>
+            <div id="settings-toast" class="hidden mt-4 px-4 py-3 bg-slate-800 text-emerald-400 text-sm rounded-lg border-l-4 border-emerald-500">
+                ✅ Pengaturan berhasil disimpan!
+            </div>
+        </div>
+    </div><!-- end settings -->
+
+    </div><!-- dot-bg -->
+</div><!-- main content -->
+
+<!-- ADD ACCOUNT MODAL -->
+<div id="modal-add-account" class="modal-overlay">
+    <div class="modal-box">
+        <div class="flex items-center gap-3 p-5 border-b border-border">
+            <div class="w-10 h-10 rounded-xl bg-shopee-light flex items-center justify-center">
+                <span class="ms text-shopee text-xl">storefront</span>
+            </div>
+            <div>
+                <h3 class="text-base font-bold text-text-main">Add Shopee Seller Account</h3>
+                <p class="text-xs text-text-muted">Connect toko baru menggunakan browser session cookie</p>
+            </div>
+            <button class="ml-auto text-text-muted hover:text-text-main" onclick="closeAddModal()">
+                <span class="ms text-xl">close</span>
+            </button>
+        </div>
+        <div class="p-5">
+            <label class="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Shopee Cookie (SPC_CDS)</label>
+            <textarea id="cookieInput" class="input-field font-mono text-xs" style="height:100px;resize:none" placeholder="Paste cookie string dari DevTools → Application → Cookies..."></textarea>
+            <div class="flex items-start gap-2 mt-3 p-3 bg-slate-50 rounded-lg border border-border">
+                <span class="ms text-text-muted text-base flex-shrink-0">shield</span>
+                <p class="text-xs text-text-muted">Cookie disimpan lokal di <span class="font-mono">%APPDATA%\SellerBoost\cookies.txt</span> — tidak dikirim ke server manapun.</p>
+            </div>
+        </div>
+        <div class="flex items-center justify-end gap-2 px-5 pb-5">
+            <button class="btn-ghost" onclick="closeAddModal()">Batal</button>
+            <button class="btn-primary" onclick="submitNewAccount()">
+                <span class="ms text-base">check</span> Validate & Save Account
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+const { ipcRenderer } = require('electron');
+
+// ===== STATE =====
+let isBotActive = false;
+let allAccounts = [];
+let allProductsData = [];
+let allOrdersData = [];
+let countdownTimestamp = 0;
+let countdownInterval = null;
+
+// ===== ROUTING =====
+function showPage(pageId, navEl) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+    document.getElementById('page-' + pageId).classList.add('active');
+    if (navEl) navEl.classList.add('active');
+
+    const titles = {
+        dashboard: 'Dashboard Overview',
+        products: 'Products Catalog',
+        boost: 'Boost Manager',
+        accounts: 'Account Management',
+        orders: 'Orders To Ship',
+        analytics: 'Analytics & Revenue',
+        history: 'Activity Logs',
+        settings: 'System Settings'
+    };
+    document.getElementById('header-title-text').textContent = titles[pageId] || pageId;
+
+    if (pageId === 'history') loadStats();
+    if (pageId === 'settings') loadSettings();
+}
+
+// ===== HELPERS =====
+function formatRp(val) {
+    if (!val || isNaN(val)) return 'Rp 0';
+    return 'Rp ' + Number(val).toLocaleString('id-ID');
+}
+function formatTime(ms) {
+    if (ms <= 0) return 'Ready';
+    const s = Math.floor(ms / 1000);
+    const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), ss = s % 60;
+    return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
+}
+function slotColor(used) {
+    if (used <= 2) return '#EE4D2D';
+    if (used <= 4) return '#F39C12';
+    return '#E74C3C';
+}
+function avatarInitial(name) {
+    return (name || '?').charAt(0).toUpperCase();
+}
+
+// ===== LOAD DATA =====
+async function loadData() {
+    try {
+        const accounts = await ipcRenderer.invoke('get-all-accounts');
+        allAccounts = accounts;
+        renderAccountsTable(accounts, 'dashboard-accounts-tbody');
+        renderAccountsTable(accounts, 'accounts-tbody');
+        populateAccountSelects(accounts);
+        updateKPIFromAccounts(accounts);
+    } catch (e) { console.error(e); }
+    try {
+        const stats = await ipcRenderer.invoke('get-stats');
+        document.getElementById('kpi-boosted').textContent = stats.totalBoosted || 0;
+        renderRecentActivity(stats.history?.slice(0, 5) || []);
+    } catch (e) {}
+}
+
+function updateKPIFromAccounts(accounts) {
+    const active = accounts.filter(a => a.status === 'Active' || a.status === 'Cooldown');
+    document.getElementById('kpi-stores').textContent = accounts.length;
+    const totalOrders = accounts.reduce((s, a) => s + (a.ordersToShip || 0), 0);
+    document.getElementById('kpi-orders').textContent = totalOrders + ' Orders';
+    document.getElementById('header-automation-text').textContent =
+        `Automation Active: ${active.length} Store${active.length !== 1 ? 's' : ''}`;
+    updateSidebarStore(accounts);
+}
+
+function updateSidebarStore(accounts) {
+    const first = accounts[0];
+    if (first) {
+        document.getElementById('sidebar-store-name').textContent = first.name;
+        document.getElementById('sidebar-store-sub').textContent = first.status;
+    }
+}
+
+function populateAccountSelects(accounts) {
+    const ids = ['products-account-select','boost-account-select','orders-account-select','analytics-account-select'];
+    ids.forEach(id => {
+        const sel = document.getElementById(id);
+        if (!sel) return;
+        const cur = sel.value;
+        sel.innerHTML = '<option value="">Pilih Akun...</option>';
+        accounts.forEach((a, i) => {
+            const opt = document.createElement('option');
+            opt.value = a.cookie;
+            opt.textContent = a.name || `Akun ${i+1}`;
+            sel.appendChild(opt);
+        });
+        if (cur) sel.value = cur;
+    });
+}
+
+// ===== RENDER ACCOUNTS TABLE =====
+function renderAccountsTable(accounts, tbodyId) {
+    const tbody = document.getElementById(tbodyId);
+    if (!accounts || accounts.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center text-text-muted py-8 text-sm">Belum ada akun. Klik "Add Account" untuk menambah toko.</td></tr>`;
+        return;
+    }
+    tbody.innerHTML = accounts.map(a => {
+        const statusBadge = a.status === 'Active' ? `<span class="badge badge-active text-xs">● Active</span>`
+            : a.status === 'Cooldown' ? `<span class="badge badge-cooldown text-xs">⏳ Cooldown</span>`
+            : `<span class="badge badge-expired text-xs">✕ ${a.status}</span>`;
+
+        const slots = a.slots || '0/5';
+        const [used, total] = slots.split('/').map(Number);
+        const pct = total > 0 ? (used/total)*100 : 0;
+        const bar = `<div class="flex items-center gap-2">
+            <div class="slot-bar w-16"><div class="slot-fill" style="width:${pct}%;background:${slotColor(used)}"></div></div>
+            <span class="text-xs text-text-muted font-mono">${slots}</span>
+        </div>`;
+
+        const next = a.nextTimestamp > 0 ? `<span class="countdown-timer text-xs font-mono text-shopee" data-ts="${a.nextTimestamp}">...</span>` : `<span class="text-xs text-text-dim">—</span>`;
+        const orders = a.ordersToShip > 0
+            ? `<span class="urgency-chip urgency-high text-[10px]">${a.ordersToShip}</span>`
+            : `<span class="text-xs text-text-dim">0</span>`;
+        const initials = avatarInitial(a.name);
+
+        return `<tr>
+            <td>
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full bg-sidebar text-white flex items-center justify-center text-xs font-bold flex-shrink-0">${initials}</div>
+                    <div>
+                        <div class="text-sm font-semibold text-text-main">${a.name}</div>
+                        <div class="text-xs text-text-dim font-mono">SPC_CDS Verified</div>
+                    </div>
+                </div>
+            </td>
+            <td>${statusBadge}</td>
+            <td>${orders}</td>
+            <td>${bar}</td>
+            <td>${next}</td>
+            <td>
+                <button onclick="deleteAccount(${JSON.stringify(a.cookie).replace(/"/g,'&quot;')})" class="btn-ghost text-xs hover:bg-red-50 hover:text-red-500 hover:border-red-200">
+                    <span class="ms text-base">delete</span>
+                </button>
+            </td>
+        </tr>`;
+    }).join('');
+    startCountdownTimers();
+}
+
+function startCountdownTimers() {
+    document.querySelectorAll('.countdown-timer[data-ts]').forEach(el => {
+        function tick() {
+            const ts = parseInt(el.getAttribute('data-ts'));
+            const rem = ts - Date.now();
+            el.textContent = rem > 0 ? formatTime(rem) : 'Ready';
+        }
+        tick();
+        setInterval(tick, 1000);
+    });
+}
+
+// ===== RECENT ACTIVITY =====
+function renderRecentActivity(history) {
+    const el = document.getElementById('recent-activity-list');
+    if (!history || history.length === 0) {
+        el.innerHTML = `<div class="text-xs text-text-dim text-center py-4">Belum ada aktivitas</div>`;
+        return;
+    }
+    el.innerHTML = history.map(h => {
+        const isSuccess = h.status === 'Success';
+        return `<div class="flex items-start gap-2 py-2 border-b border-border last:border-0">
+            <span class="ms text-sm mt-0.5 ${isSuccess ? 'text-emerald-500' : 'text-red-400'}">${isSuccess ? 'check_circle' : 'cancel'}</span>
+            <div class="min-w-0 flex-1">
+                <div class="text-xs font-semibold text-text-main truncate">${h.productName || '—'}</div>
+                <div class="text-[10px] text-text-dim">${h.shopName} · ${h.time} ${h.date}</div>
+            </div>
+            <span class="badge text-[10px] ${isSuccess ? 'badge-active' : 'badge-expired'} flex-shrink-0">${h.status}</span>
+        </div>`;
+    }).join('');
+}
+
+// ===== HISTORY PAGE =====
+async function loadStats() {
+    const stats = await ipcRenderer.invoke('get-stats');
+    const tbody = document.getElementById('history-tbody');
+    const history = stats?.history || [];
+    if (history.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center text-text-muted py-8 text-sm">Belum ada riwayat boost</td></tr>`;
+        return;
+    }
+    tbody.innerHTML = history.map(h => {
+        const isSuccess = h.status === 'Success';
+        return `<tr>
+            <td class="font-mono text-xs">${h.time}</td>
+            <td class="text-xs">${h.date}</td>
+            <td>
+                <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded-full bg-sidebar text-white text-[10px] flex items-center justify-center font-bold">${avatarInitial(h.shopName)}</div>
+                    <span class="text-xs font-semibold">${h.shopName}</span>
+                </div>
+            </td>
+            <td class="text-xs max-w-[200px] truncate">${h.productName}</td>
+            <td><span class="badge text-xs ${isSuccess ? 'badge-active' : 'badge-expired'}">${h.status}</span></td>
+        </tr>`;
+    }).join('');
+}
+
+// ===== PRODUCTS PAGE =====
+async function loadAllProducts() {
+    const cookie = document.getElementById('products-account-select').value;
+    if (!cookie) return;
+    const tbody = document.getElementById('products-tbody');
+    tbody.innerHTML = `<tr><td colspan="8" class="text-center text-text-muted py-8 text-sm"><span class="ms animate-spin inline-block">sync</span> Memuat produk...</td></tr>`;
+    try {
+        allProductsData = await ipcRenderer.invoke('get-all-products', cookie);
+        renderProductsTable(allProductsData);
+    } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center text-red-400 py-8 text-sm">Error: ${e.message}</td></tr>`;
+    }
+}
+
+function renderProductsTable(products) {
+    const tbody = document.getElementById('products-tbody');
+    if (!products || products.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center text-text-muted py-8 text-sm">Tidak ada produk ditemukan</td></tr>`;
+        return;
+    }
+    tbody.innerHTML = products.map(p => {
+        const statusBadge = p.boostStatus === 'boosting'
+            ? `<span class="badge badge-boosting text-xs">● Boosting</span>`
+            : p.boostStatus === 'ready'
+            ? `<span class="badge badge-ready text-xs">✓ Ready</span>`
+            : `<span class="badge badge-cooldown text-xs">⏳ Cooldown</span>`;
+        const img = p.image
+            ? `<img src="${p.image}" class="product-img" onerror="this.src='';this.style.background='#F8FAFC'">`
+            : `<div class="product-img flex items-center justify-center bg-slate-100"><span class="ms text-slate-300 text-xl">image</span></div>`;
+        const price = p.priceMax && p.priceMax !== p.price
+            ? `${formatRp(p.price/100000)} – ${formatRp(p.priceMax/100000)}`
+            : formatRp(p.price/100000);
+        return `<tr>
+            <td><input type="checkbox"></td>
+            <td>
+                <div class="flex items-center gap-3">
+                    ${img}
+                    <div class="min-w-0">
+                        <div class="text-xs font-semibold text-text-main line-clamp-2 max-w-[180px]">${p.name}</div>
+                        <div class="text-[10px] text-text-dim">${p.shopName}</div>
+                    </div>
+                </div>
+            </td>
+            <td><span class="badge badge-active text-[10px]">${p.shopName}</span></td>
+            <td class="text-xs font-semibold text-shopee">${price}</td>
+            <td class="text-xs font-semibold text-text-main">${p.stock}</td>
+            <td class="text-xs text-text-muted">${p.sold || 0}</td>
+            <td>${statusBadge}</td>
+            <td class="text-xs font-mono text-text-dim">${p.sku}</td>
+        </tr>`;
+    }).join('');
+}
+
+function filterProducts(type) {
+    if (type === 'all') renderProductsTable(allProductsData);
+    else renderProductsTable(allProductsData.filter(p => p.boostStatus === type));
+}
+
+// ===== BOOST MANAGER PAGE =====
+async function loadBoostProducts() {
+    const cookie = document.getElementById('boost-account-select').value;
+    if (!cookie) return;
+    const tbody = document.getElementById('boost-products-tbody');
+    try {
+        const products = await ipcRenderer.invoke('get-all-products', cookie);
+        document.getElementById('boost-product-count').textContent = products.length + ' products synced';
+        const boosting = products.filter(p => p.boostStatus === 'boosting').length;
+        const ready = products.filter(p => p.boostStatus === 'ready').length;
+        document.getElementById('boost-engine-status').textContent = isBotActive ? 'RUNNING' : 'IDLE';
+        document.getElementById('boost-success-rate').textContent = boosting > 0 ? Math.round((boosting/5)*100) + '%' : '—%';
+        tbody.innerHTML = products.map(p => {
+            const status = p.boostStatus === 'boosting'
+                ? `<span class="badge badge-boosting text-xs">● Active Boosting</span>`
+                : p.boostStatus === 'ready'
+                ? `<span class="badge badge-ready text-xs">✓ Ready</span>`
+                : `<span class="badge badge-cooldown text-xs">⏳ Cooldown</span>`;
+            const img = p.image
+                ? `<img src="${p.image}" class="product-img" onerror="this.style.display='none'">`
+                : `<div class="product-img bg-slate-100 flex items-center justify-center"><span class="ms text-slate-300 text-xl">image</span></div>`;
+            const slotText = p.boostStatus === 'boosting' ? 'Slot 1' : '—';
+            return `<tr>
+                <td><div class="flex items-center gap-3">${img}<div class="text-xs font-semibold text-text-main max-w-[200px] truncate">${p.name}</div></div></td>
+                <td><span class="badge badge-active text-[10px]">${p.shopName}</span></td>
+                <td>${status}</td>
+                <td class="font-mono text-xs text-text-muted">—:—:—</td>
+                <td class="text-xs text-text-dim">${slotText}</td>
+            </tr>`;
+        }).join('');
+    } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center text-red-400 py-8 text-sm">Error: ${e.message}</td></tr>`;
+    }
+}
+
+// ===== ORDERS PAGE =====
+async function loadOrders() {
+    const cookie = document.getElementById('orders-account-select').value;
+    if (!cookie) return;
+    const tbody = document.getElementById('orders-tbody');
+    tbody.innerHTML = `<tr><td colspan="8" class="text-center text-text-muted py-8 text-sm"><span class="ms animate-spin inline-block">sync</span> Memuat pesanan...</td></tr>`;
+    try {
+        const result = await ipcRenderer.invoke('get-orders-detail', cookie);
+        allOrdersData = result.orders || [];
+        document.getElementById('orders-total').textContent = result.total || 0;
+        document.getElementById('orders-urgent').textContent = result.urgent || 0;
+        document.getElementById('orders-store-name').textContent = result.shopName;
+        document.getElementById('orders-last-sync').textContent = 'Sync: ' + new Date().toLocaleTimeString('id-ID');
+        // Update nav badge
+        const badge = document.getElementById('orders-badge-nav');
+        if (result.urgent > 0) {
+            badge.textContent = result.urgent;
+            badge.classList.remove('hidden');
+        } else {
+            badge.classList.add('hidden');
+        }
+        renderOrdersTable(allOrdersData);
+    } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center text-red-400 py-8 text-sm">Error: ${e.message}</td></tr>`;
+    }
+}
+
+function renderOrdersTable(orders) {
+    const tbody = document.getElementById('orders-tbody');
+    if (!orders || orders.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center text-text-muted py-8 text-sm">Tidak ada pesanan yang perlu dikirim 🎉</td></tr>`;
+        return;
+    }
+    tbody.innerHTML = orders.map(o => {
+        let urgencyChip = '';
+        if (o.isUrgent) urgencyChip = `<span class="urgency-chip urgency-high">${o.hoursLeft}h left</span>`;
+        else if (o.hoursLeft < 24) urgencyChip = `<span class="urgency-chip urgency-med">${o.hoursLeft}h left</span>`;
+        else urgencyChip = `<span class="urgency-chip urgency-ok">${o.hoursLeft}h left</span>`;
+
+        const img = o.productImage
+            ? `<img src="${o.productImage}" class="product-img flex-shrink-0" onerror="this.style.display='none'">`
+            : `<div class="product-img bg-slate-100 flex items-center justify-center flex-shrink-0"><span class="ms text-slate-300 text-lg">image</span></div>`;
+
+        return `<tr class="${o.isUrgent ? 'bg-red-50/50' : ''}">
+            <td class="font-mono text-xs text-text-muted">#${o.orderId}</td>
+            <td>
+                <div class="flex items-center gap-2">
+                    ${img}
+                    <div class="min-w-0">
+                        <div class="text-xs font-semibold text-text-main truncate max-w-[160px]">${o.productName}</div>
+                        <div class="text-[10px] text-text-dim">${o.variantName || ''}</div>
+                    </div>
+                </div>
+            </td>
+            <td class="text-xs text-text-muted">${o.buyerUsername}</td>
+            <td class="text-xs font-semibold">${o.qty}x</td>
+            <td class="text-xs font-semibold text-shopee">${formatRp(o.totalPrice/100000)}</td>
+            <td class="text-xs text-text-muted">${o.courier}</td>
+            <td>${urgencyChip}</td>
+            <td><span class="badge badge-active text-xs">${o.status}</span></td>
+        </tr>`;
+    }).join('');
+}
+
+function filterOrders(type) {
+    if (type === 'all') renderOrdersTable(allOrdersData);
+    else if (type === 'urgent') renderOrdersTable(allOrdersData.filter(o => o.isUrgent));
+}
+
+// ===== ANALYTICS PAGE =====
+async function loadAnalytics() {
+    const cookie = document.getElementById('analytics-account-select').value;
+    if (!cookie) return;
+    try {
+        // Revenue summary
+        const rev = await ipcRenderer.invoke('get-revenue-summary', cookie);
+        if (rev) {
+            document.getElementById('ana-revenue').textContent = formatRp(rev.revenue/100000);
+            document.getElementById('ana-orders').textContent = rev.orders;
+            document.getElementById('ana-visitors').textContent = rev.visitors;
+            document.getElementById('ana-conv').textContent = (rev.conversionRate || 0).toFixed(1) + '%';
+            const rc = rev.revenueChange || 0;
+            document.getElementById('ana-revenue-change').innerHTML = `<span class="${rc >= 0 ? 'text-emerald-600' : 'text-red-500'} font-semibold">${rc >= 0 ? '+' : ''}${rc.toFixed(1)}%</span> vs kemarin`;
+        }
+        // Product performance
+        const products = await ipcRenderer.invoke('get-products-performance', cookie);
+        const gallery = document.getElementById('analytics-products-gallery');
+        if (!products || products.length === 0) {
+            gallery.innerHTML = `<div class="col-span-full text-center text-text-muted py-8 text-sm">Tidak ada produk aktif</div>`;
+        } else {
+            gallery.innerHTML = products.map(p => `
+                <div class="card p-4 hover:shadow-md transition-shadow">
+                    <div class="w-full h-28 bg-slate-50 rounded-lg mb-3 overflow-hidden">
+                        <img src="${p.image || ''}" class="w-full h-full object-cover" onerror="this.parentElement.style.background='#F1F5F9'">
+                    </div>
+                    <div class="text-xs font-semibold text-text-main line-clamp-2 mb-2" style="min-height:32px">${p.name}</div>
+                    <div class="grid grid-cols-3 gap-1 text-center pt-2 border-t border-border">
+                        <div>
+                            <div class="text-[10px] text-text-muted uppercase">Views</div>
+                            <div class="text-sm font-bold text-text-main">${p.views}</div>
                         </div>
-                    `;
-                });
-
-            } catch (err) {
-                gallery.innerHTML = `<div style="grid-column: 1 / -1; padding: 20px; color: red;">Error: ${err.message}</div>`;
-            }
+                        <div class="border-x border-border">
+                            <div class="text-[10px] text-text-muted uppercase">Sales</div>
+                            <div class="text-sm font-bold text-text-main">${p.sales}</div>
+                        </div>
+                        <div>
+                            <div class="text-[10px] text-text-muted uppercase">Conv.</div>
+                            <div class="text-sm font-bold text-text-main">${(p.conversion*100).toFixed(1)}%</div>
+                        </div>
+                    </div>
+                </div>`).join('');
         }
+    } catch (e) { console.error(e); }
+}
 
-        // Live Timer Tick
-        setInterval(() => {
-            const timers = document.querySelectorAll('.countdown-timer');
-            const now = Date.now();
-            timers.forEach(timer => {
-                const ts = parseInt(timer.getAttribute('data-timestamp'));
-                if (ts > 0) {
-                    const remaining = ts - now;
-                    timer.innerText = formatTimeRemaining(remaining);
-                } else {
-                    timer.innerText = "Ready";
-                }
-            });
-        }, 1000);
+// ===== ACCOUNT MODAL =====
+function openAddModal() {
+    document.getElementById('cookieInput').value = '';
+    document.getElementById('modal-add-account').classList.add('open');
+}
+function closeAddModal() {
+    document.getElementById('modal-add-account').classList.remove('open');
+}
+async function submitNewAccount() {
+    const cookie = document.getElementById('cookieInput').value.trim();
+    if (!cookie) { alert('Cookie tidak boleh kosong.'); return; }
+    const result = await ipcRenderer.invoke('add-new-account', cookie);
+    if (result.success) {
+        closeAddModal();
+        loadData();
+    } else {
+        alert('❌ ' + result.msg);
+    }
+}
+async function deleteAccount(cookie) {
+    if (!confirm('Hapus akun ini dari daftar?')) return;
+    const result = await ipcRenderer.invoke('delete-account', cookie);
+    if (result.success) loadData();
+    else alert('❌ ' + result.msg);
+}
 
-        // =====================================
-        // ACCOUNT MODAL
-        // =====================================
-        function addNewAccount() {
-            document.getElementById('cookieInput').value = '';
-            document.getElementById('addAccountModal').style.display = 'flex';
+// ===== BOT CONTROLLER =====
+async function toggleBot() {
+    if (!isBotActive) {
+        const result = await ipcRenderer.invoke('start-auto-boost');
+        if (result.success) setBotActive(true);
+    } else {
+        await ipcRenderer.invoke('stop-auto-boost');
+        setBotActive(false);
+    }
+}
+
+function setBotActive(active) {
+    isBotActive = active;
+    // Sidebar
+    const dot = document.getElementById('bot-status-dot');
+    const label = document.getElementById('bot-status-label');
+    const liveBadge = document.getElementById('bot-live-badge');
+    dot.className = `pulse-dot ${active ? 'bg-emerald-400 animate-pulse-dot' : 'bg-slate-500'}`;
+    label.textContent = active ? 'Bot Running' : 'Bot Idle';
+    liveBadge.textContent = active ? 'LIVE' : 'IDLE';
+    liveBadge.className = active ? 'text-emerald-400 text-[10px] font-mono font-semibold' : 'text-slate-500 text-[10px] font-mono font-semibold';
+    // Header button
+    const btn = document.getElementById('btn-toggle-bot');
+    const icon = document.getElementById('bot-btn-icon');
+    const text = document.getElementById('bot-btn-text');
+    btn.style.background = active ? '#DC2626' : '#1E8E3E';
+    icon.textContent = active ? 'stop' : 'play_arrow';
+    text.textContent = active ? 'Stop Bot' : 'Start Bot';
+    // Hero card
+    document.getElementById('hero-bot-icon').textContent = active ? 'stop' : 'play_arrow';
+    document.getElementById('hero-bot-text').textContent = active ? 'Stop Auto-Boost' : 'Mulai Auto-Boost';
+    // Engine KPI
+    document.getElementById('kpi-engine').textContent = active ? 'Active & Running' : 'Not Running';
+    document.getElementById('engine-dot').className = `pulse-dot ${active ? 'bg-emerald-500 animate-pulse-dot' : 'bg-slate-400'}`;
+    document.getElementById('engine-status-text').textContent = active ? 'Running' : 'Idle';
+    // Boost page
+    document.getElementById('boost-engine-status').textContent = active ? 'RUNNING' : 'IDLE';
+    document.getElementById('boost-btn-icon').textContent = active ? 'stop' : 'play_arrow';
+    document.getElementById('boost-btn-text').textContent = active ? 'Stop Bot' : 'Start Bot';
+    // Settings badge
+    const settingsBadge = document.getElementById('settings-bot-badge');
+    settingsBadge.className = `badge text-xs ${active ? 'badge-active' : 'badge-cooldown'}`;
+    settingsBadge.textContent = active ? '🟢 Bot Aktif' : '⏹ Bot Idle';
+}
+
+// ===== BOT LOG LISTENER =====
+ipcRenderer.on('bot-log', (event, data) => {
+    if (data.type === 'refresh_ui') { loadData(); return; }
+    if (data.type === 'countdown') {
+        const rem = data.remaining;
+        const ts = Date.now() + rem * 1000;
+        document.getElementById('hero-countdown').textContent = formatTime(rem * 1000);
+        document.getElementById('boost-countdown').textContent = formatTime(rem * 1000);
+        document.getElementById('bot-countdown-sidebar').textContent = 'Cooldown: ' + formatTime(rem * 1000);
+        const pct = Math.min(100, (1 - rem / 14400) * 100);
+        document.getElementById('bot-progress-bar').style.width = pct + '%';
+        document.getElementById('hero-slot-bar').style.width = pct + '%';
+        return;
+    }
+
+    const colors = { success: '#4ADE80', error: '#F87171', warning: '#FBBF24', info: '#E2E8F0' };
+    const color = colors[data.type] || '#E2E8F0';
+    const entry = document.createElement('div');
+    entry.innerHTML = `<span style="color:#64748B">[${data.time}]</span> <span style="color:${color}">${data.msg}</span>`;
+
+    ['bot-logs', 'boost-logs'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            const clone = entry.cloneNode(true);
+            el.appendChild(clone);
+            el.scrollTop = el.scrollHeight;
         }
+    });
+});
 
-        async function deleteAccount(cookie) {
-            if (!confirm('Yakin ingin menghapus akun ini? Cookie akan dihapus permanen dari daftar.')) {
-                return;
-            }
-            try {
-                const result = await ipcRenderer.invoke('delete-account', cookie);
-                if (result.success) {
-                    alert("✅ " + result.msg);
-                    loadData();
-                } else {
-                    alert("❌ " + result.msg);
-                }
-            } catch (err) {
-                alert("❌ Error: " + err.message);
-            }
-        }
+// Startup config listener
+ipcRenderer.on('startup-config', (event, cfg) => {
+    if (cfg?.autoResume && cfg?.wasRunning) setBotActive(true);
+});
 
-        function closeAddModal() {
-            document.getElementById('addAccountModal').style.display = 'none';
-        }
+// ===== SETTINGS =====
+async function loadSettings() {
+    try {
+        const cfg = await ipcRenderer.invoke('get-config');
+        const startup = await ipcRenderer.invoke('get-startup-status');
+        document.getElementById('toggle-run-on-startup').checked = startup.openAtLogin;
+        document.getElementById('toggle-auto-resume').checked = cfg.autoResume || false;
+        const appData = process.env.APPDATA || '';
+        document.getElementById('data-dir-info').textContent = appData + '\\SellerBoost\\';
+    } catch(e) {}
+}
+async function saveSettings() {
+    const runOnStartup = document.getElementById('toggle-run-on-startup').checked;
+    const autoResume = document.getElementById('toggle-auto-resume').checked;
+    await ipcRenderer.invoke('save-config', { runOnStartup, autoResume });
+    const toast = document.getElementById('settings-toast');
+    toast.classList.remove('hidden');
+    setTimeout(() => toast.classList.add('hidden'), 3000);
+}
+function onSettingChange() {}
 
-        async function submitNewAccount() {
-            const cookieString = document.getElementById('cookieInput').value;
-            
-            if (cookieString && cookieString.trim() !== "") {
-                const result = await ipcRenderer.invoke('add-new-account', cookieString);
-                if (result.success) {
-                    alert("✅ " + result.msg);
-                    loadData();
-                    closeAddModal();
-                } else {
-                    alert("❌ " + result.msg);
-                }
-            } else {
-                alert("❌ Cookie tidak boleh kosong.");
-            }
-        }
-
-        // =====================================
-        // BOT CONTROLLER LOGIC
-        // =====================================
-        let isBotActive = false;
-
-        async function toggleBot() {
-            const btn = document.getElementById('btn-toggle-bot');
-            const icon = document.getElementById('bot-icon');
-            const text = document.getElementById('bot-btn-text');
-
-            if (!isBotActive) {
-                const result = await ipcRenderer.invoke('start-auto-boost');
-                if (result.success) {
-                    isBotActive = true;
-                    btn.classList.remove('btn-primary');
-                    btn.classList.add('btn-secondary');
-                    btn.style.color = '#e74c3c';
-                    btn.style.borderColor = '#e74c3c';
-                    icon.innerText = 'stop';
-                    text.innerText = 'Stop Auto-Boost';
-
-                    document.getElementById('system-status-text').innerText = 'Running';
-                    document.getElementById('system-status-dot').classList.add('blinking');
-                    updateSettingsBadge(true);
-                }
-            } else {
-                await ipcRenderer.invoke('stop-auto-boost');
-                isBotActive = false;
-                btn.classList.add('btn-primary');
-                btn.classList.remove('btn-secondary');
-                btn.style.color = 'white';
-                btn.style.borderColor = 'var(--primary-color)';
-                icon.innerText = 'play_arrow';
-                text.innerText = 'Mulai Auto-Boost';
-
-                document.getElementById('system-status-text').innerText = 'Idle';
-                document.getElementById('system-status-dot').classList.remove('blinking');
-                updateSettingsBadge(false);
-            }
-        }
-
-
-        // Listener Log
-        ipcRenderer.on('bot-log', (event, data) => {
-            if (data.type === 'refresh_ui') {
-                loadData();
-                return;
-            }
-            if (data.type === 'countdown') { return; }
-
-            const logsContainer = document.getElementById('bot-logs');
-            const logEntry = document.createElement('div');
-            
-            let color = '#e2e8f0'; // info
-            if (data.type === 'success') color = '#4ade80';
-            else if (data.type === 'error') color = '#f87171';
-            else if (data.type === 'warning') color = '#fbbf24';
-
-            logEntry.innerHTML = `<span style="color: #64748b;">[${data.time}]</span> <span style="color: ${color}">${data.msg}</span>`;
-            logsContainer.appendChild(logEntry);
-            logsContainer.scrollTop = logsContainer.scrollHeight;
-        });
-
-        // Listener dari main.js: kirim config saat startup
-        ipcRenderer.on('startup-config', (event, cfg) => {
-            // Jika bot auto-resume berjalan di background, update UI
-            if (cfg && cfg.autoResume && cfg.wasRunning) {
-                isBotActive = true;
-                const btn = document.getElementById('btn-toggle-bot');
-                const icon = document.getElementById('bot-icon');
-                const text = document.getElementById('bot-btn-text');
-                if (btn) {
-                    btn.classList.remove('btn-primary');
-                    btn.classList.add('btn-secondary');
-                    btn.style.color = '#e74c3c';
-                    btn.style.borderColor = '#e74c3c';
-                    icon.innerText = 'stop';
-                    text.innerText = 'Stop Auto-Boost';
-                    document.getElementById('system-status-text').innerText = 'Running (Auto-Resumed)';
-                    document.getElementById('system-status-dot').classList.add('blinking');
-                }
-                updateSettingsBadge(true);
-            }
-        });
-
-        // =====================================
-        // SETTINGS FUNCTIONS
-        // =====================================
-        function updateSettingsBadge(isRunning) {
-            const badge = document.getElementById('settings-bot-badge');
-            if (!badge) return;
-            if (isRunning) {
-                badge.className = 'setting-badge badge-running';
-                badge.innerText = '🟢 Bot Aktif';
-            } else {
-                badge.className = 'setting-badge badge-stopped';
-                badge.innerText = '⏹ Bot Idle';
-            }
-        }
-
-        async function loadSettings() {
-            try {
-                const cfg = await ipcRenderer.invoke('get-config');
-                const startupStatus = await ipcRenderer.invoke('get-startup-status');
-                
-                document.getElementById('toggle-run-on-startup').checked = startupStatus.openAtLogin;
-                document.getElementById('toggle-auto-resume').checked = cfg.autoResume || false;
-                
-                // Tampilkan path data folder
-                const appData = process.env.APPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Application Support' : process.env.HOME + '/.config');
-                document.getElementById('data-dir-info').innerText = appData + '\\SellerBoost\\';
-                
-                updateSettingsBadge(isBotActive);
-            } catch (e) {
-                console.error('Gagal load settings:', e);
-            }
-        }
-
-        async function saveSettings() {
-            const runOnStartup = document.getElementById('toggle-run-on-startup').checked;
-            const autoResume = document.getElementById('toggle-auto-resume').checked;
-
-            try {
-                await ipcRenderer.invoke('save-config', { runOnStartup, autoResume });
-                
-                // Tampilkan toast
-                const toast = document.getElementById('settings-toast');
-                toast.classList.add('show');
-                setTimeout(() => toast.classList.remove('show'), 3000);
-            } catch (e) {
-                alert('❌ Gagal menyimpan pengaturan: ' + e.message);
-            }
-        }
-
-        function onSettingChange() {
-            // Bisa dipakai untuk efek visual real-time (opsional)
-        }
-
-        window.onload = () => {
-            loadData();
-            loadSettings();
-        };
-        setInterval(loadData, 60000); // 1 menit sekali sync data akun
-
-    </script>
+// ===== INIT =====
+window.onload = () => {
+    loadData();
+    loadSettings();
+};
+setInterval(loadData, 60000);
+</script>
 </body>
-</html>
+</html>

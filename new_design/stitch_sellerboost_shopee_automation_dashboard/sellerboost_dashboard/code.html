@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; } .app-drag-region { -webkit-app-region: drag; } .app-no-drag { -webkit-app-region: no-drag; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-bright": "#f9f9ff", "on-secondary": "#ffffff", "surface-container-lowest": "#ffffff", "tertiary-container": "#6a758a", "surface-container-low": "#f0f3ff", "outline-variant": "#e3beb6", "on-tertiary": "#ffffff", "on-primary-fixed": "#3e0500", "on-tertiary-fixed": "#111c2d", "primary": "#b22204", "inverse-primary": "#ffb4a4", "surface-dim": "#d0daf0", "outline": "#8f7069", "surface-container": "#e7eeff", "error": "#ba1a1a", "on-secondary-container": "#5c6274", "secondary-fixed": "#dce2f7", "primary-fixed": "#ffdad3", "on-primary": "#ffffff", "on-tertiary-container": "#fefcff", "on-error-container": "#93000a", "inverse-surface": "#273141", "error-container": "#ffdad6", "tertiary-fixed": "#d8e3fb", "surface-container-high": "#dee8ff", "primary-container": "#d63c1e", "surface": "#f9f9ff", "surface-container-highest": "#d9e3f9", "on-secondary-fixed-variant": "#404758", "tertiary": "#515c71", "secondary-container": "#d9dff5", "background": "#f9f9ff", "on-tertiary-fixed-variant": "#3c475a", "on-surface": "#121c2c", "surface-tint": "#b62506", "inverse-on-surface": "#ebf1ff", "secondary": "#575e70", "primary-fixed-dim": "#ffb4a4", "on-background": "#121c2c", "on-surface-variant": "#5b403b", "on-secondary-fixed": "#141b2b", "tertiary-fixed-dim": "#bcc7de", "on-error": "#ffffff", "on-primary-container": "#fffbff", "secondary-fixed-dim": "#c0c6db", "surface-variant": "#d9e3f9", "on-primary-fixed-variant": "#8d1600" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "margin": "1.5rem", "gutter": "1.25rem", "space-lg": "1rem", "space-xl": "1.5rem", "space-sm": "0.5rem", "space-xs": "0.25rem", "space-md": "0.75rem" }, "fontFamily": { "label-caps": ["Inter"], "title-card": ["Inter"], "body-table": ["Inter"], "body-table-bold": ["Inter"], "mono-timer": ["Inter"], "mono-terminal": ["Inter"], "body-product": ["Inter"], "display-metric": ["Inter"], "body-base": ["Inter"], "badge-label": ["Inter"], "title-section": ["Inter"] }, "fontSize": { "label-caps": ["11px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }], "title-card": ["16px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "body-table": ["13px", { "lineHeight": "18px", "fontWeight": "500" }], "body-table-bold": ["13px", { "lineHeight": "18px", "fontWeight": "600" }], "mono-timer": ["13px", { "lineHeight": "18px", "fontWeight": "600" }], "mono-terminal": ["12px", { "lineHeight": "18px", "fontWeight": "400" }], "body-product": ["14px", { "lineHeight": "20px", "fontWeight": "600" }], "display-metric": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "body-base": ["14px", { "lineHeight": "20px", "fontWeight": "500" }], "badge-label": ["12px", { "lineHeight": "16px", "fontWeight": "600" }], "title-section": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }] } } } };</script></head><body class="bg-background font-body-base text-on-surface antialiased selection:bg-primary-fixed selection:text-on-primary-fixed"><div class="fixed top-0 left-0 right-0 h-8 bg-inverse-surface z-50 flex items-center justify-between px-space-md text-inverse-on-surface select-none app-drag-region"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-sm text-primary-fixed">bolt</span><span class="font-label-caps text-label-caps text-inverse-on-surface/90">SellerBoost v2.4.0</span><span class="text-xs text-inverse-on-surface/40">•</span><span class="font-mono-terminal text-mono-terminal text-inverse-on-surface/60">ID_NODE_JKT01</span></div><div class="flex items-center app-no-drag"><button class="h-8 px-space-md hover:bg-surface-variant/20 hover:text-on-surface flex items-center justify-center transition-colors" title="Minimize"><span class="material-symbols-outlined text-sm">minimize</span></button><button class="h-8 px-space-md hover:bg-surface-variant/20 hover:text-on-surface flex items-center justify-center transition-colors" title="Maximize"><span class="material-symbols-outlined text-sm">crop_square</span></button><button class="h-8 px-space-md hover:bg-error hover:text-on-error flex items-center justify-center transition-colors" title="Close"><span class="material-symbols-outlined text-sm">close</span></button></div></div><aside class="fixed left-0 top-8 bottom-0 w-[250px] bg-inverse-surface text-inverse-on-surface z-40 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.15)]"><div class="flex flex-col min-h-0"><div class="p-space-xl pb-space-lg flex items-center gap-space-md"><img alt="SellerBoost Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XDKLbnzFT8eqzNz_BGjm7AJwCEOvjkAPFirNpabPjYenyD2gh7Ux8GNCh8m-b2akE_GJNPQoq-P2JafukkNVXo4t9csyl_uwBNGJ7XYkiwqX4TMQ9lni_Q92Azt9_MVO6J79jxLge3d_OwpTpErXhWJb7-sM_oMSWxdekwgF5GGiAPZ2OM6QVOaD_Ysa0cY35Kyg9V4Q-kYbvO4QwHPQ7ggRiGsWbhvHpEwZqls3vulqL7_1FQhf5OUng"/><div class="flex flex-col"><span class="font-title-card text-title-card font-bold tracking-tight text-surface-container-lowest leading-none">SellerBoost</span><span class="font-label-caps text-label-caps text-inverse-on-surface/60 uppercase mt-space-xs">Shopee Automation</span></div></div><div class="px-space-md mb-space-md"><div class="relative bg-surface-container-lowest/5 rounded-lg p-space-sm flex items-center justify-between text-surface-container-lowest"><div class="flex items-center gap-space-sm min-w-0"><span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span><div class="truncate"><p class="font-body-table-bold text-body-table-bold truncate">Toko Utama (Active)</p><p class="font-mono-terminal text-mono-terminal text-inverse-on-surface/60">48 Products Boosted</p></div></div><span class="material-symbols-outlined text-sm text-inverse-on-surface/60">expand_more</span></div></div><nav class="flex-1 px-space-md space-y-1 overflow-y-auto" data-active-classes="bg-primary-container text-on-primary-container font-semibold rounded-lg"><a aria-current="page" class="flex items-center gap-space-md px-space-md py-space-sm transition-colors bg-primary-container text-on-primary-container font-semibold rounded-lg" data-path="dashboard" href="#"><span class="material-symbols-outlined text-lg">dashboard</span><span class="font-body-table text-body-table">Dashboard</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-inverse-on-surface/70 hover:bg-surface-container-lowest/10 hover:text-surface-container-lowest transition-colors" data-path="products" href="#"><span class="material-symbols-outlined text-lg">inventory_2</span><span class="font-body-table text-body-table">Products</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-inverse-on-surface/70 hover:bg-surface-container-lowest/10 hover:text-surface-container-lowest transition-colors" data-path="boost-manager" href="#"><span class="material-symbols-outlined text-lg">rocket_launch</span><span class="font-body-table text-body-table">Boost Manager</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-inverse-on-surface/70 hover:bg-surface-container-lowest/10 hover:text-surface-container-lowest transition-colors" data-path="accounts" href="#"><span class="material-symbols-outlined text-lg">manage_accounts</span><span class="font-body-table text-body-table">Accounts</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-inverse-on-surface/70 hover:bg-surface-container-lowest/10 hover:text-surface-container-lowest transition-colors" data-path="analytics" href="#"><span class="material-symbols-outlined text-lg">insights</span><span class="font-body-table text-body-table">Analytics</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-inverse-on-surface/70 hover:bg-surface-container-lowest/10 hover:text-surface-container-lowest transition-colors" data-path="orders" href="#"><span class="material-symbols-outlined text-lg">shopping_cart</span><span class="font-body-table text-body-table">Orders</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-inverse-on-surface/70 hover:bg-surface-container-lowest/10 hover:text-surface-container-lowest transition-colors" data-path="activity-logs" href="#"><span class="material-symbols-outlined text-lg">terminal</span><span class="font-body-table text-body-table">Activity Logs</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-inverse-on-surface/70 hover:bg-surface-container-lowest/10 hover:text-surface-container-lowest transition-colors" data-path="settings" href="#"><span class="material-symbols-outlined text-lg">settings</span><span class="font-body-table text-body-table">Settings</span></a></nav></div><div class="p-space-md"><div class="bg-surface-container-lowest/5 rounded-lg p-space-md shadow-[inset_0_2px_4px_rgba(0,0,0,0.25)]"><div class="flex items-center justify-between mb-space-xs"><div class="flex items-center gap-space-xs"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span><span class="font-badge-label text-badge-label text-surface-container-lowest">Bot Running</span></div><span class="font-mono-terminal text-mono-terminal text-emerald-400">LIVE</span></div><p class="font-mono-timer text-mono-timer text-inverse-on-surface/80">Cooldown: 02:34:18</p><div class="w-full bg-inverse-surface h-1 rounded-full mt-space-sm overflow-hidden"><div class="bg-primary-container h-full w-4/5 rounded-full"></div></div></div></div></aside><div class="pl-[250px] pt-8"><header class="fixed top-8 left-[250px] right-0 h-16 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-30 flex items-center justify-between px-space-xl"><div class="flex items-center gap-space-lg"><nav class="flex items-center gap-space-xs text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider"><a class="text-on-surface-variant hover:text-on-surface transition-colors" data-path="dashboard" href="#">Console</a><span class="text-on-surface-variant/40">/</span><span class="text-on-surface font-bold">Live Operations</span></nav><div class="relative"><span class="material-symbols-outlined absolute left-space-md top-1/2 -translate-y-1/2 text-on-surface-variant text-base">search</span><input class="w-64 pl-9 pr-14 py-1.5 bg-surface-container-lowest text-on-surface rounded-lg font-body-table text-body-table focus:outline-none focus:ring-1 focus:ring-primary shadow-[0_1px_3px_rgba(0,0,0,0.04)] placeholder:text-on-surface-variant/60" placeholder="Search products, stores, SKU..." type="text"/><kbd class="absolute right-space-sm top-1/2 -translate-y-1/2 px-1.5 py-0.5 bg-surface-container text-on-surface-variant rounded text-[10px] font-mono-terminal font-semibold shadow-sm">Ctrl+K</kbd></div></div><div class="flex items-center gap-space-md"><div class="hidden xl:flex items-center gap-space-xs px-space-md py-1 bg-surface-container-low rounded-full"><span class="w-2 h-2 rounded-full bg-emerald-500"></span><span class="font-badge-label text-badge-label text-on-surface">Automation Active: 3 Stores</span></div><div class="hidden lg:flex items-center gap-space-xs font-mono-terminal text-mono-terminal text-on-surface-variant px-space-sm"><span class="material-symbols-outlined text-sm text-emerald-600">wifi</span><span>42ms</span></div><button class="px-space-md py-1.5 bg-surface-container-lowest text-primary rounded-lg font-body-table-bold text-body-table-bold hover:bg-surface-container hover:text-on-surface flex items-center gap-space-xs shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all"><span class="material-symbols-outlined text-sm">person_add</span><span>Add Account</span></button><button class="px-space-md py-1.5 bg-primary text-on-primary rounded-lg font-body-table-bold text-body-table-bold hover:bg-primary-container hover:text-on-primary-container flex items-center gap-space-xs shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all"><span class="material-symbols-outlined text-sm">pause_circle</span><span>Pause Bot</span></button><div class="relative"><button class="p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors flex items-center justify-center"><span class="material-symbols-outlined text-xl">notifications</span></button><span class="absolute top-0 right-0 w-4 h-4 bg-primary text-on-primary font-badge-label text-[10px] rounded-full flex items-center justify-center leading-none">3</span></div><div class="h-6 w-px bg-surface-container-highest"></div><div class="flex items-center gap-space-sm pl-space-xs cursor-pointer"><img alt="Profile" class="w-8 h-8 rounded-full object-cover shadow-[0_1px_3px_rgba(0,0,0,0.04)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVv-ASJ_FDoBrtDY2_eyQwS67bU3bbeJmv4V8e7WSnabXX1E0vDyQ4KM-fbGnwadvv8X7gdcDY7cPv8gVQGK0M4BXcEKqpnCB8X3obhMblnRirTwaoiIh_ywETYy459B7z6wG7WWMUewpxyB-Hst_cH8IS3jiIPkwxq_hG-yfpVZi1adXTaaU4adrj35Es4C-ckemGMFk_WxAAwlBTM0oViMBmLYCZANl41Y7lRof82f_Rf0FHXsII"/><div class="hidden md:flex flex-col text-left"><span class="font-body-table-bold text-body-table-bold text-on-surface leading-tight">Budi Santoso</span><span class="font-label-caps text-[10px] text-on-surface-variant leading-tight">Pro Tier</span></div><span class="material-symbols-outlined text-sm text-on-surface-variant">keyboard_arrow_down</span></div></div></header><main class="relative pt-16 min-h-[calc(100vh-2rem)] w-full px-space-xl bg-background pb-space-xl"><div class="flex flex-col w-full space-y-space-xl">
+<!-- Command Header Area -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md pt-2">
+<div>
+<div class="flex items-center gap-space-sm mb-1">
+<h1 class="font-title-section text-title-section text-on-surface tracking-tight">SellerBoost Dashboard</h1>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono-terminal font-semibold bg-primary-fixed text-on-primary-fixed">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+          LIVE DESKTOP ENGINE
+        </span>
+</div>
+<p class="font-body-base text-body-base text-on-surface-variant">Real-time automation monitoring & multi-store Shopee performance telemetry</p>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="px-3.5 py-2 bg-surface-container-lowest text-primary hover:bg-surface-container-low font-body-table-bold text-body-table-bold rounded-lg shadow-sm flex items-center gap-1.5 transition-all">
+<span class="material-symbols-outlined text-base">domain_add</span>
+<span>Add Account</span>
+</button>
+<button class="px-4 py-2 bg-primary hover:bg-primary-container text-on-primary font-body-table-bold text-body-table-bold rounded-lg shadow-md hover:shadow-lg flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+<span>Start Automation</span>
+</button>
+</div>
+</div>
+<!-- Summary KPI Metrics Grid (4 Cards) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Card 1: Connected Stores -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-xl">storefront</span>
+</div>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-badge-label font-badge-label bg-secondary-fixed text-on-secondary-fixed">
+          All Healthy
+        </span>
+</div>
+<div class="mt-space-lg">
+<p class="font-label-caps text-label-caps uppercase text-on-surface-variant">Connected Stores</p>
+<div class="flex items-baseline gap-2 mt-0.5">
+<span class="font-display-metric text-display-metric text-on-surface">3 Active</span>
+</div>
+<p class="font-mono-terminal text-mono-terminal text-on-surface-variant/80 mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-primary">add</span> +1 added this month (Quota: 5)
+        </p>
+</div>
+</div>
+<!-- Card 2: Products Boosted -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div class="w-10 h-10 rounded-lg bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+</div>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-badge-label font-badge-label bg-surface-container text-primary font-bold">
+<span class="material-symbols-outlined text-xs">trending_up</span> +18.2%
+        </span>
+</div>
+<div class="mt-space-lg">
+<p class="font-label-caps text-label-caps uppercase text-on-surface-variant">Products Boosted</p>
+<div class="flex items-baseline gap-2 mt-0.5">
+<span class="font-display-metric text-display-metric text-on-surface">128</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">/ 140 target</span>
+</div>
+<p class="font-mono-terminal text-mono-terminal text-on-surface-variant/80 mt-1">
+          +24 today (Shopee 4-hour slots)
+        </p>
+</div>
+</div>
+<!-- Card 3: Orders To Ship -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div class="w-10 h-10 rounded-lg bg-error-container flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-xl">inventory_2</span>
+</div>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-badge-label font-badge-label bg-error-container text-on-error-container">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span> 5 Urgent
+        </span>
+</div>
+<div class="mt-space-lg">
+<p class="font-label-caps text-label-caps uppercase text-on-surface-variant">Orders To Ship</p>
+<div class="flex items-baseline gap-2 mt-0.5">
+<span class="font-display-metric text-display-metric text-on-surface">17 Orders</span>
+</div>
+<p class="font-mono-terminal text-mono-terminal text-error mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">timer</span> 5 urgent (< 12h deadline)
+        </p>
+</div>
+</div>
+<!-- Card 4: Automation Engine -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-xl">smart_toy</span>
+</div>
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-badge-label font-badge-label bg-surface-container-low text-on-surface">
+<span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+          Loop Steady
+        </span>
+</div>
+<div class="mt-space-lg">
+<p class="font-label-caps text-label-caps uppercase text-on-surface-variant">Automation Engine</p>
+<div class="flex items-baseline gap-2 mt-0.5">
+<span class="font-display-metric text-display-metric text-on-surface">Active & Running</span>
+</div>
+<p class="font-mono-terminal text-mono-terminal text-on-surface-variant/80 mt-1">
+          Loop interval: 4h 05m (smart cooldown)
+        </p>
+</div>
+</div>
+</div>
+<!-- Live Automation Showcase Hero (Centerpiece) -->
+<div class="relative overflow-hidden rounded-xl bg-inverse-surface text-inverse-on-surface p-space-xl shadow-lg">
+<!-- Ambient glowing backdrop effect -->
+<div class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-primary/20 blur-3xl pointer-events-none"></div>
+<div class="absolute left-1/3 -bottom-24 w-72 h-72 rounded-full bg-primary-container/10 blur-3xl pointer-events-none"></div>
+<div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-center">
+<!-- Left Column: Store & Active Product (5 cols) -->
+<div class="lg:col-span-5 flex flex-col justify-between space-y-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="px-2.5 py-1 rounded bg-surface-container-lowest/10 backdrop-blur-md flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary-fixed animate-pulse"></span>
+<span class="font-mono-terminal text-mono-terminal text-primary-fixed uppercase tracking-wider font-semibold">Active Boost Engine</span>
+</div>
+<span class="font-mono-terminal text-mono-terminal text-inverse-on-surface/50">Worker #01</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h2 class="font-title-card text-title-card text-surface-container-lowest font-bold">Toko Utama</h2>
+<span class="px-2 py-0.5 rounded bg-surface-container-lowest/15 text-[10px] font-mono-terminal text-surface-container-lowest">SPC_CDS Verified</span>
+</div>
+<p class="font-body-product text-body-product text-inverse-on-surface/90 mt-1 line-clamp-1">
+            Kemeja Batik Pria Slimfit Premium
+          </p>
+<div class="flex items-center gap-space-sm mt-2 text-inverse-on-surface/60 font-mono-terminal text-mono-terminal">
+<span>SKU: BTK-092</span>
+<span>•</span>
+<span class="text-primary-fixed font-semibold">Slot 3/5 Active</span>
+</div>
+</div>
+<!-- Slot saturation tracker -->
+<div>
+<div class="flex justify-between font-label-caps text-label-caps text-inverse-on-surface/70 mb-1.5">
+<span>Shopee Slot Allocation</span>
+<span>3 of 5 Boosted</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container-lowest/15 overflow-hidden flex gap-1 p-0.5">
+<div class="h-full w-1/5 rounded-full bg-primary-fixed"></div>
+<div class="h-full w-1/5 rounded-full bg-primary-fixed"></div>
+<div class="h-full w-1/5 rounded-full bg-primary-fixed"></div>
+<div class="h-full w-1/5 rounded-full bg-surface-container-lowest/20"></div>
+<div class="h-full w-1/5 rounded-full bg-surface-container-lowest/20"></div>
+</div>
+</div>
+</div>
+<!-- Center Column: Countdown Meter (4 cols) -->
+<div class="lg:col-span-4 flex flex-col items-center justify-center p-space-lg rounded-xl bg-surface-container-lowest/5 backdrop-blur-md shadow-inner text-center">
+<span class="font-label-caps text-label-caps uppercase tracking-wider text-inverse-on-surface/60">Next Boost Cycle In</span>
+<div class="flex items-center justify-center gap-2 my-2">
+<div class="flex flex-col items-center">
+<span class="font-mono-timer text-3xl font-bold tracking-tight text-surface-container-lowest" id="timer-val">02:34:18</span>
+</div>
+</div>
+<div class="w-full bg-surface-container-lowest/10 h-1.5 rounded-full overflow-hidden mt-1">
+<div class="bg-primary h-full rounded-full transition-all duration-1000" style="width: 64%"></div>
+</div>
+<p class="font-mono-terminal text-[11px] text-inverse-on-surface/70 mt-3 flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-xs text-primary-fixed">schedule</span>
+          Queued: Batik Solo Official @ 16:45 WIB
+        </p>
+</div>
+<!-- Right Column: Telemetry & Actions (3 cols) -->
+<div class="lg:col-span-3 flex flex-col justify-between space-y-space-md">
+<div class="bg-surface-container-lowest/5 rounded-lg p-3">
+<div class="flex items-center justify-between text-xs font-mono-terminal text-inverse-on-surface/80">
+<span>Success Rate</span>
+<span class="text-primary-fixed font-bold">99.2%</span>
+</div>
+<div class="flex items-center justify-between text-xs font-mono-terminal text-inverse-on-surface/60 mt-1">
+<span>Slots Fulfilled</span>
+<span class="text-surface-container-lowest">127 / 128</span>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<button class="w-full py-2 px-3 bg-primary text-on-primary hover:bg-primary-container font-body-table-bold text-body-table-bold rounded-lg shadow transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">bolt</span>
+<span>Boost All Now (Force)</span>
+</button>
+<div class="grid grid-cols-2 gap-2">
+<button class="py-1.5 px-2 bg-surface-container-lowest/10 hover:bg-surface-container-lowest/20 text-surface-container-lowest font-body-table text-body-table rounded-lg flex items-center justify-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-xs">pause</span>
+<span>Pause</span>
+</button>
+<button class="py-1.5 px-2 bg-surface-container-lowest/10 hover:bg-surface-container-lowest/20 text-surface-container-lowest font-body-table text-body-table rounded-lg flex items-center justify-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-xs">refresh</span>
+<span>Cookies</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Mid Section: Chart & Live Events (2 Columns: 60% / 40%) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Column: Boost Activity Frequency (7-day chart) -->
+<div class="lg:col-span-7 bg-surface-container-lowest p-space-xl rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm mb-space-lg">
+<div>
+<h3 class="font-title-card text-title-card text-on-surface font-bold">Boost Activity & Frequency</h3>
+<p class="font-body-table text-body-table text-on-surface-variant">Cycle completions across active 4-hour slots</p>
+</div>
+<div class="inline-flex p-1 bg-surface-container-low rounded-lg font-body-table text-body-table">
+<button class="px-2.5 py-1 text-on-surface-variant hover:text-on-surface rounded transition-colors">Today</button>
+<button class="px-2.5 py-1 bg-surface-container-lowest text-primary font-bold rounded shadow-sm">7 Days</button>
+<button class="px-2.5 py-1 text-on-surface-variant hover:text-on-surface rounded transition-colors">30 Days</button>
+</div>
+</div>
+<!-- Native Lightweight SVG Area/Line Chart -->
+<div class="relative w-full h-56 flex flex-col justify-end">
+<svg class="w-full h-44 overflow-visible" preserveaspectratio="none" viewbox="0 0 600 200">
+<defs>
+<lineargradient id="boostGrad" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#b22204" stop-opacity="0.25"></stop>
+<stop offset="100%" stop-color="#b22204" stop-opacity="0.0"></stop>
+</lineargradient>
+</defs>
+<!-- Background Grid Lines -->
+<line stroke="#f0f3ff" stroke-width="1.5" x1="0" x2="600" y1="20" y2="20"></line>
+<line stroke="#f0f3ff" stroke-width="1.5" x1="0" x2="600" y1="70" y2="70"></line>
+<line stroke="#f0f3ff" stroke-width="1.5" x1="0" x2="600" y1="120" y2="120"></line>
+<line stroke="#f0f3ff" stroke-width="1.5" x1="0" x2="600" y1="170" y2="170"></line>
+<!-- Gradient Area Fill -->
+<polygon fill="url(#boostGrad)" points="0,170 0,110 95,85 190,130 285,45 380,60 475,30 570,18 600,22 600,170"></polygon>
+<!-- Primary Line Chart -->
+<polyline fill="none" points="0,110 95,85 190,130 285,45 380,60 475,30 570,18 600,22" stroke="#b22204" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></polyline>
+<!-- Data Points -->
+<circle cx="95" cy="85" fill="#ffffff" r="4" stroke="#b22204" stroke-width="2.5"></circle>
+<circle cx="190" cy="130" fill="#ffffff" r="4" stroke="#b22204" stroke-width="2.5"></circle>
+<circle cx="285" cy="45" fill="#ffffff" r="4" stroke="#b22204" stroke-width="2.5"></circle>
+<circle cx="380" cy="60" fill="#ffffff" r="4" stroke="#b22204" stroke-width="2.5"></circle>
+<circle cx="475" cy="30" fill="#ffffff" r="4" stroke="#b22204" stroke-width="2.5"></circle>
+<circle cx="570" cy="18" fill="#b22204" r="5" stroke="#ffffff" stroke-width="2"></circle>
+</svg>
+<!-- X-Axis Labels -->
+<div class="flex justify-between pt-3 font-mono-terminal text-[11px] text-on-surface-variant">
+<span>Mon (18)</span>
+<span>Tue (19)</span>
+<span>Wed (20)</span>
+<span>Thu (21)</span>
+<span>Fri (22)</span>
+<span>Sat (23)</span>
+<span class="text-primary font-bold">Sun Today</span>
+</div>
+</div>
+<!-- Quick Chart Legend/Summary -->
+<div class="flex items-center justify-between pt-space-md mt-space-md border-t border-surface-container-low font-mono-terminal text-mono-terminal text-on-surface-variant">
+<div class="flex items-center gap-space-md">
+<span class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span> Successful Slots (99%)
+          </span>
+<span class="flex items-center gap-1.5 text-on-surface-variant/70">
+<span class="w-2.5 h-2.5 rounded-full bg-surface-dim"></span> Cooldown Wait
+          </span>
+</div>
+<span class="text-on-surface font-semibold">Peak: 142 Boosts/Day</span>
+</div>
+</div>
+<!-- Right Column: Recent Activity Feed (40%) -->
+<div class="lg:col-span-5 bg-surface-container-lowest p-space-xl rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between mb-space-md">
+<div>
+<h3 class="font-title-card text-title-card text-on-surface font-bold">Recent Automation Activity</h3>
+<p class="font-body-table text-body-table text-on-surface-variant">Real-time daemon events</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-on-surface">tune</span>
+</div>
+<div class="space-y-3 overflow-y-auto max-h-[290px] pr-1">
+<!-- Event 1 -->
+<div class="p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3">
+<span class="material-symbols-outlined text-sm text-primary mt-0.5">check_circle</span>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-1">
+<p class="font-body-table-bold text-body-table-bold text-on-surface truncate">Product Boosted</p>
+<span class="font-mono-terminal text-[11px] text-on-surface-variant shrink-0">14:12 WIB</span>
+</div>
+<p class="font-mono-terminal text-mono-terminal text-on-surface-variant truncate">Kemeja Batik Pria Slimfit (Toko Utama)</p>
+</div>
+<span class="px-2 py-0.5 rounded text-[10px] font-mono-terminal bg-surface-container text-on-surface font-semibold">SUCCESS</span>
+</div>
+<!-- Event 2 -->
+<div class="p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3">
+<span class="material-symbols-outlined text-sm text-secondary mt-0.5">hourglass_top</span>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-1">
+<p class="font-body-table-bold text-body-table-bold text-on-surface truncate">Cooldown Active</p>
+<span class="font-mono-terminal text-[11px] text-on-surface-variant shrink-0">13:50 WIB</span>
+</div>
+<p class="font-mono-terminal text-mono-terminal text-on-surface-variant truncate">Gamis Rayon: 03:12:00 remaining</p>
+</div>
+<span class="px-2 py-0.5 rounded text-[10px] font-mono-terminal bg-secondary-fixed text-on-secondary-fixed font-semibold">COOLDOWN</span>
+</div>
+<!-- Event 3 -->
+<div class="p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3">
+<span class="material-symbols-outlined text-sm text-primary mt-0.5">verified_user</span>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-1">
+<p class="font-body-table-bold text-body-table-bold text-on-surface truncate">Cookie Refreshed</p>
+<span class="font-mono-terminal text-[11px] text-on-surface-variant shrink-0">12:30 WIB</span>
+</div>
+<p class="font-mono-terminal text-mono-terminal text-on-surface-variant truncate">Shopee session token verified for 'Batik Nusantara'</p>
+</div>
+<span class="px-2 py-0.5 rounded text-[10px] font-mono-terminal bg-surface-container text-primary font-semibold">INFO</span>
+</div>
+<!-- Event 4 -->
+<div class="p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3">
+<span class="material-symbols-outlined text-sm text-on-surface mt-0.5">shopping_bag</span>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-1">
+<p class="font-body-table-bold text-body-table-bold text-on-surface truncate">Order Sync</p>
+<span class="font-mono-terminal text-[11px] text-on-surface-variant shrink-0">11:05 WIB</span>
+</div>
+<p class="font-mono-terminal text-mono-terminal text-on-surface-variant truncate">4 new orders received for Toko Utama</p>
+</div>
+<span class="px-2 py-0.5 rounded text-[10px] font-mono-terminal bg-surface-container-highest text-on-surface font-semibold">ORDER</span>
+</div>
+<!-- Event 5 -->
+<div class="p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors flex items-start gap-3">
+<span class="material-symbols-outlined text-sm text-primary mt-0.5">published_with_changes</span>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-1">
+<p class="font-body-table-bold text-body-table-bold text-on-surface truncate">Auto Cycle Done</p>
+<span class="font-mono-terminal text-[11px] text-on-surface-variant shrink-0">10:00 WIB</span>
+</div>
+<p class="font-mono-terminal text-mono-terminal text-on-surface-variant truncate">Automatic boost cycle #42 completed</p>
+</div>
+<span class="px-2 py-0.5 rounded text-[10px] font-mono-terminal bg-surface-container text-on-surface font-semibold">SUCCESS</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Section: Orders To Ship (Action Required) -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm p-space-xl">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm mb-space-lg">
+<div class="flex items-center gap-space-sm">
+<h3 class="font-title-card text-title-card text-on-surface font-bold">Orders To Ship</h3>
+<span class="px-2.5 py-0.5 rounded-full text-badge-label font-badge-label bg-error-container text-on-error-container font-semibold">Action Required</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 bg-surface-container text-on-surface hover:bg-surface-container-high rounded-lg font-body-table text-body-table flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-sm">print</span>
+<span>Batch Print (Airway Bills)</span>
+</button>
+<button class="px-3 py-1.5 bg-surface-container-low text-primary hover:bg-surface-container rounded-lg font-body-table-bold text-body-table-bold flex items-center gap-1 transition-colors">
+<span>View All (17)</span>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Responsive High-Density Data Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-caps text-label-caps uppercase">
+<th class="py-3 px-4 rounded-l-lg">Order ID</th>
+<th class="py-3 px-4">Store</th>
+<th class="py-3 px-4">Product Details</th>
+<th class="py-3 px-4 text-center">Qty</th>
+<th class="py-3 px-4 text-right">Total Amount</th>
+<th class="py-3 px-4">Status</th>
+<th class="py-3 px-4">Shipping Deadline</th>
+<th class="py-3 px-4 text-right rounded-r-lg">Action</th>
+</tr>
+</thead>
+<tbody class="font-body-table text-body-table text-on-surface divide-y divide-surface-container-low">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3.5 px-4 font-mono-terminal font-bold text-on-surface">#240519-78901</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1.5 font-body-table-bold text-body-table-bold text-on-surface">
+<span class="w-5 h-5 rounded-full bg-inverse-surface text-inverse-on-surface text-[10px] flex items-center justify-center font-bold">T</span>
+                Toko Utama
+              </span>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex flex-col">
+<span class="font-body-table-bold text-body-table-bold truncate max-w-xs">Mukena Silk Premium - Dusty Pink</span>
+<span class="font-mono-terminal text-[11px] text-on-surface-variant">Variant: All Size / Pink Rose</span>
+</div>
+</td>
+<td class="py-3.5 px-4 text-center font-mono-terminal">2 pcs</td>
+<td class="py-3.5 px-4 text-right font-mono-terminal font-bold text-on-surface">Rp 378.000</td>
+<td class="py-3.5 px-4">
+<span class="px-2.5 py-1 rounded-full text-badge-label font-badge-label bg-secondary-fixed text-on-secondary-fixed whitespace-nowrap">
+                Pending Pickup
+              </span>
+</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-badge-label font-badge-label bg-error-container text-on-error-container font-semibold animate-pulse">
+<span class="material-symbols-outlined text-xs">alarm</span> 4h 15m left
+              </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<button class="px-3 py-1 bg-primary text-on-primary hover:bg-primary-container rounded-lg font-body-table-bold text-body-table-bold text-xs shadow-sm transition-all inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">receipt_long</span>
+                Print Airway Bill
+              </button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3.5 px-4 font-mono-terminal font-bold text-on-surface">#240519-78894</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1.5 font-body-table-bold text-body-table-bold text-on-surface">
+<span class="w-5 h-5 rounded-full bg-tertiary text-on-tertiary text-[10px] flex items-center justify-center font-bold">B</span>
+                Batik Nusantara
+              </span>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex flex-col">
+<span class="font-body-table-bold text-body-table-bold truncate max-w-xs">Kemeja Batik Modern L</span>
+<span class="font-mono-terminal text-[11px] text-on-surface-variant">Variant: L / Lengan Panjang</span>
+</div>
+</td>
+<td class="py-3.5 px-4 text-center font-mono-terminal">1 pc</td>
+<td class="py-3.5 px-4 text-right font-mono-terminal font-bold text-on-surface">Rp 189.000</td>
+<td class="py-3.5 px-4">
+<span class="px-2.5 py-1 rounded-full text-badge-label font-badge-label bg-surface-container text-primary font-semibold whitespace-nowrap">
+                Ready To Ship
+              </span>
+</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-badge-label font-badge-label bg-surface-container-high text-on-surface font-semibold">
+<span class="material-symbols-outlined text-xs">schedule</span> 9h 30m left
+              </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<button class="px-3 py-1 bg-surface-container hover:bg-surface-container-high text-on-surface rounded-lg font-body-table-bold text-body-table-bold text-xs transition-all inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">local_shipping</span>
+                Arrange Shipment
+              </button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3.5 px-4 font-mono-terminal font-bold text-on-surface">#240519-78852</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1.5 font-body-table-bold text-body-table-bold text-on-surface">
+<span class="w-5 h-5 rounded-full bg-inverse-surface text-inverse-on-surface text-[10px] flex items-center justify-center font-bold">T</span>
+                Toko Utama
+              </span>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex flex-col">
+<span class="font-body-table-bold text-body-table-bold truncate max-w-xs">Daster Rayon Busui Motif Leaf</span>
+<span class="font-mono-terminal text-[11px] text-on-surface-variant">Variant: Standard / Emerald Green</span>
+</div>
+</td>
+<td class="py-3.5 px-4 text-center font-mono-terminal">3 pcs</td>
+<td class="py-3.5 px-4 text-right font-mono-terminal font-bold text-on-surface">Rp 165.000</td>
+<td class="py-3.5 px-4">
+<span class="px-2.5 py-1 rounded-full text-badge-label font-badge-label bg-surface-container-low text-on-surface-variant whitespace-nowrap">
+                Shipped
+              </span>
+</td>
+<td class="py-3.5 px-4 font-mono-terminal text-[12px] text-on-surface-variant">
+              Delivered to J&T (Drop Point)
+            </td>
+<td class="py-3.5 px-4 text-right">
+<button class="px-3 py-1 bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface rounded-lg font-body-table-bold text-body-table-bold text-xs transition-all inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">radar</span>
+                Track
+              </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<script>
+  (function() {
+    let totalSeconds = 2 * 3600 + 34 * 60 + 18;
+    const el = document.getElementById('timer-val');
+    if (!el) return;
+
+    setInterval(function() {
+      if (totalSeconds > 0) {
+        totalSeconds--;
+        const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+        const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+        const seconds = String(totalSeconds % 60).padStart(2, '0');
+        el.textContent = hours + ':' + minutes + ':' + seconds;
+      }
+    }, 1000);
+  })();
+</script></main></div></body></html>

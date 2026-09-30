@@ -172,6 +172,21 @@ ipcMain.handle('get-products-performance', async (event, cookie) => {
     return await botCore.getProductPerformance(cookie);
 });
 
+// ALL PRODUCTS (new Products page)
+ipcMain.handle('get-all-products', async (event, cookie) => {
+    return await botCore.getAllProducts(cookie);
+});
+
+// ORDERS DETAIL (new Orders page)
+ipcMain.handle('get-orders-detail', async (event, cookie) => {
+    return await botCore.getOrdersDetail(cookie);
+});
+
+// REVENUE SUMMARY (new Analytics feature)
+ipcMain.handle('get-revenue-summary', async (event, cookie) => {
+    return await botCore.getRevenueSummary(cookie);
+});
+
 // START/STOP BOT EVENTS
 ipcMain.handle('start-auto-boost', async (event) => {
     return await botCore.startBot((logData) => {

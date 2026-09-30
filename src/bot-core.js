@@ -96,7 +96,7 @@ async function getShopInfo(cookie, spcCds) {
     }
 }
 
-// Fungsi ambil Order To Ship
+// Fungsi ambil Order To Ship (count only)
 async function getOrdersToShip(cookie, spcCds) {
     try {
         const url = `https://seller.shopee.co.id/api/v3/order/get_order_list_to_ship_meta?SPC_CDS=${spcCds}&SPC_CDS_VER=2`;
@@ -109,6 +109,162 @@ async function getOrdersToShip(cookie, spcCds) {
         return 0;
     } catch (e) {
         return 0;
+    }
+}
+
+// ==========================================
+// FUNGSI: DAFTAR PESANAN LENGKAP (Orders Page)
+// ==========================================
+async function getOrdersDetail(cookie) {
+    try {
+        const spcCds = cookie.match(/SPC_CDS=([^;]+)/)?.[1];
+        if (!spcCds) return { orders: [], shopName: 'Unknown', urgent: 0, total: 0 };
+
+        const shopName = await getShopInfo(cookie, spcCds);
+
+        // Ambil daftar order yang perlu dikirim
+        const url = `https://seller.shopee.co.id/api/v3/order/get_order_list?SPC_CDS=${spcCds}&SPC_CDS_VER=2`;
+        const payload = {
+            page_size: 30,
+            page_number: 1,
+            order_status: 100, // READY_TO_SHIP
+            order_filter_status: 0
+        };
+        const customHeaders = {
+            ...getHeaders(cookie),
+            'Referer': 'https://seller.shopee.co.id/portal/sale/order?type=toship'
+        };
+        const res = await axios.post(url, payload, { headers: customHeaders });
+
+        if (!res.data || res.data.code !== 0 || !res.data.data) {
+            return { orders: [], shopName, urgent: 0, total: 0 };
+        }
+
+        const orderList = res.data.data.order_list || [];
+        const now = Date.now() / 1000;
+
+        const orders = orderList.map(o => {
+            const deadline = o.ship_by_date || 0;
+            const hoursLeft = deadline > 0 ? Math.floor((deadline - now) / 3600) : 999;
+            return {
+                orderId: o.order_sn || o.ordersn || '-',
+                shopName,
+                buyerUsername: o.buyer_username || '-',
+                productName: o.item_list?.[0]?.item_name || 'Produk Tidak Diketahui',
+                productImage: o.item_list?.[0]?.image_url
+                    ? `https://cf.shopee.co.id/file/${o.item_list[0].image_url}`
+                    : '',
+                variantName: o.item_list?.[0]?.variation_name || '',
+                qty: o.item_list?.[0]?.amount || 1,
+                totalPrice: o.total_amount || 0,
+                courier: o.shipping_carrier || '-',
+                status: o.order_status === 100 ? 'Ready to Ship' : 'Pending',
+                deadline: deadline,
+                hoursLeft,
+                isUrgent: hoursLeft < 12 && hoursLeft >= 0,
+                paymentMethod: o.cod ? 'COD' : 'Shopee Regular'
+            };
+        });
+
+        const urgent = orders.filter(o => o.isUrgent).length;
+        return { orders, shopName, urgent, total: orders.length };
+    } catch (e) {
+        console.error('getOrdersDetail error:', e.message);
+        return { orders: [], shopName: 'Error', urgent: 0, total: 0 };
+    }
+}
+
+// ==========================================
+// FUNGSI: KATALOG PRODUK LENGKAP (Products Page)
+// ==========================================
+async function getAllProducts(cookie) {
+    try {
+        const spcCds = cookie.match(/SPC_CDS=([^;]+)/)?.[1];
+        if (!spcCds) return [];
+
+        const shopName = await getShopInfo(cookie, spcCds);
+
+        // Ambil semua produk live
+        const url = `https://seller.shopee.co.id/api/v3/opt/mpsku/list/v2/search_product_list?SPC_CDS=${spcCds}&SPC_CDS_VER=2&page_size=40&list_type=live_all`;
+        const res = await axios.get(url, { headers: getHeaders(cookie) });
+
+        if (!res.data || res.data.code !== 0) return [];
+
+        const products = res.data.data?.products || [];
+
+        // Ambil boost status untuk semua produk
+        const productIds = products.map(p => p.id);
+        let boostInfos = {};
+        if (productIds.length > 0) {
+            try {
+                const idList = productIds.slice(0, 20).join(',');
+                const boostUrl = `https://seller.shopee.co.id/api/v3/opt/mpsku/list/get_boost_info?SPC_CDS=${spcCds}&SPC_CDS_VER=2&product_id_list=${idList}`;
+                const boostRes = await axios.get(boostUrl, { headers: getHeaders(cookie) });
+                boostInfos = boostRes.data?.data?.boost_infos || {};
+            } catch (e) { /* ignore */ }
+        }
+
+        // Ambil bumped (currently boosting) list
+        let bumpedIds = [];
+        try {
+            const bumpedUrl = `https://seller.shopee.co.id/api/v3/opt/mpsku/list/get_bumped_product_list?SPC_CDS=${spcCds}&SPC_CDS_VER=2`;
+            const bumpedRes = await axios.get(bumpedUrl, { headers: getHeaders(cookie) });
+            bumpedIds = (bumpedRes.data?.data?.products || []).map(p => p.id);
+        } catch (e) { /* ignore */ }
+
+        return products.map(p => {
+            const isBoosted = bumpedIds.includes(p.id);
+            const boostInfo = boostInfos[p.id];
+            const canBoost = boostInfo && boostInfo.disabled_boost_button === false;
+            return {
+                id: p.id,
+                name: p.name,
+                image: p.image_url ? `https://cf.shopee.co.id/file/${p.image_url}` : '',
+                price: p.price_min || p.price || 0,
+                priceMax: p.price_max || 0,
+                stock: p.stock || 0,
+                sold: p.historical_sold || 0,
+                sku: p.item_sku || '-',
+                shopName,
+                boostStatus: isBoosted ? 'boosting' : (canBoost ? 'ready' : 'cooldown'),
+                disabled: boostInfo?.disabled_boost_button !== false && !isBoosted
+            };
+        });
+    } catch (e) {
+        console.error('getAllProducts error:', e.message);
+        return [];
+    }
+}
+
+// ==========================================
+// FUNGSI: REVENUE SUMMARY (dari key-metrics)
+// ==========================================
+async function getRevenueSummary(cookie) {
+    try {
+        const spcCds = cookie.match(/SPC_CDS=([^;]+)/)?.[1];
+        if (!spcCds) return null;
+
+        const shopName = await getShopInfo(cookie, spcCds);
+        const url = `https://seller.shopee.co.id/api/mydata/v2/homepage/key-metrics/?SPC_CDS=${spcCds}&SPC_CDS_VER=2&order_type=confirmed`;
+        const customHeaders = { ...getHeaders(cookie), 'Referer': 'https://seller.shopee.co.id/' };
+        const res = await axios.get(url, { headers: customHeaders });
+
+        if (!res.data || !res.data.data) return { shopName, revenue: 0, orders: 0, visitors: 0 };
+
+        const d = res.data.data;
+        return {
+            shopName,
+            revenue: d.revenue?.value || d.gmv?.value || 0,
+            revenueChange: d.revenue?.trend || d.gmv?.trend || 0,
+            orders: d.order_count?.value || 0,
+            ordersChange: d.order_count?.trend || 0,
+            visitors: d.visitor?.value || d.page_view?.value || 0,
+            visitorsChange: d.visitor?.trend || 0,
+            conversionRate: d.conversion_rate?.value || 0,
+        };
+    } catch (e) {
+        console.error('getRevenueSummary error:', e.message);
+        return null;
     }
 }
 
@@ -523,6 +679,9 @@ async function stopBot() {
 module.exports = { 
     getAllAccountsStatus,
     getProductPerformance,
+    getAllProducts,
+    getOrdersDetail,
+    getRevenueSummary,
     addAccount,
     deleteAccount,
     startBot,
