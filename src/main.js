@@ -1,6 +1,98 @@
-const { app, BrowserWindow, ipcMain, Tray, Menu, nativeImage } = require('electron');
+const { app, BrowserWindow, ipcMain, Tray, Menu, nativeImage, shell } = require('electron');
 const path = require('path');
+const fs = require('fs');
+const https = require('https');
+const { spawn } = require('child_process');
 const botCore = require('./bot-core');
+
+// ==========================================
+// AUTO-UPDATER (GitHub Releases)
+// ==========================================
+const GITHUB_OWNER = 'airdrop-888';
+const GITHUB_REPO  = 'SellerBoost-Shopee';
+const CURRENT_VERSION = app.getVersion(); // dari package.json
+
+async function checkForUpdates() {
+    try {
+        const axios = require('axios');
+        const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases/latest`;
+        const res = await axios.get(url, {
+            headers: { 'User-Agent': 'SellerBoost-App', 'Accept': 'application/vnd.github.v3+json' },
+            timeout: 8000
+        });
+        const latest = res.data;
+        const latestVersion = (latest.tag_name || '').replace(/^v/, '');
+        if (!latestVersion) return null;
+
+        // Bandingkan versi (semver sederhana)
+        if (isNewerVersion(latestVersion, CURRENT_VERSION)) {
+            // Cari asset .exe installer
+            const asset = (latest.assets || []).find(a =>
+                a.name.toLowerCase().endsWith('.exe') && a.name.toLowerCase().includes('setup')
+            ) || (latest.assets || [])[0];
+
+            return {
+                version: latestVersion,
+                notes: latest.body || '',
+                downloadUrl: asset ? asset.browser_download_url : latest.html_url,
+                htmlUrl: latest.html_url,
+                hasDirectDownload: !!(asset)
+            };
+        }
+        return null; // sudah versi terbaru
+    } catch (e) {
+        console.log('[Updater] Gagal cek update:', e.message);
+        return null;
+    }
+}
+
+function isNewerVersion(latest, current) {
+    const parse = v => v.split('.').map(n => parseInt(n) || 0);
+    const [la, lb, lc] = parse(latest);
+    const [ca, cb, cc] = parse(current);
+    if (la !== ca) return la > ca;
+    if (lb !== cb) return lb > cb;
+    return lc > cc;
+}
+
+async function downloadAndInstall(downloadUrl, version) {
+    return new Promise((resolve, reject) => {
+        const tmpPath = path.join(app.getPath('temp'), `SellerBoost-Setup-${version}.exe`);
+        const file = fs.createWriteStream(tmpPath);
+        let totalBytes = 0;
+        let receivedBytes = 0;
+
+        function doRequest(url, redirectCount = 0) {
+            if (redirectCount > 5) return reject(new Error('Too many redirects'));
+            const proto = url.startsWith('https') ? https : require('http');
+            proto.get(url, { headers: { 'User-Agent': 'SellerBoost-App' } }, res => {
+                // Handle redirect
+                if (res.statusCode === 301 || res.statusCode === 302 || res.statusCode === 307 || res.statusCode === 308) {
+                    return doRequest(res.headers.location, redirectCount + 1);
+                }
+                if (res.statusCode !== 200) {
+                    return reject(new Error(`HTTP ${res.statusCode}`));
+                }
+                totalBytes = parseInt(res.headers['content-length'] || '0');
+                res.on('data', chunk => {
+                    receivedBytes += chunk.length;
+                    if (mainWindow && totalBytes > 0) {
+                        const pct = Math.round((receivedBytes / totalBytes) * 100);
+                        mainWindow.webContents.send('update-progress', { percent: pct, received: receivedBytes, total: totalBytes });
+                    }
+                });
+                res.pipe(file);
+                file.on('finish', () => {
+                    file.close(() => resolve(tmpPath));
+                });
+            }).on('error', err => {
+                fs.unlink(tmpPath, () => {});
+                reject(err);
+            });
+        }
+        doRequest(downloadUrl);
+    });
+}
 
 // Fix GPU error: Disable GPU acceleration
 app.disableHardwareAcceleration();
@@ -141,6 +233,14 @@ app.whenReady().then(async () => {
     // Jalankan auto-resume setelah app siap
     await autoResumeBot();
     
+    // Cek update 3 detik setelah app siap (biar UI udah loaded)
+    setTimeout(async () => {
+        const updateInfo = await checkForUpdates();
+        if (updateInfo && mainWindow) {
+            mainWindow.webContents.send('update-available', updateInfo);
+        }
+    }, 3000);
+    
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) createWindow();
     });
@@ -240,4 +340,53 @@ ipcMain.handle('quit-app', async () => {
     await botCore.stopBot();
     if (tray) tray.destroy();
     app.quit();
+});
+
+// ==========================================
+// UPDATE IPC HANDLERS
+// ==========================================
+
+// Manual check dari UI
+ipcMain.handle('check-for-updates', async () => {
+    return await checkForUpdates();
+});
+
+// Download + install update
+ipcMain.handle('download-and-install', async (event, { downloadUrl, version, htmlUrl, hasDirectDownload }) => {
+    try {
+        if (!hasDirectDownload) {
+            // Fallback: buka browser ke halaman releases
+            shell.openExternal(htmlUrl);
+            return { success: true, fallback: true };
+        }
+
+        if (mainWindow) mainWindow.webContents.send('update-progress', { percent: 0, status: 'downloading' });
+
+        const installerPath = await downloadAndInstall(downloadUrl, version);
+
+        if (mainWindow) mainWindow.webContents.send('update-progress', { percent: 100, status: 'launching' });
+
+        // Jalankan installer, lalu quit
+        setTimeout(async () => {
+            spawn(installerPath, [], { detached: true, stdio: 'ignore' }).unref();
+            app.isQuitting = true;
+            await botCore.stopBot();
+            if (tray) tray.destroy();
+            app.quit();
+        }, 500);
+
+        return { success: true };
+    } catch (e) {
+        console.error('[Updater] Download gagal:', e.message);
+        // Fallback ke browser jika download gagal
+        shell.openExternal(htmlUrl);
+        return { success: false, error: e.message, fallback: true };
+    }
+});
+
+// Dismiss update (jangan tampilkan lagi untuk versi ini)
+ipcMain.handle('dismiss-update', (event, version) => {
+    // Simpan versi yang di-skip ke config
+    botCore.saveConfig({ skippedVersion: version });
+    return true;
 });
