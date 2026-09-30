@@ -201,20 +201,96 @@
 
             <!-- SETTINGS PAGE -->
             <div id="page-settings" class="page-section">
+                <style>
+                    .settings-section { margin-bottom: 28px; }
+                    .settings-section h3 { font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border-color); }
+                    .setting-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 18px 0; border-bottom: 1px solid var(--border-color); gap: 24px; }
+                    .setting-row:last-child { border-bottom: none; }
+                    .setting-info { flex: 1; }
+                    .setting-info .setting-title { font-size: 14px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; }
+                    .setting-info .setting-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+                    /* Toggle Switch */
+                    .toggle-switch { position: relative; width: 48px; height: 26px; flex-shrink: 0; margin-top: 2px; }
+                    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+                    .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: 0.3s; border-radius: 26px; }
+                    .toggle-slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: 0.3s; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+                    input:checked + .toggle-slider { background-color: var(--primary-color); }
+                    input:checked + .toggle-slider:before { transform: translateX(22px); }
+                    .setting-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 99px; font-size: 11px; font-weight: 600; margin-left: 8px; }
+                    .badge-running { background: #dcfce7; color: #16a34a; }
+                    .badge-stopped { background: #fee2e2; color: #dc2626; }
+                    .settings-save-btn { margin-top: 8px; padding: 10px 28px; border-radius: 8px; font-size: 14px; font-weight: 600; }
+                    .settings-toast { display: none; padding: 12px 20px; border-radius: 8px; background: #1e293b; color: #4ade80; font-size: 13px; margin-top: 16px; border-left: 3px solid #4ade80; }
+                    .settings-toast.show { display: block; }
+                </style>
+
                 <div class="table-card">
-                    <div class="table-header">
+                    <div class="table-header" style="margin-bottom: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 20px;">
                         <h2>Pengaturan Sistem</h2>
+                        <span id="settings-bot-badge" class="setting-badge badge-stopped">⏹ Bot Idle</span>
                     </div>
+
                     <div style="padding: 24px;">
-                        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Konfigurasi bot dan jeda eksekusi dapat diatur di sini (segera hadir).</p>
-                        
-                        <div style="margin-bottom: 16px;">
-                            <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px;">Jeda Antar Akun (Detik)</label>
-                            <input type="number" value="3" disabled style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 6px; width: 100px;">
+
+                        <!-- Section: Startup & Background -->
+                        <div class="settings-section">
+                            <h3>🚀 Startup & Background</h3>
+
+                            <div class="setting-row">
+                                <div class="setting-info">
+                                    <div class="setting-title">Jalankan Saat Windows Startup</div>
+                                    <div class="setting-desc">SellerBoost akan otomatis berjalan di background setiap kali PC dinyalakan. Ikon akan muncul di system tray — <strong>tidak mengganggu</strong> kegiatan Anda.</div>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="toggle-run-on-startup" onchange="onSettingChange()">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="setting-row">
+                                <div class="setting-info">
+                                    <div class="setting-title">Auto-Resume Bot Setelah Restart</div>
+                                    <div class="setting-desc">Jika bot sedang aktif saat PC mati/restart, bot akan <strong>otomatis dilanjutkan</strong> saat PC kembali hidup — tanpa perlu tekan tombol manual. Ideal untuk kondisi mati lampu.</div>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="toggle-auto-resume" onchange="onSettingChange()">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
                         </div>
+
+                        <!-- Section: Bot -->
+                        <div class="settings-section">
+                            <h3>⚙️ Parameter Bot</h3>
+                            <div class="setting-row">
+                                <div class="setting-info">
+                                    <div class="setting-title">Jeda Antar Akun (Detik)</div>
+                                    <div class="setting-desc">Waktu jeda sebelum bot berpindah ke akun berikutnya. Default: 3 detik.</div>
+                                </div>
+                                <input type="number" value="3" disabled style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 6px; width: 80px; text-align: center; font-family: 'Inter'; font-size: 14px; color: var(--text-muted); background: #f8fafc;">
+                            </div>
+                        </div>
+
+                        <!-- Section: Info -->
+                        <div class="settings-section">
+                            <h3>📂 Lokasi Data</h3>
+                            <div class="setting-row">
+                                <div class="setting-info">
+                                    <div class="setting-title">Folder Penyimpanan</div>
+                                    <div class="setting-desc" id="data-dir-info" style="font-family: monospace; word-break: break-all;">Memuat...</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary settings-save-btn" onclick="saveSettings()">
+                            <span class="material-icons-round" style="font-size: 16px; vertical-align: middle; margin-right: 4px;">save</span>
+                            Simpan Pengaturan
+                        </button>
+                        <div class="settings-toast" id="settings-toast">✅ Pengaturan berhasil disimpan!</div>
                     </div>
                 </div>
             </div>
+
             
         </main>
 
@@ -555,6 +631,7 @@
 
                     document.getElementById('system-status-text').innerText = 'Running';
                     document.getElementById('system-status-dot').classList.add('blinking');
+                    updateSettingsBadge(true);
                 }
             } else {
                 await ipcRenderer.invoke('stop-auto-boost');
@@ -568,8 +645,10 @@
 
                 document.getElementById('system-status-text').innerText = 'Idle';
                 document.getElementById('system-status-dot').classList.remove('blinking');
+                updateSettingsBadge(false);
             }
         }
+
 
         // Listener Log
         ipcRenderer.on('bot-log', (event, data) => {
@@ -592,11 +671,87 @@
             logsContainer.scrollTop = logsContainer.scrollHeight;
         });
 
+        // Listener dari main.js: kirim config saat startup
+        ipcRenderer.on('startup-config', (event, cfg) => {
+            // Jika bot auto-resume berjalan di background, update UI
+            if (cfg && cfg.autoResume && cfg.wasRunning) {
+                isBotActive = true;
+                const btn = document.getElementById('btn-toggle-bot');
+                const icon = document.getElementById('bot-icon');
+                const text = document.getElementById('bot-btn-text');
+                if (btn) {
+                    btn.classList.remove('btn-primary');
+                    btn.classList.add('btn-secondary');
+                    btn.style.color = '#e74c3c';
+                    btn.style.borderColor = '#e74c3c';
+                    icon.innerText = 'stop';
+                    text.innerText = 'Stop Auto-Boost';
+                    document.getElementById('system-status-text').innerText = 'Running (Auto-Resumed)';
+                    document.getElementById('system-status-dot').classList.add('blinking');
+                }
+                updateSettingsBadge(true);
+            }
+        });
+
+        // =====================================
+        // SETTINGS FUNCTIONS
+        // =====================================
+        function updateSettingsBadge(isRunning) {
+            const badge = document.getElementById('settings-bot-badge');
+            if (!badge) return;
+            if (isRunning) {
+                badge.className = 'setting-badge badge-running';
+                badge.innerText = '🟢 Bot Aktif';
+            } else {
+                badge.className = 'setting-badge badge-stopped';
+                badge.innerText = '⏹ Bot Idle';
+            }
+        }
+
+        async function loadSettings() {
+            try {
+                const cfg = await ipcRenderer.invoke('get-config');
+                const startupStatus = await ipcRenderer.invoke('get-startup-status');
+                
+                document.getElementById('toggle-run-on-startup').checked = startupStatus.openAtLogin;
+                document.getElementById('toggle-auto-resume').checked = cfg.autoResume || false;
+                
+                // Tampilkan path data folder
+                const appData = process.env.APPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Application Support' : process.env.HOME + '/.config');
+                document.getElementById('data-dir-info').innerText = appData + '\\SellerBoost\\';
+                
+                updateSettingsBadge(isBotActive);
+            } catch (e) {
+                console.error('Gagal load settings:', e);
+            }
+        }
+
+        async function saveSettings() {
+            const runOnStartup = document.getElementById('toggle-run-on-startup').checked;
+            const autoResume = document.getElementById('toggle-auto-resume').checked;
+
+            try {
+                await ipcRenderer.invoke('save-config', { runOnStartup, autoResume });
+                
+                // Tampilkan toast
+                const toast = document.getElementById('settings-toast');
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 3000);
+            } catch (e) {
+                alert('❌ Gagal menyimpan pengaturan: ' + e.message);
+            }
+        }
+
+        function onSettingChange() {
+            // Bisa dipakai untuk efek visual real-time (opsional)
+        }
+
         window.onload = () => {
             loadData();
+            loadSettings();
         };
         setInterval(loadData, 60000); // 1 menit sekali sync data akun
 
     </script>
 </body>
-</html>
+</html>

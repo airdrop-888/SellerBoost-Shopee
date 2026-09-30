@@ -1,168 +1,179 @@
 <div align="center">
 
-# 🚀 SellerBoost — Shopee Auto Product Boost
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=200&section=header&text=SellerBoost&fontSize=60&fontColor=fff&animation=twinkling&fontAlignY=38&desc=Shopee%20Auto%20Product%20Boost%20%7C%20Free%20%26%20Open%20Source&descAlignY=60&descSize=16" width="100%"/>
 
-**Tools Otomatisasi Push Produk Shopee — 100% Gratis & Open Source**
+</div>
 
-![Platform](https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011-blue?style=flat-square&logo=windows&logoColor=white)
-![Shopee](https://img.shields.io/badge/Shopee-Seller%20Center-EE4D2D?style=flat-square&logo=shopee&logoColor=white)
-![Version](https://img.shields.io/badge/Version-2.0.0-success?style=flat-square)
-![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
+<div align="center">
+
+[![Version](https://img.shields.io/badge/version-2.1.0-blue?style=for-the-badge)](https://github.com/airdrop-888/SellerBoost-Shopee/releases)
+[![Platform](https://img.shields.io/badge/platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/airdrop-888/SellerBoost-Shopee/releases)
+[![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)](LICENSE)
+[![Electron](https://img.shields.io/badge/Electron-27-47848F?style=for-the-badge&logo=electron&logoColor=white)](https://electronjs.org)
 
 </div>
 
 ---
 
-## 💡 Apa Ini?
+## 📦 Download
 
-Sebagai Seller Shopee, menekan tombol **"Naikkan Produk"** setiap 4 jam secara manual sangatlah melelahkan dan sering terlewat.
+<div align="center">
 
-**SellerBoost** hadir sebagai asisten virtual toko Anda — berjalan otomatis 24/7 di background dengan fitur **Smart Cooldown Tracker** yang membaca server Shopee agar aman dari spam.
+### ⬇️ [SellerBoost-Setup-2.1.0.exe](https://github.com/airdrop-888/SellerBoost-Shopee/releases/latest)
 
-> ⚠️ **Disclaimer:** Tools ini dibuat untuk tujuan edukasi dan automasi pribadi. Segala risiko akibat penggunaan tools ini sepenuhnya menjadi tanggung jawab pengguna.
+> Installer resmi untuk Windows 64-bit. Klik dua kali dan ikuti wizard instalasi.
 
----
-
-## ✨ Fitur Utama
-
-- 🖥️ **Modern SPA Dashboard** — Antarmuka Single Page Application bergaya Enterprise
-- 📊 **30-Day Product Analytics** — Monitor Views, Sales, Conversion Rate 30 hari terakhir
-- 📦 **Orders To Ship Tracker** — Notifikasi pesanan baru langsung di dashboard
-- 👥 **Multi-Account Manager** — Kelola banyak toko Shopee sekaligus
-- 🧠 **Smart Cooldown Tracker** — Bot baca sisa waktu cooldown dari server Shopee secara real-time
-- 🛡️ **Human-Like Delay** — Random delay per aksi agar terlihat seperti aktivitas manusia
-- 🔕 **Minimize to Tray** — Tutup window, bot tetap jalan di background (system tray)
-- 💻 **CLI Mode** — Bisa juga dijalankan via terminal tanpa GUI
-- 🔓 **100% Free & Open Source** — MIT License, tidak ada biaya tersembunyi
+</div>
 
 ---
 
-## ⬇️ Download & Cara Pakai (Termudah)
+## ✨ Fitur Unggulan
 
-### Opsi A: Download Portable .exe ⭐ (Direkomendasikan)
-
-> **Tidak perlu install Node.js, tidak perlu npm install — langsung jalan!**
-
-1. Pergi ke **[Releases](../../releases/latest)**
-2. Download **`SellerBoost-Portable-2.0.0.exe`**
-3. Jalankan file `.exe` → Dashboard langsung terbuka
-4. Tambahkan cookie Shopee via tombol **"Tambah Akun Baru"**
-5. Klik **Start Bot** — selesai!
-
-> 💡 Saat close window (❌), app **tidak mati** — tetap jalan di system tray (pojok kanan bawah taskbar). Klik icon tray untuk buka kembali. Untuk keluar total: klik kanan icon tray → **Keluar**.
+| Fitur | Keterangan |
+|-------|-----------|
+| 🚀 **Auto Product Boost** | Boost produk Shopee otomatis sesuai slot & cooldown |
+| 🖥️ **Modern SPA Dashboard** | UI elegan dengan navigasi tab instant |
+| 👥 **Multi-Account** | Kelola banyak akun toko dalam satu dashboard |
+| 📊 **30-Day Analytics** | Pantau Views, Sales, dan Conversion Rate produk |
+| 📦 **Orders To Ship Tracker** | Notifikasi badge merah untuk pesanan siap kirim |
+| ⏱️ **Smart Cooldown** | Deteksi otomatis waktu boost berikutnya |
+| 🗂️ **Riwayat Boost** | Log lengkap semua aktivitas boost |
+| 🔔 **System Tray** | Minimize ke tray, berjalan di background |
+| 💾 **Data Persisten** | Cookies & data tersimpan di `%APPDATA%` — tidak hilang saat restart |
+| 🚀 **Windows Startup** | Otomatis berjalan saat Windows dinyalakan |
+| 🔄 **Auto-Resume Bot** | Bot otomatis lanjut setelah restart/mati lampu |
 
 ---
 
-### Opsi B: Jalankan dari Source Code (Developer)
+## 🖼️ Screenshot
 
-**Prasyarat:** [Node.js](https://nodejs.org/) v16+
+> Dashboard utama dengan tabel akun, status bot, dan log aktivitas realtime.
+
+---
+
+## 🔧 Cara Install
+
+### Metode 1: Installer (Direkomendasikan)
+
+1. Download **`SellerBoost-Setup-2.1.0.exe`** dari [Releases](https://github.com/airdrop-888/SellerBoost-Shopee/releases/latest)
+2. Jalankan installer sebagai **Administrator**
+3. Ikuti wizard → **Next → Install → Finish**
+4. Software terinstall di `C:\Program Files\SellerBoost\`
+5. Shortcut otomatis muncul di Desktop dan Start Menu
+
+### Metode 2: Build dari Source
 
 ```bash
-# 1. Clone repo
+# Clone repository
 git clone https://github.com/airdrop-888/SellerBoost-Shopee.git
 cd SellerBoost-Shopee
 
-# 2. Install dependencies
+# Install dependencies
 npm install
 
-# 3. Jalankan GUI Dashboard
+# Jalankan mode development
 npm start
 
-# ATAU CLI Mode (terminal only)
-npm run cli
+# Build installer
+npm run dist:nsis
 ```
 
-> ⚠️ **Catatan:** Jika `npm start` error karena Electron binary gagal download, jalankan via `run.bat` atau download portable `.exe` di Releases.
+**Requirements:** Node.js 18+, Windows 10/11 x64
 
 ---
 
-## 🍪 Cara Tambah Akun (Cookie Shopee)
+## 🍪 Cara Mendapatkan Cookie Shopee
 
-### Via UI Aplikasi (Paling Mudah)
+1. Login ke [seller.shopee.co.id](https://seller.shopee.co.id)
+2. Buka **DevTools** → F12
+3. Tab **Application** → **Cookies** → `https://seller.shopee.co.id`
+4. Klik kanan → **Copy all** atau gunakan extension **Cookie-Editor**
+5. Paste ke kolom "Tambah Akun Baru" di dashboard
 
-1. Buka aplikasi SellerBoost
-2. Klik tombol **"Tambah Akun Baru"** (Dashboard atau tab Accounts)
-3. Paste Cookie Shopee Seller kamu (harus mengandung `SPC_CDS`)
-4. Klik **"Simpan Akun"**
-
-**Cara Ambil Cookie dari Browser:**
-1. Buka [Shopee Seller Center](https://seller.shopee.co.id) → Login
-2. Tekan **F12** → Tab **Application** → **Cookies** → `seller.shopee.co.id`
-3. Salin seluruh string cookie (pastikan ada `SPC_CDS`)
-
-**Cara Hapus Akun:**
-- Buka tab **Dashboard** atau tab **Accounts**
-- Klik ikon 🗑️ di kolom ACTIONS → Konfirmasi
-
-> 💡 Session cookie Shopee berlaku ~7 hari. Update cookie lama dengan fitur **Tambah Akun** di UI — tidak perlu buka file manual.
+> ⚠️ **Penting:** Pastikan cookie mengandung nilai `SPC_CDS`. Cookie biasanya valid 7-30 hari.
 
 ---
 
-## 📁 Struktur Project
+## ⚙️ Pengaturan Auto-Start (Baru di v2.1.0)
 
+Buka halaman **Settings** di dashboard:
+
+| Pengaturan | Fungsi |
+|-----------|--------|
+| **Jalankan Saat Windows Startup** | App otomatis berjalan di background setiap PC dinyalakan |
+| **Auto-Resume Bot Setelah Restart** | Bot otomatis lanjut jika PC restart/mati lampu saat bot aktif |
+
+**Skenario mati lampu:**
 ```
-SellerBoost-Shopee/
-├── src/
-│   ├── main.js          # Electron main process + system tray
-│   ├── bot-core.js      # Core logic API & auto-boost
-│   ├── index.html       # SPA Dashboard UI
-│   ├── style.css        # Stylesheet dashboard
-│   └── icon.png         # Tray icon
-├── build/
-│   └── icon.ico         # Windows app icon (multi-size)
-├── index.js             # CLI version (tanpa GUI)
-├── run.bat              # Silent launcher (tanpa terminal window)
-├── run_silent.vbs       # Helper VBS untuk silent launch
-├── cookies.txt          # File konfigurasi cookie akun
-├── package.json         # Dependencies & scripts
-└── readme.md            # Dokumentasi ini
+PC Mati → Hidup → SellerBoost launch otomatis (tersembunyi)
+                → Bot resume di background 🟢
+                → Ikon muncul di System Tray
 ```
 
 ---
 
-## 🛠️ Build .exe Sendiri (Opsional)
+## 💾 Lokasi Penyimpanan Data
 
-```bash
-# Install dependencies dulu
-npm install
+Data disimpan secara **permanen** di folder AppData, terpisah dari folder instalasi:
 
-# Build portable .exe
-npm run dist
-
-# Output ada di: dist-build/SellerBoost-Portable-2.0.0.exe
+```
+C:\Users\<NamaUser>\AppData\Roaming\SellerBoost\
+├── cookies.txt    ← Data akun (tidak hilang saat reinstall)
+├── stats.json     ← Riwayat & statistik boost
+└── config.json    ← Konfigurasi auto-start & auto-resume
 ```
 
 ---
 
-## ⚙️ Teknologi
+## 🔔 System Tray
 
-| Teknologi | Kegunaan |
-|-----------|----------|
-| [Electron](https://www.electronjs.org/) | Desktop App Framework |
-| [Axios](https://axios-http.com/) | HTTP Client untuk API Shopee |
-| [Node.js](https://nodejs.org/) | Runtime Environment |
+- **Minimize/Close** → App tetap berjalan di background (ikon muncul di tray)
+- **Klik ikon tray** → Toggle tampilkan/sembunyikan dashboard
+- **Klik kanan tray** → Menu: Buka Dashboard, Sembunyikan, Keluar
 
 ---
 
-## 🤝 Kontribusi
+## 📋 Changelog
 
-Pull request sangat diterima! Silakan:
-1. Fork project ini
-2. Buat branch baru (`git checkout -b feature/fitur-baru`)
-3. Commit perubahan (`git commit -m 'feat: tambah fitur baru'`)
-4. Push ke branch (`git push origin feature/fitur-baru`)
-5. Buat Pull Request
+### v2.1.0 — Auto-Start & Persistent Data
+- ✅ **Installer NSIS** — wizard install ke `C:\Program Files`
+- ✅ **Windows Startup** — daftar ke registry via `app.setLoginItemSettings()`
+- ✅ **Auto-Resume Bot** — bot lanjut otomatis setelah restart/mati lampu
+- ✅ **Persistent Storage** — cookies & stats tersimpan di `%APPDATA%` (tidak hilang)
+- ✅ **Settings Page** — UI toggle untuk konfigurasi startup & auto-resume
+- ✅ **config.json** — menyimpan state bot secara permanen
+
+### v2.0.0 — Dashboard Overhaul
+- ✅ Modern SPA Dashboard dengan sidebar navigasi
+- ✅ Multi-account management
+- ✅ 30-Day Product Analytics (Views, Sales, Conversion)
+- ✅ Orders To Ship Tracker
+- ✅ Smart Cooldown Detection
+- ✅ System Tray support
+- ✅ Riwayat boost & statistik
+
+### v1.0.0 — Initial Release
+- ✅ CLI-based auto boost
+- ✅ Multi-account via cookies.txt
 
 ---
 
-## 📄 Lisensi
+## ⚠️ Disclaimer
 
-Project ini dilisensikan under **[MIT License](LICENSE)** — bebas digunakan, dimodifikasi, dan didistribusikan.
+Tool ini dibuat untuk keperluan edukasi dan otomatisasi pribadi. Gunakan dengan bijak dan sesuai **Terms of Service** Shopee. Penulis tidak bertanggung jawab atas segala konsekuensi penggunaan tool ini.
+
+---
+
+## 📄 License
+
+MIT License — Free & Open Source
 
 ---
 
 <div align="center">
-  <b>Made with ❤️ for Indonesian Shopee Sellers</b>
-  <br>
-  <i>Free & Open Source Forever</i>
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=100&section=footer" width="100%"/>
+
+⭐️ *Jika tool ini bermanfaat, berikan bintang di GitHub!* ⭐️
+
 </div>

@@ -4,22 +4,49 @@ const path = require('path');
 
 // ==========================================
 // FIX PATH UNTUK .EXE / CLI / DEV
+// Data disimpan di %APPDATA%\SellerBoost agar
+// tidak hilang saat restart PC atau reinstall
 // ==========================================
-let rootPath;
+let DATA_DIR;
 try {
     const { app } = require('electron');
-    if (app.isPackaged) {
-        rootPath = path.dirname(process.execPath);
-    } else {
-        rootPath = path.join(__dirname, '..');
-    }
+    // userData = C:\Users\<User>\AppData\Roaming\SellerBoost
+    DATA_DIR = app.getPath('userData');
 } catch (e) {
     // Fallback untuk CLI mode (tanpa electron)
-    rootPath = process.cwd();
+    DATA_DIR = process.env.APPDATA
+        ? path.join(process.env.APPDATA, 'SellerBoost')
+        : path.join(require('os').homedir(), '.sellerboost');
 }
-const COOKIE_FILE = path.join(rootPath, 'cookies.txt');
-const STATS_FILE = path.join(rootPath, 'stats.json');
+// Pastikan folder data ada
+fs.ensureDirSync(DATA_DIR);
+const COOKIE_FILE = path.join(DATA_DIR, 'cookies.txt');
+const STATS_FILE = path.join(DATA_DIR, 'stats.json');
+const CONFIG_FILE = path.join(DATA_DIR, 'config.json');
 const DEFAULT_COOLDOWN = 4 * 60 * 60; // 4 Jam
+
+// ==========================================
+// CONFIG: simpan state permanen (auto-resume, dll)
+// ==========================================
+async function getConfig() {
+    try {
+        if (!fs.existsSync(CONFIG_FILE)) {
+            const defaults = { autoResume: false, wasRunning: false };
+            await fs.writeFile(CONFIG_FILE, JSON.stringify(defaults, null, 2));
+            return defaults;
+        }
+        return JSON.parse(await fs.readFile(CONFIG_FILE, 'utf-8'));
+    } catch (e) {
+        return { autoResume: false, wasRunning: false };
+    }
+}
+
+async function saveConfig(updates) {
+    const cfg = await getConfig();
+    const merged = { ...cfg, ...updates };
+    await fs.writeFile(CONFIG_FILE, JSON.stringify(merged, null, 2));
+    return merged;
+}
 
 // STATE BOT GLOBAL
 let isBotRunning = false;
@@ -453,12 +480,15 @@ async function startBot(cb) {
     
     logCallback = cb;
     isBotRunning = true;
+    // Simpan state: bot sedang aktif
+    await saveConfig({ wasRunning: true });
     botLog('🚀 Sistem Auto-Boost Diaktifkan!', 'success');
     botLog(`📂 Jalur File Akun: ${COOKIE_FILE}`, 'info');
     
     if (!fs.existsSync(COOKIE_FILE)) {
         botLog('File cookies.txt tidak ditemukan!', 'error');
         isBotRunning = false;
+        await saveConfig({ wasRunning: false });
         return { success: false };
     }
 
@@ -468,6 +498,7 @@ async function startBot(cb) {
     if (cookies.length === 0) {
         botLog('Tidak ada akun (cookies kosong).', 'error');
         isBotRunning = false;
+        await saveConfig({ wasRunning: false });
         return { success: false };
     }
 
@@ -478,9 +509,11 @@ async function startBot(cb) {
     return { success: true };
 }
 
-function stopBot() {
+async function stopBot() {
     isBotRunning = false;
     if (botCountdownInterval) clearInterval(botCountdownInterval);
+    // Simpan state: bot tidak aktif
+    await saveConfig({ wasRunning: false });
     if (logCallback) {
         botLog('⏹️ Sistem Auto-Boost Dihentikan oleh Pengguna.', 'warning');
     }
@@ -494,5 +527,7 @@ module.exports = {
     deleteAccount,
     startBot,
     stopBot,
-    getStats
+    getStats,
+    getConfig,
+    saveConfig
 };

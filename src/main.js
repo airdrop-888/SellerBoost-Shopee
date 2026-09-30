@@ -11,14 +11,13 @@ app.commandLine.appendSwitch('disable-software-rasterizer');
 let mainWindow;
 let tray;
 
+// Deteksi apakah app diluncurkan dari Windows Startup (--autostart flag)
+const isAutoStart = process.argv.includes('--autostart');
+
 // Prevent app from quitting when window closed
 app.on('window-all-closed', (e) => {
-    // Pastikan bot mati jika aplikasi di-close
-    botCore.stopBot();
-    e.preventDefault(); // Don't quit, keep running in background
-    if (process.platform !== 'darwin') {
-        // On Windows/Linux, keep app running in tray
-    }
+    // Jangan quit - tetap jalan di background (tray)
+    e.preventDefault();
 });
 
 function createWindow() {
@@ -37,9 +36,16 @@ function createWindow() {
 
     mainWindow.loadFile(path.join(__dirname, 'index.html'));
     
-    // Show window when ready to avoid white flash
+    // Show window when ready (hanya kalau bukan auto-start, atau user buka dari tray)
     mainWindow.once('ready-to-show', () => {
-        mainWindow.show();
+        if (!isAutoStart) {
+            mainWindow.show();
+        }
+        // Kirim status bot ke UI begitu window siap
+        mainWindow.webContents.once('did-finish-load', async () => {
+            const cfg = await botCore.getConfig();
+            mainWindow.webContents.send('startup-config', cfg);
+        });
     });
 
     // Close button (❌) = minimize to tray, not quit
@@ -56,14 +62,13 @@ function createWindow() {
 }
 
 function createTray() {
-    // Load tray icon
     const iconPath = path.join(__dirname, 'icon.png');
     const icon = nativeImage.createFromPath(iconPath);
     
     tray = new Tray(icon.resize({ width: 16, height: 16 }));
     tray.setToolTip('SellerBoost - Auto Product Boost');
     
-    const contextMenu = Menu.buildFromTemplate([
+    const buildContextMenu = () => Menu.buildFromTemplate([
         {
             label: 'Buka Dashboard',
             click: () => {
@@ -84,16 +89,16 @@ function createTray() {
         { type: 'separator' },
         {
             label: 'Keluar',
-            click: () => {
+            click: async () => {
                 app.isQuitting = true;
-                botCore.stopBot();
+                await botCore.stopBot();
                 if (tray) tray.destroy();
                 app.quit();
             }
         }
     ]);
     
-    tray.setContextMenu(contextMenu);
+    tray.setContextMenu(buildContextMenu());
     
     // Click tray icon = toggle window
     tray.on('click', () => {
@@ -110,12 +115,33 @@ function createTray() {
     });
 }
 
-app.whenReady().then(() => {
+// ==========================================
+// AUTO-RESUME BOT DI BACKGROUND
+// ==========================================
+async function autoResumeBot() {
+    const cfg = await botCore.getConfig();
+    // Hanya auto-resume jika fitur diaktifkan dan bot sebelumnya sedang running
+    if (cfg.autoResume && cfg.wasRunning) {
+        console.log('[SellerBoost] Auto-resume bot di background...');
+        await botCore.startBot((logData) => {
+            // Kirim log ke UI kalau window terbuka
+            if (mainWindow && mainWindow.webContents) {
+                mainWindow.webContents.send('bot-log', logData);
+            }
+        });
+        // Update tooltip tray
+        if (tray) tray.setToolTip('SellerBoost - Bot Aktif 🟢');
+    }
+}
+
+app.whenReady().then(async () => {
     createWindow();
     createTray();
     
+    // Jalankan auto-resume setelah app siap
+    await autoResumeBot();
+    
     app.on('activate', () => {
-        // On macOS, re-create window when dock icon clicked
         if (BrowserWindow.getAllWindows().length === 0) createWindow();
     });
 });
@@ -149,7 +175,6 @@ ipcMain.handle('get-products-performance', async (event, cookie) => {
 // START/STOP BOT EVENTS
 ipcMain.handle('start-auto-boost', async (event) => {
     return await botCore.startBot((logData) => {
-        // Kirim log ke renderer process (index.html)
         if (mainWindow) {
             mainWindow.webContents.send('bot-log', logData);
         }
@@ -157,13 +182,47 @@ ipcMain.handle('start-auto-boost', async (event) => {
 });
 
 ipcMain.handle('stop-auto-boost', async () => {
-    return botCore.stopBot();
+    return await botCore.stopBot();
+});
+
+// ==========================================
+// CONFIG IPC: Windows Startup + Auto-Resume
+// ==========================================
+
+// Ambil config dari UI
+ipcMain.handle('get-config', async () => {
+    return await botCore.getConfig();
+});
+
+// Simpan config dari UI
+ipcMain.handle('save-config', async (event, updates) => {
+    const cfg = await botCore.saveConfig(updates);
+    
+    // Terapkan setting Windows Startup
+    if ('runOnStartup' in updates) {
+        const exePath = process.execPath;
+        app.setLoginItemSettings({
+            openAtLogin: updates.runOnStartup,
+            // Tambahkan --autostart flag agar app tahu ini dari startup
+            args: updates.runOnStartup ? ['--autostart'] : []
+        });
+    }
+    
+    return cfg;
+});
+
+// Baca status Windows Startup aktual dari registry
+ipcMain.handle('get-startup-status', async () => {
+    const settings = app.getLoginItemSettings({
+        args: ['--autostart']
+    });
+    return { openAtLogin: settings.openAtLogin };
 });
 
 // Tray IPC: trigger quit from renderer (optional)
-ipcMain.handle('quit-app', () => {
+ipcMain.handle('quit-app', async () => {
     app.isQuitting = true;
-    botCore.stopBot();
+    await botCore.stopBot();
     if (tray) tray.destroy();
     app.quit();
 });
