@@ -931,14 +931,19 @@ function renderAccountsTable(accounts, tbodyId) {
 }
 
 function startCountdownTimers() {
+    // Jika bot sedang aktif & ada countdownTimestamp global, pakai itu agar sinkron
+    // Kalau tidak, fallback ke data-ts per element
     document.querySelectorAll('.countdown-timer[data-ts]').forEach(el => {
         function tick() {
-            const ts = parseInt(el.getAttribute('data-ts'));
-            const rem = ts - Date.now();
+            // Prioritaskan countdownTimestamp global jika tersedia (lebih akurat)
+            const ts = (countdownTimestamp > 0) ? countdownTimestamp : parseInt(el.getAttribute('data-ts'));
+            const rem = Math.max(0, ts - Date.now());
             el.textContent = rem > 0 ? formatTime(rem) : 'Ready';
         }
         tick();
-        setInterval(tick, 1000);
+        // Simpan interval ID di element agar bisa di-clear kalau perlu
+        if (el._tickInterval) clearInterval(el._tickInterval);
+        el._tickInterval = setInterval(tick, 1000);
     });
 }
 
@@ -1293,6 +1298,7 @@ function startHeroCountdownInterval() {
         if (countdownTimestamp <= 0) return;
         const rem = Math.max(0, countdownTimestamp - Date.now());
         const timeStr = formatTime(rem);
+        // Update semua elemen countdown sekaligus (hero, boost, sidebar, table)
         document.getElementById('hero-countdown').textContent = timeStr;
         document.getElementById('boost-countdown').textContent = timeStr;
         document.getElementById('bot-countdown-sidebar').textContent = 'Cooldown: ' + timeStr;
@@ -1300,6 +1306,10 @@ function startHeroCountdownInterval() {
         const pct = Math.min(100, (1 - rem / totalMs) * 100);
         document.getElementById('bot-progress-bar').style.width = pct + '%';
         document.getElementById('hero-slot-bar').style.width = pct + '%';
+        // Sync semua countdown timer di tabel account (data-ts) agar tampil sama
+        document.querySelectorAll('.countdown-timer[data-ts]').forEach(el => {
+            el.textContent = rem > 0 ? timeStr : 'Ready';
+        });
     }, 1000);
 }
 
