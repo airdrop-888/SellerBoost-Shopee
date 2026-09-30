@@ -621,8 +621,8 @@ function startCountdown(durationInSeconds, cookies) {
             return;
         }
         
-        // Optional: Update UI countdown (setiap 5 detik)
-        if (remaining % 5 === 0 && logCallback) {
+        // Update UI countdown setiap detik agar timer sinkron
+        if (logCallback) {
             logCallback({ type: 'countdown', remaining });
         }
         

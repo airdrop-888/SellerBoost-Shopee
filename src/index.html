@@ -700,8 +700,9 @@ let isBotActive = false;
 let allAccounts = [];
 let allProductsData = [];
 let allOrdersData = [];
-let countdownTimestamp = 0;
+let countdownTimestamp = 0;  // Timestamp kapan countdown selesai (ms)
 let countdownInterval = null;
+let heroCountdownInterval = null; // Interval lokal untuk update UI countdown
 
 // ===== ROUTING =====
 function showPage(pageId, navEl) {
@@ -724,6 +725,16 @@ function showPage(pageId, navEl) {
 
     if (pageId === 'history') loadStats();
     if (pageId === 'settings') loadSettings();
+    // Auto-load products jika akun sudah dipilih
+    if (pageId === 'products') {
+        const sel = document.getElementById('products-account-select');
+        if (sel && sel.value) loadAllProducts();
+    }
+    // Auto-load boost products jika akun sudah dipilih
+    if (pageId === 'boost') {
+        const sel = document.getElementById('boost-account-select');
+        if (sel && sel.value) loadBoostProducts();
+    }
 }
 
 // ===== HELPERS =====
@@ -932,8 +943,10 @@ function renderProductsTable(products) {
             : p.boostStatus === 'ready'
             ? `<span class="badge badge-ready text-xs">✓ Ready</span>`
             : `<span class="badge badge-cooldown text-xs">⏳ Cooldown</span>`;
+        // Gambar produk di Products Catalog dengan fallback placeholder
         const img = p.image
-            ? `<img src="${p.image}" class="product-img" onerror="this.src='';this.style.background='#F8FAFC'">`
+            ? `<img src="${p.image}" class="product-img" loading="lazy"
+                 onerror="this.outerHTML='<div class=\'product-img flex items-center justify-center bg-slate-100\'><span class=\'ms text-slate-300 text-xl\'>image</span></div>'">`
             : `<div class="product-img flex items-center justify-center bg-slate-100"><span class="ms text-slate-300 text-xl">image</span></div>`;
         const price = p.priceMax && p.priceMax !== p.price
             ? `${formatRp(p.price/100000)} – ${formatRp(p.priceMax/100000)}`
@@ -982,12 +995,15 @@ async function loadBoostProducts() {
                 : p.boostStatus === 'ready'
                 ? `<span class="badge badge-ready text-xs">✓ Ready</span>`
                 : `<span class="badge badge-cooldown text-xs">⏳ Cooldown</span>`;
-            const img = p.image
-                ? `<img src="${p.image}" class="product-img" onerror="this.style.display='none'">`
+            // Gambar produk dengan fallback placeholder jika gagal load
+            const imgHtml = p.image
+                ? `<img src="${p.image}" class="product-img" loading="lazy"
+                     onerror="this.outerHTML='<div class=\'product-img bg-slate-100 flex items-center justify-center\'><span class=\'ms text-slate-300 text-xl\'>image</span></div>'"
+                   >`
                 : `<div class="product-img bg-slate-100 flex items-center justify-center"><span class="ms text-slate-300 text-xl">image</span></div>`;
             const slotText = p.boostStatus === 'boosting' ? 'Slot 1' : '—';
             return `<tr>
-                <td><div class="flex items-center gap-3">${img}<div class="text-xs font-semibold text-text-main max-w-[200px] truncate">${p.name}</div></div></td>
+                <td><div class="flex items-center gap-3">${imgHtml}<div class="text-xs font-semibold text-text-main max-w-[200px] truncate">${p.name}</div></div></td>
                 <td><span class="badge badge-active text-[10px]">${p.shopName}</span></td>
                 <td>${status}</td>
                 <td class="font-mono text-xs text-text-muted">—:—:—</td>
@@ -1183,20 +1199,46 @@ function setBotActive(active) {
     const settingsBadge = document.getElementById('settings-bot-badge');
     settingsBadge.className = `badge text-xs ${active ? 'badge-active' : 'badge-cooldown'}`;
     settingsBadge.textContent = active ? '🟢 Bot Aktif' : '⏹ Bot Idle';
+    // Kelola interval countdown UI
+    if (active) {
+        startHeroCountdownInterval();
+    } else {
+        // Reset semua timer saat bot stop
+        if (heroCountdownInterval) { clearInterval(heroCountdownInterval); heroCountdownInterval = null; }
+        countdownTimestamp = 0;
+        document.getElementById('hero-countdown').textContent = '—:—:—';
+        document.getElementById('boost-countdown').textContent = '—:—:—';
+        document.getElementById('bot-countdown-sidebar').textContent = 'Belum aktif';
+        document.getElementById('bot-progress-bar').style.width = '0%';
+        document.getElementById('hero-slot-bar').style.width = '0%';
+    }
 }
 
 // ===== BOT LOG LISTENER =====
+// Jalankan interval lokal agar semua timer berjalan bersamaan & sinkron
+function startHeroCountdownInterval() {
+    if (heroCountdownInterval) clearInterval(heroCountdownInterval);
+    heroCountdownInterval = setInterval(() => {
+        if (countdownTimestamp <= 0) return;
+        const rem = Math.max(0, countdownTimestamp - Date.now());
+        const timeStr = formatTime(rem);
+        document.getElementById('hero-countdown').textContent = timeStr;
+        document.getElementById('boost-countdown').textContent = timeStr;
+        document.getElementById('bot-countdown-sidebar').textContent = 'Cooldown: ' + timeStr;
+        const totalMs = 14400 * 1000;
+        const pct = Math.min(100, (1 - rem / totalMs) * 100);
+        document.getElementById('bot-progress-bar').style.width = pct + '%';
+        document.getElementById('hero-slot-bar').style.width = pct + '%';
+    }, 1000);
+}
+
 ipcRenderer.on('bot-log', (event, data) => {
     if (data.type === 'refresh_ui') { loadData(); return; }
     if (data.type === 'countdown') {
-        const rem = data.remaining;
-        const ts = Date.now() + rem * 1000;
-        document.getElementById('hero-countdown').textContent = formatTime(rem * 1000);
-        document.getElementById('boost-countdown').textContent = formatTime(rem * 1000);
-        document.getElementById('bot-countdown-sidebar').textContent = 'Cooldown: ' + formatTime(rem * 1000);
-        const pct = Math.min(100, (1 - rem / 14400) * 100);
-        document.getElementById('bot-progress-bar').style.width = pct + '%';
-        document.getElementById('hero-slot-bar').style.width = pct + '%';
+        // Simpan timestamp target agar semua timer sinkron dari satu sumber
+        countdownTimestamp = Date.now() + data.remaining * 1000;
+        // Pastikan interval lokal berjalan
+        if (!heroCountdownInterval) startHeroCountdownInterval();
         return;
     }
 

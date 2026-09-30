@@ -8,6 +8,13 @@ dist-build/
 # File data privat - JANGAN di-commit
 cookies.txt
 stats.json
+config.json
+
+# Folder desain lama / scratch (tidak perlu di repo publik)
+new_design/
+
+# File HAR (network capture) - bisa mengandung cookie/session sensitif!
+*.har
 
 # File testing/scratch
 scratch_test.js
