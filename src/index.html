@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SellerBoost v2.4 â€” Shopee Automation</title>
+    <title>SellerBoost v2.4 — Shopee Automation</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -108,7 +108,7 @@
     <div class="flex items-center gap-2">
         <span class="ms text-shopee text-sm">bolt</span>
         <span class="text-white/80 text-xs font-semibold tracking-wide">SellerBoost v2.4.0</span>
-        <span class="text-white/30 text-xs">â€¢</span>
+        <span class="text-white/30 text-xs">•</span>
         <span id="bot-node-label" class="text-white/40 font-mono text-xs">ID_LOCAL</span>
     </div>
     <div class="flex items-center" style="-webkit-app-region:no-drag">
@@ -137,7 +137,7 @@
             <span class="pulse-dot bg-emerald-400 animate-pulse-dot"></span>
             <div class="min-w-0">
                 <div class="text-white text-xs font-semibold truncate" id="sidebar-store-name">Memuat...</div>
-                <div class="text-white/40 text-[10px] font-mono" id="sidebar-store-sub">â€”</div>
+                <div class="text-white/40 text-[10px] font-mono" id="sidebar-store-sub">—</div>
             </div>
         </div>
     </div>
@@ -229,7 +229,7 @@
                     <span class="badge badge-active text-[10px]">Healthy</span>
                 </div>
                 <div class="text-xs uppercase tracking-wider text-text-muted font-semibold mb-1">Connected Stores</div>
-                <div class="text-2xl font-bold text-text-main" id="kpi-stores">â€”</div>
+                <div class="text-2xl font-bold text-text-main" id="kpi-stores">—</div>
                 <div class="text-xs text-text-dim mt-1">akun terdaftar</div>
             </div>
             <div class="stat-card">
@@ -240,7 +240,7 @@
                     <span class="badge badge-boosting text-[10px]" id="kpi-boost-badge">+0</span>
                 </div>
                 <div class="text-xs uppercase tracking-wider text-text-muted font-semibold mb-1">Total Boosted</div>
-                <div class="text-2xl font-bold text-text-main" id="kpi-boosted">â€”</div>
+                <div class="text-2xl font-bold text-text-main" id="kpi-boosted">—</div>
                 <div class="text-xs text-text-dim mt-1">sepanjang masa</div>
             </div>
             <div class="stat-card">
@@ -251,7 +251,7 @@
                     <span class="badge badge-expired text-[10px]" id="kpi-urgent-badge">0 Urgent</span>
                 </div>
                 <div class="text-xs uppercase tracking-wider text-text-muted font-semibold mb-1">Orders To Ship</div>
-                <div class="text-2xl font-bold text-text-main" id="kpi-orders">â€”</div>
+                <div class="text-2xl font-bold text-text-main" id="kpi-orders">—</div>
                 <div class="text-xs text-text-dim mt-1">perlu dikirim</div>
             </div>
             <div class="stat-card">
@@ -266,7 +266,7 @@
                 </div>
                 <div class="text-xs uppercase tracking-wider text-text-muted font-semibold mb-1">Automation Engine</div>
                 <div class="text-base font-bold text-text-main" id="kpi-engine">Not Running</div>
-                <div class="text-xs text-text-dim mt-1" id="kpi-engine-sub">â€”</div>
+                <div class="text-xs text-text-dim mt-1" id="kpi-engine-sub">—</div>
             </div>
         </div>
 
@@ -276,7 +276,7 @@
             <div class="relative z-10 flex flex-col lg:flex-row lg:items-center gap-6">
                 <div class="flex-1">
                     <div class="flex items-center gap-2 mb-1">
-                        <span class="text-[10px] font-mono font-semibold text-shopee uppercase tracking-wider">â— ACTIVE BOOST ENGINE</span>
+                        <span class="text-[10px] font-mono font-semibold text-shopee uppercase tracking-wider">● ACTIVE BOOST ENGINE</span>
                         <span class="text-white/30 text-xs font-mono">Worker #01</span>
                     </div>
                     <div class="text-white font-bold text-lg mb-1" id="hero-store">Menunggu bot aktif...</div>
@@ -289,13 +289,13 @@
                 </div>
                 <div class="text-center px-6 border-l border-white/10">
                     <div class="text-white/40 text-xs uppercase tracking-wider mb-1">Next Cycle In</div>
-                    <div class="text-white text-3xl font-bold font-mono countdown-timer" id="hero-countdown">â€”:â€”:â€”</div>
+                    <div class="text-white text-3xl font-bold font-mono countdown-timer" id="hero-countdown">—:—:—</div>
                     <div class="text-white/30 text-xs mt-1">4H Cooldown Cycle</div>
                 </div>
                 <div class="px-4 border-l border-white/10 text-right">
                     <div class="text-white/40 text-xs uppercase tracking-wider mb-1">Success Rate</div>
-                    <div class="text-shopee text-2xl font-bold" id="hero-success-rate">â€”</div>
-                    <div class="text-white/40 text-xs mt-1" id="hero-slots-fulfilled">â€”</div>
+                    <div class="text-shopee text-2xl font-bold" id="hero-success-rate">—</div>
+                    <div class="text-white/40 text-xs mt-1" id="hero-slots-fulfilled">—</div>
                 </div>
             </div>
             <!-- Bot Controls -->
@@ -416,16 +416,16 @@
             <div class="stat-card text-center">
                 <div class="text-xs text-text-muted uppercase tracking-wider mb-1">Bot Status</div>
                 <div class="text-lg font-bold text-text-main" id="boost-engine-status">IDLE</div>
-                <div class="text-xs text-text-dim" id="boost-jitter">â€”</div>
+                <div class="text-xs text-text-dim" id="boost-jitter">—</div>
             </div>
             <div class="stat-card text-center">
                 <div class="text-xs text-text-muted uppercase tracking-wider mb-1">Next Reset</div>
-                <div class="text-lg font-bold font-mono text-text-main countdown-timer" id="boost-countdown">â€”:â€”:â€”</div>
+                <div class="text-lg font-bold font-mono text-text-main countdown-timer" id="boost-countdown">—:—:—</div>
                 <div class="text-xs text-text-dim">4H Shopee Cycle</div>
             </div>
             <div class="stat-card text-center">
                 <div class="text-xs text-text-muted uppercase tracking-wider mb-1">24h Success Rate</div>
-                <div class="text-2xl font-bold text-emerald-600" id="boost-success-rate">â€”%</div>
+                <div class="text-2xl font-bold text-emerald-600" id="boost-success-rate">—%</div>
             </div>
         </div>
         <!-- Products boost table -->
@@ -436,7 +436,7 @@
                     Product Queue
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="text-xs text-text-muted" id="boost-product-count">â€”</span>
+                    <span class="text-xs text-text-muted" id="boost-product-count">—</span>
                 </div>
             </div>
             <div class="table-wrap">
@@ -506,18 +506,18 @@
         <div class="grid grid-cols-3 gap-4 mb-4">
             <div class="stat-card">
                 <div class="text-xs text-text-muted uppercase tracking-wider mb-1">Total Orders</div>
-                <div class="text-2xl font-bold text-text-main" id="orders-total">â€”</div>
+                <div class="text-2xl font-bold text-text-main" id="orders-total">—</div>
                 <div class="text-xs text-text-dim mt-1">perlu dikirim</div>
             </div>
             <div class="stat-card" style="border-color: #FECDC4;">
-                <div class="text-xs text-shopee uppercase tracking-wider mb-1 font-semibold">âš  Urgent Deadline</div>
-                <div class="text-2xl font-bold text-shopee" id="orders-urgent">â€”</div>
+                <div class="text-xs text-shopee uppercase tracking-wider mb-1 font-semibold">⚠ Urgent Deadline</div>
+                <div class="text-2xl font-bold text-shopee" id="orders-urgent">—</div>
                 <div class="text-xs text-shopee/60 mt-1">< 12 jam lagi</div>
             </div>
             <div class="stat-card" style="border-color: #A7F3D0;">
                 <div class="text-xs text-text-muted uppercase tracking-wider mb-1">Store</div>
-                <div class="text-base font-bold text-text-main truncate" id="orders-store-name">â€”</div>
-                <div class="text-xs text-text-dim mt-1" id="orders-last-sync">â€”</div>
+                <div class="text-base font-bold text-text-main truncate" id="orders-store-name">—</div>
+                <div class="text-xs text-text-dim mt-1" id="orders-last-sync">—</div>
             </div>
         </div>
         <!-- Filter tabs -->
@@ -557,23 +557,23 @@
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 <div class="stat-card">
                     <div class="text-xs uppercase tracking-wider text-text-muted mb-1 font-semibold">Revenue</div>
-                    <div class="text-2xl font-bold text-text-main" id="ana-revenue">â€”</div>
+                    <div class="text-2xl font-bold text-text-main" id="ana-revenue">—</div>
                     <div class="text-xs mt-1" id="ana-revenue-change">pilih akun</div>
                 </div>
                 <div class="stat-card">
                     <div class="text-xs uppercase tracking-wider text-text-muted mb-1 font-semibold">Orders</div>
-                    <div class="text-2xl font-bold text-text-main" id="ana-orders">â€”</div>
-                    <div class="text-xs mt-1" id="ana-orders-change">â€”</div>
+                    <div class="text-2xl font-bold text-text-main" id="ana-orders">—</div>
+                    <div class="text-xs mt-1" id="ana-orders-change">—</div>
                 </div>
                 <div class="stat-card">
                     <div class="text-xs uppercase tracking-wider text-text-muted mb-1 font-semibold">Visitors</div>
-                    <div class="text-2xl font-bold text-text-main" id="ana-visitors">â€”</div>
-                    <div class="text-xs mt-1" id="ana-visitors-change">â€”</div>
+                    <div class="text-2xl font-bold text-text-main" id="ana-visitors">—</div>
+                    <div class="text-xs mt-1" id="ana-visitors-change">—</div>
                 </div>
                 <div class="stat-card">
                     <div class="text-xs uppercase tracking-wider text-text-muted mb-1 font-semibold">Conversion Rate</div>
-                    <div class="text-2xl font-bold text-emerald-600" id="ana-conv">â€”%</div>
-                    <div class="text-xs mt-1 text-text-dim">dari visitor â†’ order</div>
+                    <div class="text-2xl font-bold text-emerald-600" id="ana-conv">—%</div>
+                    <div class="text-xs mt-1 text-text-dim">dari visitor → order</div>
                 </div>
             </div>
             <!-- Product Performance from existing -->
@@ -613,16 +613,16 @@
                 <h1 class="section-title">System Settings</h1>
                 <p class="section-sub">Konfigurasi automasi, startup, dan penyimpanan data</p>
             </div>
-            <span id="settings-bot-badge" class="badge badge-cooldown text-xs">â¹ Bot Idle</span>
+            <span id="settings-bot-badge" class="badge badge-cooldown text-xs">⏹ Bot Idle</span>
         </div>
         <div class="card p-6 max-w-2xl">
             <!-- Startup -->
             <div class="mb-6">
-                <h3 class="text-xs font-bold text-text-muted uppercase tracking-wider mb-4 pb-2 border-b border-border">ðŸš€ Startup & Background</h3>
+                <h3 class="text-xs font-bold text-text-muted uppercase tracking-wider mb-4 pb-2 border-b border-border">🚀 Startup & Background</h3>
                 <div class="flex items-start justify-between py-4 border-b border-border gap-6">
                     <div>
                         <div class="text-sm font-semibold text-text-main mb-1">Jalankan Saat Windows Startup</div>
-                        <div class="text-xs text-text-muted leading-relaxed">App otomatis berjalan di background saat PC dinyalakan. Muncul di System Tray â€” tidak mengganggu aktivitas.</div>
+                        <div class="text-xs text-text-muted leading-relaxed">App otomatis berjalan di background saat PC dinyalakan. Muncul di System Tray — tidak mengganggu aktivitas.</div>
                     </div>
                     <label class="toggle-switch flex-shrink-0 mt-0.5">
                         <input type="checkbox" id="toggle-run-on-startup" onchange="onSettingChange()">
@@ -642,7 +642,7 @@
             </div>
             <!-- Data -->
             <div class="mb-6">
-                <h3 class="text-xs font-bold text-text-muted uppercase tracking-wider mb-4 pb-2 border-b border-border">ðŸ“‚ Data Storage</h3>
+                <h3 class="text-xs font-bold text-text-muted uppercase tracking-wider mb-4 pb-2 border-b border-border">📂 Data Storage</h3>
                 <div class="py-3">
                     <div class="text-sm font-semibold text-text-main mb-1">Folder Penyimpanan</div>
                     <div class="text-xs font-mono text-text-dim bg-slate-50 px-3 py-2 rounded-lg border border-border" id="data-dir-info">Memuat...</div>
@@ -654,14 +654,13 @@
             <div id="settings-toast" class="hidden mt-4 px-4 py-3 bg-slate-800 text-emerald-400 text-sm rounded-lg border-l-4 border-emerald-500">
                 ✅ Pengaturan berhasil disimpan!
             </div>
-
             <!-- Update Section -->
             <div class="mt-8">
                 <h3 class="text-xs font-bold text-text-muted uppercase tracking-wider mb-4 pb-2 border-b border-border">🔄 Pembaruan Aplikasi</h3>
                 <div class="flex items-center justify-between py-3">
                     <div>
                         <div class="text-sm font-semibold text-text-main mb-1">Versi Saat Ini</div>
-                        <div class="text-xs text-text-muted font-mono">SellerBoost v2.4.0 &nbsp;·&nbsp; <a onclick="require('electron').shell.openExternal('https://github.com/airdrop-888/SellerBoost-Shopee/releases')" class="text-shopee cursor-pointer hover:underline">Lihat semua rilis →</a></div>
+                        <div class="text-xs text-text-muted font-mono">SellerBoost v2.4.0 &nbsp;&middot;&nbsp; <a onclick="require('electron').shell.openExternal('https://github.com/airdrop-888/SellerBoost-Shopee/releases')" class="text-shopee cursor-pointer hover:underline">Lihat semua rilis &rarr;</a></div>
                     </div>
                     <button id="btn-check-update" onclick="manualCheckUpdate()" class="btn-secondary text-xs">
                         <span class="ms text-base">system_update</span> Cek Update
@@ -673,6 +672,64 @@
 
     </div><!-- dot-bg -->
 </div><!-- main content -->
+
+<!-- ===== UPDATE MODAL ===== -->
+<div id="modal-update" class="modal-overlay" style="z-index:200">
+    <div class="modal-box" style="width:520px;max-width:95vw">
+        <div class="flex items-start gap-4 p-5 pb-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#EE4D2D,#FF8C42)">
+                <span class="ms text-white" style="font-size:24px">system_update</span>
+            </div>
+            <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-0.5">
+                    <h3 class="text-base font-bold text-text-main">Update Tersedia! 🎉</h3>
+                    <span id="update-version-badge" class="badge badge-boosting text-[10px]">v&mdash;</span>
+                </div>
+                <p class="text-xs text-text-muted">Versi baru SellerBoost sudah tersedia. Update untuk mendapatkan fitur terbaru dan perbaikan bug.</p>
+            </div>
+            <button onclick="dismissUpdate()" class="text-text-muted hover:text-text-main flex-shrink-0 mt-0.5">
+                <span class="ms text-xl">close</span>
+            </button>
+        </div>
+        <div id="update-notes-wrap" class="mx-5 mb-4 p-3 bg-slate-50 rounded-lg border border-border" style="display:none">
+            <div class="text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1.5">What's New</div>
+            <div id="update-notes" class="text-xs text-text-muted leading-relaxed" style="max-height:80px;overflow-y:auto;white-space:pre-wrap"></div>
+        </div>
+        <div id="update-progress-wrap" class="mx-5 mb-4" style="display:none">
+            <div class="flex items-center justify-between mb-1.5">
+                <span class="text-xs font-semibold text-text-main" id="update-progress-label">Mengunduh update...</span>
+                <span class="text-xs font-mono text-text-muted" id="update-progress-pct">0%</span>
+            </div>
+            <div class="slot-bar h-2">
+                <div id="update-progress-bar" class="slot-fill bg-shopee transition-all duration-300" style="width:0%"></div>
+            </div>
+            <p class="text-[10px] text-text-dim mt-1.5" id="update-progress-sub">Installer akan dijalankan otomatis setelah selesai</p>
+        </div>
+        <div class="mx-5 mb-4 flex items-center gap-2 text-xs text-text-muted">
+            <span class="ms text-sm text-emerald-500">check_circle</span>
+            <span>App akan restart otomatis setelah installer selesai</span>
+        </div>
+        <div id="update-actions" class="flex items-center justify-between px-5 pb-5">
+            <button onclick="skipThisVersion()" class="text-xs text-text-muted hover:text-text-main underline underline-offset-2">Lewati versi ini</button>
+            <div class="flex items-center gap-2">
+                <button onclick="dismissUpdate()" class="btn-ghost text-xs">Nanti saja</button>
+                <button id="btn-do-update" onclick="doUpdate()" class="btn-primary text-xs">
+                    <span class="ms text-base">download</span> Update Sekarang
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- UPDATE BANNER -->
+<div id="update-banner" style="display:none;position:fixed;top:32px;left:220px;right:0;z-index:150;background:linear-gradient(90deg,#EE4D2D,#FF6B35);padding:7px 20px;align-items:center;gap:10px">
+    <span class="ms text-white text-base">system_update</span>
+    <span class="text-white text-xs font-semibold flex-1" id="update-banner-text">Update tersedia!</span>
+    <button onclick="document.getElementById('modal-update').classList.add('open')" class="text-white text-xs font-bold bg-white/20 hover:bg-white/30 px-3 py-1 rounded-full transition-colors">Lihat Update</button>
+    <button onclick="document.getElementById('update-banner').style.display='none'" class="text-white/70 hover:text-white ml-1">
+        <span class="ms text-base">close</span>
+    </button>
+</div>
 
 <!-- ADD ACCOUNT MODAL -->
 <div id="modal-add-account" class="modal-overlay">
@@ -691,10 +748,10 @@
         </div>
         <div class="p-5">
             <label class="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Shopee Cookie (SPC_CDS)</label>
-            <textarea id="cookieInput" class="input-field font-mono text-xs" style="height:100px;resize:none" placeholder="Paste cookie string dari DevTools â†’ Application â†’ Cookies..."></textarea>
+            <textarea id="cookieInput" class="input-field font-mono text-xs" style="height:100px;resize:none" placeholder="Paste cookie string dari DevTools → Application → Cookies..."></textarea>
             <div class="flex items-start gap-2 mt-3 p-3 bg-slate-50 rounded-lg border border-border">
                 <span class="ms text-text-muted text-base flex-shrink-0">shield</span>
-                <p class="text-xs text-text-muted">Cookie disimpan lokal di <span class="font-mono">%APPDATA%\SellerBoost\cookies.txt</span> â€” tidak dikirim ke server manapun.</p>
+                <p class="text-xs text-text-muted">Cookie disimpan lokal di <span class="font-mono">%APPDATA%\SellerBoost\cookies.txt</span> — tidak dikirim ke server manapun.</p>
             </div>
         </div>
         <div class="flex items-center justify-end gap-2 px-5 pb-5">
@@ -704,77 +761,6 @@
             </button>
         </div>
     </div>
-</div>
-
-<!-- ===== UPDATE MODAL ===== -->
-<div id="modal-update" class="modal-overlay" style="z-index:200">
-    <div class="modal-box" style="width:520px;max-width:95vw">
-        <!-- Header -->
-        <div class="flex items-start gap-4 p-5 pb-4">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#EE4D2D,#FF8C42)">
-                <span class="ms text-white" style="font-size:24px">system_update</span>
-            </div>
-            <div class="flex-1 min-w-0">
-                <div class="flex items-center gap-2 mb-0.5">
-                    <h3 class="text-base font-bold text-text-main">Update Tersedia! ðŸŽ‰</h3>
-                    <span id="update-version-badge" class="badge badge-boosting text-[10px]">vâ€”</span>
-                </div>
-                <p class="text-xs text-text-muted">Versi baru SellerBoost sudah tersedia. Update untuk mendapatkan fitur terbaru dan perbaikan bug.</p>
-            </div>
-            <button onclick="dismissUpdate()" class="text-text-muted hover:text-text-main flex-shrink-0 mt-0.5">
-                <span class="ms text-xl">close</span>
-            </button>
-        </div>
-
-        <!-- Release Notes -->
-        <div id="update-notes-wrap" class="mx-5 mb-4 p-3 bg-slate-50 rounded-lg border border-border" style="display:none">
-            <div class="text-[10px] font-bold text-text-muted uppercase tracking-wider mb-1.5">What's New</div>
-            <div id="update-notes" class="text-xs text-text-muted leading-relaxed" style="max-height:80px;overflow-y:auto;white-space:pre-wrap"></div>
-        </div>
-
-        <!-- Progress Area (tersembunyi saat belum download) -->
-        <div id="update-progress-wrap" class="mx-5 mb-4" style="display:none">
-            <div class="flex items-center justify-between mb-1.5">
-                <span class="text-xs font-semibold text-text-main" id="update-progress-label">Mengunduh update...</span>
-                <span class="text-xs font-mono text-text-muted" id="update-progress-pct">0%</span>
-            </div>
-            <div class="slot-bar h-2">
-                <div id="update-progress-bar" class="slot-fill bg-shopee transition-all duration-300" style="width:0%"></div>
-            </div>
-            <p class="text-[10px] text-text-dim mt-1.5" id="update-progress-sub">Installer akan dijalankan otomatis setelah selesai</p>
-        </div>
-
-        <!-- Info strip -->
-        <div class="mx-5 mb-4 flex items-center gap-2 text-xs text-text-muted">
-            <span class="ms text-sm text-emerald-500">check_circle</span>
-            <span>App akan restart otomatis setelah installer selesai</span>
-        </div>
-
-        <!-- Actions -->
-        <div id="update-actions" class="flex items-center justify-between px-5 pb-5">
-            <button onclick="skipThisVersion()" class="text-xs text-text-muted hover:text-text-main underline underline-offset-2">
-                Lewati versi ini
-            </button>
-            <div class="flex items-center gap-2">
-                <button onclick="dismissUpdate()" class="btn-ghost text-xs">Nanti saja</button>
-                <button id="btn-do-update" onclick="doUpdate()" class="btn-primary text-xs">
-                    <span class="ms text-base">download</span> Update Sekarang
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- UPDATE BANNER (muncul di bawah titlebar, untuk setelah dismiss modal) -->
-<div id="update-banner" style="display:none;position:fixed;top:32px;left:220px;right:0;z-index:150;background:linear-gradient(90deg,#EE4D2D,#FF6B35);padding:7px 20px;display:none;align-items:center;gap:10px">
-    <span class="ms text-white text-base">system_update</span>
-    <span class="text-white text-xs font-semibold flex-1" id="update-banner-text">Update tersedia!</span>
-    <button onclick="document.getElementById('modal-update').classList.add('open')" class="text-white text-xs font-bold bg-white/20 hover:bg-white/30 px-3 py-1 rounded-full transition-colors">
-        Lihat Update
-    </button>
-    <button onclick="document.getElementById('update-banner').style.display='none'" class="text-white/70 hover:text-white ml-1">
-        <span class="ms text-base">close</span>
-    </button>
 </div>
 
 <script>
@@ -902,9 +888,9 @@ function renderAccountsTable(accounts, tbodyId) {
         return;
     }
     tbody.innerHTML = accounts.map(a => {
-        const statusBadge = a.status === 'Active' ? `<span class="badge badge-active text-xs">â— Active</span>`
-            : a.status === 'Cooldown' ? `<span class="badge badge-cooldown text-xs">â³ Cooldown</span>`
-            : `<span class="badge badge-expired text-xs">âœ• ${a.status}</span>`;
+        const statusBadge = a.status === 'Active' ? `<span class="badge badge-active text-xs">● Active</span>`
+            : a.status === 'Cooldown' ? `<span class="badge badge-cooldown text-xs">⏳ Cooldown</span>`
+            : `<span class="badge badge-expired text-xs">✕ ${a.status}</span>`;
 
         const slots = a.slots || '0/5';
         const [used, total] = slots.split('/').map(Number);
@@ -914,7 +900,7 @@ function renderAccountsTable(accounts, tbodyId) {
             <span class="text-xs text-text-muted font-mono">${slots}</span>
         </div>`;
 
-        const next = a.nextTimestamp > 0 ? `<span class="countdown-timer text-xs font-mono text-shopee" data-ts="${a.nextTimestamp}">...</span>` : `<span class="text-xs text-text-dim">â€”</span>`;
+        const next = a.nextTimestamp > 0 ? `<span class="countdown-timer text-xs font-mono text-shopee" data-ts="${a.nextTimestamp}">...</span>` : `<span class="text-xs text-text-dim">—</span>`;
         const orders = a.ordersToShip > 0
             ? `<span class="urgency-chip urgency-high text-[10px]">${a.ordersToShip}</span>`
             : `<span class="text-xs text-text-dim">0</span>`;
@@ -968,8 +954,8 @@ function renderRecentActivity(history) {
         return `<div class="flex items-start gap-2 py-2 border-b border-border last:border-0">
             <span class="ms text-sm mt-0.5 ${isSuccess ? 'text-emerald-500' : 'text-red-400'}">${isSuccess ? 'check_circle' : 'cancel'}</span>
             <div class="min-w-0 flex-1">
-                <div class="text-xs font-semibold text-text-main truncate">${h.productName || 'â€”'}</div>
-                <div class="text-[10px] text-text-dim">${h.shopName} Â· ${h.time} ${h.date}</div>
+                <div class="text-xs font-semibold text-text-main truncate">${h.productName || '—'}</div>
+                <div class="text-[10px] text-text-dim">${h.shopName} · ${h.time} ${h.date}</div>
             </div>
             <span class="badge text-[10px] ${isSuccess ? 'badge-active' : 'badge-expired'} flex-shrink-0">${h.status}</span>
         </div>`;
@@ -1024,17 +1010,17 @@ function renderProductsTable(products) {
     }
     tbody.innerHTML = products.map(p => {
         const statusBadge = p.boostStatus === 'boosting'
-            ? `<span class="badge badge-boosting text-xs">â— Boosting</span>`
+            ? `<span class="badge badge-boosting text-xs">● Boosting</span>`
             : p.boostStatus === 'ready'
-            ? `<span class="badge badge-ready text-xs">âœ“ Ready</span>`
-            : `<span class="badge badge-cooldown text-xs">â³ Cooldown</span>`;
+            ? `<span class="badge badge-ready text-xs">✓ Ready</span>`
+            : `<span class="badge badge-cooldown text-xs">⏳ Cooldown</span>`;
         // Gambar produk di Products Catalog dengan fallback placeholder
         const img = p.image
             ? `<img src="${p.image}" class="product-img" loading="lazy"
                  onerror="this.outerHTML='<div class=\'product-img flex items-center justify-center bg-slate-100\'><span class=\'ms text-slate-300 text-xl\'>image</span></div>'">`
             : `<div class="product-img flex items-center justify-center bg-slate-100"><span class="ms text-slate-300 text-xl">image</span></div>`;
         const price = p.priceMax && p.priceMax !== p.price
-            ? `${formatRp(p.price/100000)} â€“ ${formatRp(p.priceMax/100000)}`
+            ? `${formatRp(p.price/100000)} – ${formatRp(p.priceMax/100000)}`
             : formatRp(p.price/100000);
         return `<tr>
             <td><input type="checkbox"></td>
@@ -1073,25 +1059,25 @@ async function loadBoostProducts() {
         const boosting = products.filter(p => p.boostStatus === 'boosting').length;
         const ready = products.filter(p => p.boostStatus === 'ready').length;
         document.getElementById('boost-engine-status').textContent = isBotActive ? 'RUNNING' : 'IDLE';
-        document.getElementById('boost-success-rate').textContent = boosting > 0 ? Math.round((boosting/5)*100) + '%' : 'â€”%';
+        document.getElementById('boost-success-rate').textContent = boosting > 0 ? Math.round((boosting/5)*100) + '%' : '—%';
         tbody.innerHTML = products.map(p => {
             const status = p.boostStatus === 'boosting'
-                ? `<span class="badge badge-boosting text-xs">â— Active Boosting</span>`
+                ? `<span class="badge badge-boosting text-xs">● Active Boosting</span>`
                 : p.boostStatus === 'ready'
-                ? `<span class="badge badge-ready text-xs">âœ“ Ready</span>`
-                : `<span class="badge badge-cooldown text-xs">â³ Cooldown</span>`;
+                ? `<span class="badge badge-ready text-xs">✓ Ready</span>`
+                : `<span class="badge badge-cooldown text-xs">⏳ Cooldown</span>`;
             // Gambar produk dengan fallback placeholder jika gagal load
             const imgHtml = p.image
                 ? `<img src="${p.image}" class="product-img" loading="lazy"
                      onerror="this.outerHTML='<div class=\'product-img bg-slate-100 flex items-center justify-center\'><span class=\'ms text-slate-300 text-xl\'>image</span></div>'"
                    >`
                 : `<div class="product-img bg-slate-100 flex items-center justify-center"><span class="ms text-slate-300 text-xl">image</span></div>`;
-            const slotText = p.boostStatus === 'boosting' ? 'Slot 1' : 'â€”';
+            const slotText = p.boostStatus === 'boosting' ? 'Slot 1' : '—';
             return `<tr>
                 <td><div class="flex items-center gap-3">${imgHtml}<div class="text-xs font-semibold text-text-main max-w-[200px] truncate">${p.name}</div></div></td>
                 <td><span class="badge badge-active text-[10px]">${p.shopName}</span></td>
                 <td>${status}</td>
-                <td class="font-mono text-xs text-text-muted">â€”:â€”:â€”</td>
+                <td class="font-mono text-xs text-text-muted">—:—:—</td>
                 <td class="text-xs text-text-dim">${slotText}</td>
             </tr>`;
         }).join('');
@@ -1130,7 +1116,7 @@ async function loadOrders() {
 function renderOrdersTable(orders) {
     const tbody = document.getElementById('orders-tbody');
     if (!orders || orders.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" class="text-center text-text-muted py-8 text-sm">Tidak ada pesanan yang perlu dikirim ðŸŽ‰</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center text-text-muted py-8 text-sm">Tidak ada pesanan yang perlu dikirim 🎉</td></tr>`;
         return;
     }
     tbody.innerHTML = orders.map(o => {
@@ -1231,14 +1217,14 @@ async function submitNewAccount() {
         closeAddModal();
         loadData();
     } else {
-        alert('âŒ ' + result.msg);
+        alert('❌ ' + result.msg);
     }
 }
 async function deleteAccount(cookie) {
     if (!confirm('Hapus akun ini dari daftar?')) return;
     const result = await ipcRenderer.invoke('delete-account', cookie);
     if (result.success) loadData();
-    else alert('âŒ ' + result.msg);
+    else alert('❌ ' + result.msg);
 }
 
 // ===== BOT CONTROLLER =====
@@ -1283,7 +1269,7 @@ function setBotActive(active) {
     // Settings badge
     const settingsBadge = document.getElementById('settings-bot-badge');
     settingsBadge.className = `badge text-xs ${active ? 'badge-active' : 'badge-cooldown'}`;
-    settingsBadge.textContent = active ? 'ðŸŸ¢ Bot Aktif' : 'â¹ Bot Idle';
+    settingsBadge.textContent = active ? '🟢 Bot Aktif' : '⏹ Bot Idle';
     // Kelola interval countdown UI
     if (active) {
         startHeroCountdownInterval();
@@ -1291,8 +1277,8 @@ function setBotActive(active) {
         // Reset semua timer saat bot stop
         if (heroCountdownInterval) { clearInterval(heroCountdownInterval); heroCountdownInterval = null; }
         countdownTimestamp = 0;
-        document.getElementById('hero-countdown').textContent = 'â€”:â€”:â€”';
-        document.getElementById('boost-countdown').textContent = 'â€”:â€”:â€”';
+        document.getElementById('hero-countdown').textContent = '—:—:—';
+        document.getElementById('boost-countdown').textContent = '—:—:—';
         document.getElementById('bot-countdown-sidebar').textContent = 'Belum aktif';
         document.getElementById('bot-progress-bar').style.width = '0%';
         document.getElementById('hero-slot-bar').style.width = '0%';
@@ -1385,14 +1371,14 @@ ipcRenderer.on('update-progress', (event, data) => {
     wrap.style.display = 'block';
     if (data.status === 'launching' || data.percent >= 100) {
         bar.style.width = '100%'; pct.textContent = '100%';
-        lbl.textContent = 'Download selesai, menjalankan installer...';
+        lbl.textContent = '\u2705 Download selesai, menjalankan installer...';
         sub.textContent = 'App akan menutup dan installer terbuka otomatis';
         const btnU = document.getElementById('btn-do-update');
         if (btnU) { btnU.disabled = true; btnU.textContent = 'Menjalankan installer...'; }
     } else {
         bar.style.width = data.percent + '%';
         pct.textContent = data.percent + '%';
-        const mb = data.total > 0 ?  + ' + '( /  MB)' + " : '';
+        const mb = data.total > 0 ? ' (' + (data.received/1048576).toFixed(1) + ' / ' + (data.total/1048576).toFixed(1) + ' MB)' : '';
         lbl.textContent = 'Mengunduh update...' + mb;
     }
 });
@@ -1427,7 +1413,8 @@ function dismissUpdate() {
     document.getElementById('modal-update').classList.remove('open');
     if (_updateInfo) {
         const banner = document.getElementById('update-banner');
-        document.getElementById('update-banner-text').textContent = 'SellerBoost v' + _updateInfo.version + ' tersedia - klik untuk update';
+        document.getElementById('update-banner-text').textContent =
+            'SellerBoost v' + _updateInfo.version + ' tersedia \u2014 klik untuk update';
         banner.style.display = 'flex';
     }
 }
@@ -1448,7 +1435,8 @@ async function manualCheckUpdate() {
         if (btn) { btn.disabled = false; btn.textContent = 'Cek Update'; }
     } else {
         if (btn) {
-            btn.disabled = false; btn.textContent = 'Sudah versi terbaru!';
+            btn.disabled = false;
+            btn.innerHTML = '\u2705 Sudah versi terbaru!';
             setTimeout(() => { btn.innerHTML = '<span class="ms text-base">system_update</span> Cek Update'; }, 3000);
         }
     }
