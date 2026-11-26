@@ -108,6 +108,8 @@ Lihat [`docs/CHANGELOG.md`](docs/CHANGELOG.md).
 Ada masalah atau butuh bantuan setup? Hubungi penjual dengan menyertakan:
 versi aplikasi (pojok kiri bawah dashboard), screenshot error, dan isi `Activity Logs`.
 
+Panduan keamanan akun & file sensitif: [`docs/KEAMANAN.md`](docs/KEAMANAN.md).
+
 ---
 
 ## Watermark Build (Opsional)
