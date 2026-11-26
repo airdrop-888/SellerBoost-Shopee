@@ -326,6 +326,21 @@ ipcMain.handle('save-config', async (event, updates) => {
     return cfg;
 });
 
+// Identitas produk / watermark build
+ipcMain.handle('get-branding', async () => {
+    let brand = {};
+    try {
+        brand = JSON.parse(fs.readFileSync(path.join(__dirname, 'branding.json'), 'utf8'));
+    } catch (e) {}
+    return {
+        product: brand.product || 'SellerBoost',
+        owner: brand.owner || '',
+        contact: brand.contact || '',
+        watermark: brand.watermark || '',
+        version: app.getVersion()
+    };
+});
+
 // Baca status Windows Startup aktual dari registry
 ipcMain.handle('get-startup-status', async () => {
     const settings = app.getLoginItemSettings({

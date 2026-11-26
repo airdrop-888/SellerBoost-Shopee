@@ -89,9 +89,9 @@ Cookie tersimpan hanya di komputer pengguna. Uninstall aplikasi tidak menghapus 
 ```
 src/        kode aplikasi (main process, bot core, UI)
 build/      icon installer
-docs/       panduan pengguna, changelog, kebijakan lisensi
+docs/       panduan pengguna & changelog
 release/    installer siap distribusi
-tools/      script development (generate icon)
+tools/      script development (generate icon, build release)
 index.js    entry CLI
 ```
 
@@ -110,8 +110,19 @@ versi aplikasi (pojok kiri bawah dashboard), screenshot error, dan isi `Activity
 
 ---
 
+## Watermark Build (Opsional)
+
+Setiap installer bisa diberi identitas/watermark untuk menandai siapa penerima build:
+
+```powershell
+.\tools\build-release.ps1 -Watermark "INV-2026-0117" -Owner "Nama Pembeli" -Contact "wa.me/62xxx"
+```
+
+Watermark tampil di header dashboard (`SellerBoost v2.4.0 · INV-2026-0117`).
+Tanpa parameter, build tetap bersih tanpa watermark.
+
+---
+
 ## Lisensi
 
-Perangkat lunak ini **bukan** open source. Penggunaan diatur dalam
-[`docs/LICENSE-EULA.md`](docs/LICENSE-EULA.md). Dilarang menjual ulang,
-mendistribusikan, atau membocorkan aplikasi tanpa izin tertulis dari pemilik.
+MIT License — free & open source. Lihat [`LICENSE`](LICENSE).

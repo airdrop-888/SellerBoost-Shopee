@@ -107,7 +107,7 @@
 <div class="fixed top-0 left-0 right-0 h-8 bg-sidebar z-50 flex items-center justify-between px-3 select-none" style="-webkit-app-region:drag">
     <div class="flex items-center gap-2">
         <span class="ms text-shopee text-sm">bolt</span>
-        <span class="text-white/80 text-xs font-semibold tracking-wide">SellerBoost v2.4.0</span>
+        <span id="brand-version-text" class="text-white/80 text-xs font-semibold tracking-wide">SellerBoost v2.4.0</span>
         <span class="text-white/30 text-xs">•</span>
         <span id="bot-node-label" class="text-white/40 font-mono text-xs">ID_LOCAL</span>
     </div>
@@ -660,7 +660,7 @@
                 <div class="flex items-center justify-between py-3">
                     <div>
                         <div class="text-sm font-semibold text-text-main mb-1">Versi Saat Ini</div>
-                        <div class="text-xs text-text-muted font-mono">SellerBoost v2.4.0 &nbsp;&middot;&nbsp; <a onclick="require('electron').shell.openExternal('https://github.com/airdrop-888/SellerBoost-Shopee/releases')" class="text-shopee cursor-pointer hover:underline">Lihat semua rilis &rarr;</a></div>
+                        <div class="text-xs text-text-muted font-mono"><span id="brand-footer-text">SellerBoost v2.4.0</span> &nbsp;&middot;&nbsp; <a onclick="require('electron').shell.openExternal('https://github.com/airdrop-888/SellerBoost-Shopee/releases')" class="text-shopee cursor-pointer hover:underline">Lihat semua rilis &rarr;</a></div>
                     </div>
                     <button id="btn-check-update" onclick="manualCheckUpdate()" class="btn-secondary text-xs">
                         <span class="ms text-base">system_update</span> Cek Update
@@ -765,6 +765,19 @@
 
 <script>
 const { ipcRenderer } = require('electron');
+
+// ===== BRANDING / WATERMARK =====
+(async () => {
+    try {
+        const b = await ipcRenderer.invoke('get-branding');
+        const head = document.getElementById('brand-version-text');
+        if (head) head.textContent = b.watermark ? `${b.product} v${b.version} · ${b.watermark}` : `${b.product} v${b.version}`;
+        const foot = document.getElementById('brand-footer-text');
+        if (foot) foot.textContent = `${b.product} v${b.version}`;
+        if (b.product) document.title = b.product;
+        if (b.contact) window.__sellerBoostContact = b.contact;
+    } catch (e) {}
+})();
 
 // ===== STATE =====
 let isBotActive = false;
