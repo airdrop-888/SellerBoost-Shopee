@@ -1,0 +1,64 @@
+{
+  "name": "seller-boost",
+  "version": "2.4.0",
+  "description": "Shopee Product Boost Automation Tool (Free & Open Source)",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "cli": "node index.js",
+    "dist": "electron-builder --win --x64",
+    "dist:nsis": "electron-builder --win nsis --x64",
+    "dist:portable": "electron-builder --win portable --x64"
+  },
+  "build": {
+    "appId": "com.sellerboost.app",
+    "productName": "SellerBoost",
+    "copyright": "Copyright © 2024 SellerBoost",
+    "directories": {
+      "output": "dist-build"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "requestedExecutionLevel": "requireAdministrator",
+      "signingHashAlgorithms": null,
+      "sign": null
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": true,
+      "selectPerMachineByDefault": true,
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "installerHeaderIcon": "build/icon.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "SellerBoost",
+      "artifactName": "SellerBoost-Setup-${version}.exe",
+      "installerLanguages": ["en_US"],
+      "language": "1033",
+      "deleteAppDataOnUninstall": false
+    }
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "figlet": "^1.7.0",
+    "fs-extra": "^11.1.1",
+    "nanospinner": "^1.2.2",
+    "picocolors": "^1.0.1"
+  },
+  "devDependencies": {
+    "electron": "^27.3.11",
+    "electron-builder": "^24.13.3"
+  }
+}

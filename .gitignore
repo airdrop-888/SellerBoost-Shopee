@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+dist-build/
+release/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log
+
+# Data privat - JANGAN di-commit (session Shopee)
+cookies.txt
+stats.json
+config.json
+*.har
+
+# Secret / key material
+.env
+.env.*
+*.pem
+*.key
+*.pfx
+
+# Scratch
+scratch_test.js
+src/icon-256.png
