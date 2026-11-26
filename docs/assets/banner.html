@@ -1,0 +1,307 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { --s: 1; }
+  html, body { width: calc(1600px * var(--s)); height: calc(533px * var(--s)); overflow: hidden; }
+  body {
+    font-family: "Segoe UI Variable Display", "Segoe UI", Inter, Arial, sans-serif;
+    background: #080A0F;
+    color: #E9EEF5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .banner {
+    position: relative;
+    width: 1600px;
+    height: 533px;
+    overflow: hidden;
+    transform: scale(var(--s));
+    transform-origin: top left;
+    background:
+      radial-gradient(1100px 520px at 82% 40%, rgba(238,77,45,.16), transparent 65%),
+      radial-gradient(700px 420px at 6% 105%, rgba(255,115,55,.10), transparent 70%),
+      linear-gradient(105deg, #0A0D13 0%, #0D1119 52%, #11151E 100%);
+  }
+
+  .grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(900px 520px at 30% 50%, #000 25%, transparent 78%);
+    -webkit-mask-image: radial-gradient(900px 520px at 30% 50%, #000 25%, transparent 78%);
+  }
+
+  .sweep {
+    position: absolute;
+    width: 1300px; height: 220px;
+    right: -320px; top: 150px;
+    background: linear-gradient(90deg, transparent, rgba(238,77,45,.42), rgba(255,138,76,.10), transparent);
+    transform: rotate(-18deg);
+    filter: blur(46px);
+    opacity: .85;
+  }
+
+  .hline {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+    background: linear-gradient(90deg, #EE4D2D, #FF8A4C 55%, rgba(255,138,76,0));
+  }
+
+  .content {
+    position: relative;
+    z-index: 3;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 68px;
+    gap: 44px;
+  }
+
+  .left { width: 730px; flex: 0 0 730px; }
+
+  .brand { display: flex; align-items: center; gap: 16px; margin-bottom: 30px; }
+  .mark {
+    width: 54px; height: 54px; border-radius: 15px;
+    background: linear-gradient(145deg, #FF7A45, #EE4D2D 62%, #C93A1F);
+    display: grid; place-items: center;
+    box-shadow: 0 10px 28px rgba(238,77,45,.38), inset 0 1px 0 rgba(255,255,255,.35);
+  }
+  .mark svg { width: 26px; height: 26px; }
+  .wordmark { font-size: 30px; font-weight: 700; letter-spacing: -.6px; }
+  .wordmark span { color: #FF7A45; }
+
+  h1 {
+    font-size: 53px;
+    line-height: 1.13;
+    letter-spacing: -1.9px;
+    font-weight: 700;
+    color: #F4F7FB;
+  }
+  h1 .accent {
+    background: linear-gradient(92deg, #FF8A4C, #EE4D2D 70%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .sub {
+    margin-top: 20px;
+    font-size: 17px;
+    line-height: 1.6;
+    color: #93A0B4;
+    max-width: 600px;
+  }
+
+  .pills { display: flex; gap: 10px; margin-top: 28px; }
+  .pill {
+    font-size: 12.5px;
+    letter-spacing: .2px;
+    color: #B9C4D4;
+    border: 1px solid rgba(255,255,255,.13);
+    background: rgba(255,255,255,.045);
+    padding: 7px 15px;
+    border-radius: 999px;
+    display: flex; align-items: center; gap: 7px;
+  }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: #FF6B35; box-shadow: 0 0 10px #FF6B35; }
+
+  /* ---------- dashboard mock ---------- */
+  .right { position: relative; flex: 1; display: flex; justify-content: flex-end; padding-right: 42px; }
+  .card {
+    width: 556px;
+    background: linear-gradient(165deg, rgba(24,29,39,.96), rgba(13,17,24,.97));
+    border: 1px solid rgba(255,255,255,.085);
+    border-radius: 20px;
+    padding: 20px 22px 18px;
+    box-shadow:
+      0 40px 90px rgba(0,0,0,.62),
+      0 0 0 1px rgba(255,255,255,.02) inset,
+      0 1px 0 rgba(255,255,255,.06) inset;
+    transform: rotate(-2.2deg);
+  }
+
+  .card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .card-title { font-size: 14.5px; font-weight: 650; color: #DCE4EF; letter-spacing: .1px; }
+  .live {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 10.5px; letter-spacing: 1.4px; font-weight: 700;
+    color: #FF8A4C;
+    background: rgba(238,77,45,.12);
+    border: 1px solid rgba(238,77,45,.28);
+    padding: 4px 9px; border-radius: 6px;
+  }
+
+  .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+  .kpi {
+    background: rgba(255,255,255,.035);
+    border: 1px solid rgba(255,255,255,.06);
+    border-radius: 11px;
+    padding: 11px 13px;
+  }
+  .kpi .label { font-size: 10.5px; color: #7F8CA0; letter-spacing: .5px; text-transform: uppercase; font-weight: 600; }
+  .kpi .value { font-size: 22px; font-weight: 700; letter-spacing: -.6px; margin-top: 4px; color: #F2F6FB; font-variant-numeric: tabular-nums; }
+  .kpi .delta { font-size: 10.5px; margin-top: 2px; color: #4FBF8B; font-weight: 600; }
+
+  .chart-wrap {
+    background: rgba(255,255,255,.022);
+    border: 1px solid rgba(255,255,255,.05);
+    border-radius: 12px;
+    padding: 10px 8px 4px;
+  }
+  .chart { width: 100%; height: 132px; display: block; }
+
+  .card-foot { display: flex; align-items: center; gap: 18px; margin-top: 15px; }
+
+  .ring { position: relative; width: 54px; height: 54px; flex: 0 0 54px; }
+  .ring svg { transform: rotate(-90deg); }
+  .ring .pct {
+    position: absolute; inset: 0; display: grid; place-items: center;
+    font-size: 12.5px; font-weight: 700; color: #F2F6FB;
+  }
+
+  .foot-lines { flex: 1; }
+  .foot-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px; }
+  .foot-row:last-child { margin-bottom: 0; }
+  .foot-label { font-size: 11.5px; color: #8391A5; }
+  .foot-value { font-size: 11.5px; color: #D7E0EC; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .bar { height: 5px; border-radius: 99px; background: rgba(255,255,255,.07); overflow: hidden; margin-top: 5px; }
+  .bar > i { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, #EE4D2D, #FF9558); }
+  .bar.alt > i { background: linear-gradient(90deg, #3E7BFA, #6FA0FF); }
+
+  .chip {
+    position: absolute; z-index: 4;
+    font-size: 11.5px; font-weight: 600; color: #EAF0F7;
+    background: rgba(20,25,34,.94);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 10px;
+    padding: 8px 12px;
+    display: flex; align-items: center; gap: 8px;
+    box-shadow: 0 14px 34px rgba(0,0,0,.5);
+  }
+  .chip .tick {
+    width: 16px; height: 16px; border-radius: 50%;
+    background: rgba(79,191,139,.16);
+    color: #4FBF8B; display: grid; place-items: center; font-size: 10px; font-weight: 800;
+  }
+  .chip.one { top: -6px; left: 30px; }
+  .chip.two { bottom: -16px; left: 46px; }
+</style>
+</head>
+<body>
+  <div class="banner">
+    <div class="grid"></div>
+    <div class="sweep"></div>
+
+    <div class="content">
+      <div class="left">
+        <div class="brand">
+          <div class="mark">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M13.2 2 4.6 13.4h5.2L9.8 22l8.9-11.7h-5.5L13.2 2Z" fill="#fff"/>
+            </svg>
+          </div>
+          <div class="wordmark">Seller<span>Boost</span></div>
+        </div>
+
+        <h1>Boost produk otomatis.<br /><span class="accent">Slot tidak pernah hangus.</span></h1>
+
+        <p class="sub">
+          Auto-boost Shopee sesuai slot dan cooldown 4 jam, multi-toko dalam satu
+          dashboard, tetap jalan setelah restart.
+        </p>
+
+        <div class="pills">
+          <div class="pill"><span class="dot"></span>Auto Boost 4 Jam</div>
+          <div class="pill">Multi-Akun</div>
+          <div class="pill">Windows 10 / 11</div>
+          <div class="pill">Open Source</div>
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">Boost Overview</div>
+            <div class="live"><span class="dot"></span>LIVE</div>
+          </div>
+
+          <div class="kpis">
+            <div class="kpi">
+              <div class="label">Boosted</div>
+              <div class="value">1,284</div>
+              <div class="delta">+18 hari ini</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Success</div>
+              <div class="value">99.2%</div>
+              <div class="delta">+0.4%</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Toko</div>
+              <div class="value">6</div>
+              <div class="delta">semua aktif</div>
+            </div>
+          </div>
+
+          <div class="chart-wrap">
+            <svg class="chart" viewBox="0 0 560 132" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="fill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#EE4D2D" stop-opacity="0.34"/>
+                  <stop offset="100%" stop-color="#EE4D2D" stop-opacity="0"/>
+                </linearGradient>
+                <linearGradient id="stroke" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#FF9558"/>
+                  <stop offset="100%" stop-color="#EE4D2D"/>
+                </linearGradient>
+              </defs>
+              <g stroke="rgba(255,255,255,.055)" stroke-width="1">
+                <line x1="0" y1="30" x2="560" y2="30"/>
+                <line x1="0" y1="66" x2="560" y2="66"/>
+                <line x1="0" y1="102" x2="560" y2="102"/>
+              </g>
+              <path d="M0,104 C40,96 62,78 96,80 C130,82 150,58 186,60 C222,62 240,40 276,44 C312,48 332,30 368,33 C404,36 428,18 464,20 C500,22 528,10 560,12 L560,132 L0,132 Z" fill="url(#fill)"/>
+              <path d="M0,104 C40,96 62,78 96,80 C130,82 150,58 186,60 C222,62 240,40 276,44 C312,48 332,30 368,33 C404,36 428,18 464,20 C500,22 528,10 560,12"
+                    fill="none" stroke="url(#stroke)" stroke-width="2.6" stroke-linecap="round"/>
+              <circle cx="464" cy="20" r="4.6" fill="#FF7A45" stroke="#0D1119" stroke-width="2.6"/>
+            </svg>
+          </div>
+
+          <div class="card-foot">
+            <div class="ring">
+              <svg width="54" height="54" viewBox="0 0 54 54">
+                <circle cx="27" cy="27" r="22" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="5"/>
+                <circle cx="27" cy="27" r="22" fill="none" stroke="#EE4D2D" stroke-width="5"
+                        stroke-linecap="round" stroke-dasharray="138.2" stroke-dashoffset="11.1"/>
+              </svg>
+              <div class="pct">92%</div>
+            </div>
+            <div class="foot-lines">
+              <div class="foot-row">
+                <span class="foot-label">Slot terpakai</span>
+                <span class="foot-value">18 / 20</span>
+              </div>
+              <div class="bar"><i style="width:90%"></i></div>
+              <div class="foot-row" style="margin-top:9px">
+                <span class="foot-label">Cooldown berikutnya</span>
+                <span class="foot-value">02:14:38</span>
+              </div>
+              <div class="bar alt"><i style="width:38%"></i></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chip one"><span class="tick">&#10003;</span>Boost berhasil &middot; 3 produk</div>
+        <div class="chip two"><span class="tick">&#10003;</span>Auto-resume aktif</div>
+      </div>
+    </div>
+
+    <div class="hline"></div>
+  </div>
+</body>
+</html>
