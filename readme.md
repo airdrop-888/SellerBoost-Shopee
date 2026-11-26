@@ -14,6 +14,14 @@
 
 [Tentang](#tentang) · [Fitur](#fitur) · [Instalasi](#instalasi) · [Mulai Cepat](#mulai-cepat) · [Arsitektur](#arsitektur) · [FAQ](#faq)
 
+<br />
+
+<a href="https://github.com/airdrop-888/SellerBoost-Shopee/releases/download/v2.4.0/SellerBoost-Setup-2.4.0.exe">
+  <img src="https://img.shields.io/badge/Download%20Installer-v2.4.0%20%C2%B7%2073%20MB-EE4D2D?style=for-the-badge&logo=windows&logoColor=white" alt="Download SellerBoost Setup 2.4.0" />
+</a>
+
+<sub>Windows 10/11 · 64-bit · NSIS installer</sub>
+
 </div>
 
 ---
@@ -72,7 +80,7 @@ Dibangun dengan Electron, berjalan lokal di komputer seller. Cookie dan data tok
 
 ### Installer (disarankan)
 
-1. Unduh **`SellerBoost-Setup-2.4.0.exe`** dari halaman [Releases](https://github.com/airdrop-888/SellerBoost-Shopee/releases)
+1. Unduh **`SellerBoost-Setup-2.4.0.exe`** — [direct link](https://github.com/airdrop-888/SellerBoost-Shopee/releases/download/v2.4.0/SellerBoost-Setup-2.4.0.exe) (73 MB)
 2. Klik kanan → **Run as administrator**
 3. Ikuti wizard: **Next → Install → Finish**
 4. Buka SellerBoost dari shortcut Desktop
