@@ -48,8 +48,11 @@ app.whenReady().then(async () => {
   await new Promise(r => setTimeout(r, 700));
 
   const image = await win.webContents.capturePage();
+  // Turunkan ke 2400px lebar supaya file ringan (tetap tajam saat ditampilkan GitHub)
+  const OUT_W = 2400;
+  const scaled = image.resize({ width: OUT_W, quality: 'best' });
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
-  fs.writeFileSync(outPath, image.toPNG());
+  fs.writeFileSync(outPath, scaled.toPNG());
 
   const size = image.getSize();
   const dpr = await win.webContents.executeJavaScript('window.devicePixelRatio');
